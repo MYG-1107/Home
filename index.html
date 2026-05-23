@@ -45,6 +45,21 @@
     controls.minDistance = 4;
     controls.maxDistance = 20;
 
+    let autoRotate = true;
+    let autoRotateResumeTimer;
+    const pauseAutoRotate = () => {
+      autoRotate = false;
+      clearTimeout(autoRotateResumeTimer);
+    };
+    const resumeAutoRotateSoon = () => {
+      clearTimeout(autoRotateResumeTimer);
+      autoRotateResumeTimer = setTimeout(() => {
+        autoRotate = true;
+      }, 1500);
+    };
+    controls.addEventListener("start", pauseAutoRotate);
+    controls.addEventListener("end", resumeAutoRotateSoon);
+
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
     scene.add(ambientLight);
 
@@ -111,7 +126,9 @@
 
     const animate = () => {
       requestAnimationFrame(animate);
-      houseGroup.rotation.y += 0.003;
+      if (autoRotate) {
+        houseGroup.rotation.y += 0.003;
+      }
       controls.update();
       renderer.render(scene, camera);
     };
