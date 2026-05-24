@@ -142,11 +142,10 @@
     doorFrame.position.set(2.8, 1.13, halfDepth - wallThickness / 2 - 0.08);
     houseGroup.add(doorFrame);
 
-    const labelLengthThreshold = 12;
-    const labelFontSizeLarge = 30;
-    const labelFontSizeSmall = 24;
-
     const createLabel = (text, planeSize) => {
+      const labelLengthThreshold = 12;
+      const labelFontSizeLarge = 30;
+      const labelFontSizeSmall = 24;
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
       canvas.width = 256;
@@ -182,12 +181,25 @@
       houseGroup.add(label);
     };
 
+    const leftZoneWidth = halfWidth;
+    const rightZoneWidth = halfWidth;
+    const frontZoneDepth = halfDepth;
+    const backZoneDepth = halfDepth;
+    const leftCenterX = -halfWidth / 2;
+    const rightCenterX = halfWidth / 2;
+    const frontCenterZ = halfDepth / 2;
+    const backCenterZ = -halfDepth / 2;
+    const diningWidth = rightZoneWidth / 2;
+    const kitchenWidth = rightZoneWidth / 2;
+    const diningCenterX = rightCenterX - diningWidth / 2;
+    const kitchenCenterX = rightCenterX + kitchenWidth / 2;
+
     const rooms = [
-      { name: "Hall", width: 5, depth: 4, centerX: 2.5, centerZ: 2, color: "#f5e6c8" },
-      { name: "Dining", width: 2.5, depth: 4, centerX: 1.25, centerZ: -2, color: "#f0d9d9" },
-      { name: "Kitchen", width: 2.5, depth: 4, centerX: 3.75, centerZ: -2, color: "#d9f0e8" },
-      { name: "Master Bedroom", width: 5, depth: 4, centerX: -2.5, centerZ: -2, color: "#e0ddf5" },
-      { name: "Child Bedroom", width: 5, depth: 4, centerX: -2.5, centerZ: 2, color: "#dbeaf7" }
+      { name: "Hall", width: rightZoneWidth, depth: frontZoneDepth, centerX: rightCenterX, centerZ: frontCenterZ, color: "#f5e6c8" },
+      { name: "Dining", width: diningWidth, depth: backZoneDepth, centerX: diningCenterX, centerZ: backCenterZ, color: "#f0d9d9" },
+      { name: "Kitchen", width: kitchenWidth, depth: backZoneDepth, centerX: kitchenCenterX, centerZ: backCenterZ, color: "#d9f0e8" },
+      { name: "Master Bedroom", width: leftZoneWidth, depth: backZoneDepth, centerX: leftCenterX, centerZ: backCenterZ, color: "#e0ddf5" },
+      { name: "Child Bedroom", width: leftZoneWidth, depth: frontZoneDepth, centerX: leftCenterX, centerZ: frontCenterZ, color: "#dbeaf7" }
     ];
 
     rooms.forEach(addRoom);
