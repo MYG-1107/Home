@@ -85,7 +85,7 @@
       <button data-view="play">Play Area</button>
       <button data-view="front">Front Porch</button>
     </div>
-    <div class="hint">Use mouse to orbit. Buttons navigate to rooms and outdoor areas.</div>
+    <div class="hint">Use mouse to orbit. Buttons navigate to rooms or outdoor areas.</div>
   </div>
   <script type="importmap">
     {
@@ -99,9 +99,10 @@
     import * as THREE from "three";
     import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+    const SKY_COLOR = "#b7d6ff";
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#b7d6ff");
-    scene.fog = new THREE.Fog(0xb7d6ff, 40, 85);
+    scene.background = new THREE.Color(SKY_COLOR);
+    scene.fog = new THREE.Fog(SKY_COLOR, 40, 85);
 
     const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 140);
     camera.position.set(16, 9, 16);
@@ -611,7 +612,8 @@
     const updateCameraAnimation = () => {
       if (!activeMove) return;
       const elapsed = performance.now() - activeMove.start;
-      const progress = Math.min(elapsed / activeMove.duration, 1);
+      const duration = Math.max(activeMove.duration, 1);
+      const progress = Math.min(elapsed / duration, 1);
       const eased = easeInOutQuad(progress);
       camera.position.lerpVectors(activeMove.fromPosition, activeMove.toPosition, eased);
       controls.target.lerpVectors(activeMove.fromTarget, activeMove.toTarget, eased);
