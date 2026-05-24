@@ -85,7 +85,7 @@
       <button data-view="play">Play Area</button>
       <button data-view="front">Front Porch</button>
     </div>
-    <div class="hint">Use mouse to orbit. Buttons navigate between rooms and back.</div>
+    <div class="hint">Use mouse to orbit. Buttons navigate to rooms and outdoor areas.</div>
   </div>
   <script type="importmap">
     {
@@ -584,7 +584,8 @@
       }
     };
 
-    const easeInOutQuad = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+    const easeInOutQuad = (progress) =>
+      progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
     let activeMove = null;
     const moveCameraTo = (viewKey) => {
       const view = roomViews[viewKey];
@@ -610,11 +611,11 @@
       requestAnimationFrame(animate);
       if (activeMove) {
         const elapsed = performance.now() - activeMove.start;
-        const t = Math.min(elapsed / activeMove.duration, 1);
-        const eased = easeInOutQuad(t);
+        const progress = Math.min(elapsed / activeMove.duration, 1);
+        const eased = easeInOutQuad(progress);
         camera.position.lerpVectors(activeMove.fromPosition, activeMove.toPosition, eased);
         controls.target.lerpVectors(activeMove.fromTarget, activeMove.toTarget, eased);
-        if (t >= 1) {
+        if (progress >= 1) {
           activeMove = null;
           resumeAutoRotateSoon();
         }
