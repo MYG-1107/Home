@@ -145,6 +145,10 @@
     doorFrame.position.set(2.8, 1.13, halfDepth - wallThickness / 2 - 0.08);
     houseGroup.add(doorFrame);
 
+    const SHORT_LABEL_LENGTH = 12;
+    const LARGE_LABEL_FONT = 30;
+    const SMALL_LABEL_FONT = 24;
+
     const createLabel = (text, size) => {
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
@@ -153,7 +157,7 @@
       context.fillStyle = "rgba(15, 23, 42, 0.65)";
       context.fillRect(0, 0, canvas.width, canvas.height);
       context.fillStyle = "#f8fafc";
-      const fontSize = text.length > 12 ? 24 : 30;
+      const fontSize = text.length > SHORT_LABEL_LENGTH ? SMALL_LABEL_FONT : LARGE_LABEL_FONT;
       context.font = `600 ${fontSize}px "Segoe UI", sans-serif`;
       context.textAlign = "center";
       context.textBaseline = "middle";
@@ -191,29 +195,34 @@
 
     rooms.forEach(addRoom);
 
-    const addBox = ({ width, height, depth, x, y = 0, z, material }) => {
+    const addFurnitureBox = ({ name, width, height, depth, x, y = 0, z, material }) => {
       const mesh = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), material);
       mesh.position.set(x, y + height / 2, z);
       mesh.castShadow = true;
       mesh.receiveShadow = true;
+      mesh.name = name;
       houseGroup.add(mesh);
       return mesh;
     };
 
-    addBox({ width: 1.8, height: 0.45, depth: 0.8, x: 3.4, z: 2.6, material: fabricMaterial });
-    addBox({ width: 1.8, height: 0.35, depth: 0.3, x: 3.4, y: 0.45, z: 3.0, material: fabricMaterial });
-    addBox({ width: 0.9, height: 0.35, depth: 0.6, x: 1.8, z: 2.1, material: woodMaterial });
-    addBox({ width: 1.2, height: 0.12, depth: 0.8, x: 1.25, y: 0.42, z: -2.0, material: woodMaterial });
-    addBox({ width: 0.35, height: 0.45, depth: 0.35, x: 0.55, z: -1.5, material: woodMaterial });
-    addBox({ width: 0.35, height: 0.45, depth: 0.35, x: 1.95, z: -1.5, material: woodMaterial });
-    addBox({ width: 0.35, height: 0.45, depth: 0.35, x: 0.55, z: -2.5, material: woodMaterial });
-    addBox({ width: 0.35, height: 0.45, depth: 0.35, x: 1.95, z: -2.5, material: woodMaterial });
-    addBox({ width: 1.9, height: 0.9, depth: 0.5, x: 4.3, z: -3.2, material: metalMaterial });
-    addBox({ width: 1.1, height: 0.9, depth: 0.5, x: 3.5, z: -1.6, material: metalMaterial });
-    addBox({ width: 2.2, height: 0.4, depth: 1.6, x: -3.4, z: -2.7, material: woodMaterial });
-    addBox({ width: 0.5, height: 0.6, depth: 1.4, x: -4.4, z: -2.7, material: trimMaterial });
-    addBox({ width: 1.6, height: 0.35, depth: 1.2, x: -3.4, z: 2.7, material: woodMaterial });
-    addBox({ width: 0.6, height: 0.7, depth: 0.6, x: -1.2, z: 2.4, material: trimMaterial });
+    const furnitureItems = [
+      { name: "Hall Sofa Base", width: 1.8, height: 0.45, depth: 0.8, x: 3.4, z: 2.6, material: fabricMaterial },
+      { name: "Hall Sofa Back", width: 1.8, height: 0.35, depth: 0.3, x: 3.4, y: 0.45, z: 3.0, material: fabricMaterial },
+      { name: "Hall Coffee Table", width: 0.9, height: 0.35, depth: 0.6, x: 1.8, z: 2.1, material: woodMaterial },
+      { name: "Dining Table", width: 1.2, height: 0.12, depth: 0.8, x: 1.25, y: 0.42, z: -2.0, material: woodMaterial },
+      { name: "Dining Chair 1", width: 0.35, height: 0.45, depth: 0.35, x: 0.55, z: -1.5, material: woodMaterial },
+      { name: "Dining Chair 2", width: 0.35, height: 0.45, depth: 0.35, x: 1.95, z: -1.5, material: woodMaterial },
+      { name: "Dining Chair 3", width: 0.35, height: 0.45, depth: 0.35, x: 0.55, z: -2.5, material: woodMaterial },
+      { name: "Dining Chair 4", width: 0.35, height: 0.45, depth: 0.35, x: 1.95, z: -2.5, material: woodMaterial },
+      { name: "Kitchen Counter A", width: 1.9, height: 0.9, depth: 0.5, x: 4.3, z: -3.2, material: metalMaterial },
+      { name: "Kitchen Counter B", width: 1.1, height: 0.9, depth: 0.5, x: 3.5, z: -1.6, material: metalMaterial },
+      { name: "Master Bed", width: 2.2, height: 0.4, depth: 1.6, x: -3.4, z: -2.7, material: woodMaterial },
+      { name: "Master Wardrobe", width: 0.5, height: 0.6, depth: 1.4, x: -4.4, z: -2.7, material: trimMaterial },
+      { name: "Child Bed", width: 1.6, height: 0.35, depth: 1.2, x: -3.4, z: 2.7, material: woodMaterial },
+      { name: "Child Storage", width: 0.6, height: 0.7, depth: 0.6, x: -1.2, z: 2.4, material: trimMaterial }
+    ];
+
+    furnitureItems.forEach(addFurnitureBox);
 
     const grass = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), grassMaterial);
     grass.rotation.x = -Math.PI * 0.5;
