@@ -607,19 +607,22 @@
       });
     });
 
+    const updateCameraAnimation = () => {
+      if (!activeMove) return;
+      const elapsed = performance.now() - activeMove.start;
+      const progress = Math.min(elapsed / activeMove.duration, 1);
+      const eased = easeInOutQuad(progress);
+      camera.position.lerpVectors(activeMove.fromPosition, activeMove.toPosition, eased);
+      controls.target.lerpVectors(activeMove.fromTarget, activeMove.toTarget, eased);
+      if (progress >= 1) {
+        activeMove = null;
+        resumeAutoRotateSoon();
+      }
+    };
+
     const animate = () => {
       requestAnimationFrame(animate);
-      if (activeMove) {
-        const elapsed = performance.now() - activeMove.start;
-        const progress = Math.min(elapsed / activeMove.duration, 1);
-        const eased = easeInOutQuad(progress);
-        camera.position.lerpVectors(activeMove.fromPosition, activeMove.toPosition, eased);
-        controls.target.lerpVectors(activeMove.fromTarget, activeMove.toTarget, eased);
-        if (progress >= 1) {
-          activeMove = null;
-          resumeAutoRotateSoon();
-        }
-      }
+      updateCameraAnimation();
       controls.update();
       renderer.render(scene, camera);
     };
