@@ -56,15 +56,19 @@
     controls.maxPolarAngle = Math.PI * 0.48;
 
     let autoRotate = true;
+    controls.autoRotate = autoRotate;
+    controls.autoRotateSpeed = 0.6;
     let autoRotateResumeTimer;
     const pauseAutoRotate = () => {
       autoRotate = false;
+      controls.autoRotate = false;
       clearTimeout(autoRotateResumeTimer);
     };
     const resumeAutoRotateSoon = () => {
       clearTimeout(autoRotateResumeTimer);
       autoRotateResumeTimer = setTimeout(() => {
         autoRotate = true;
+        controls.autoRotate = true;
       }, 1500);
     };
     controls.addEventListener("start", pauseAutoRotate);
@@ -218,7 +222,6 @@
 
     const animate = () => {
       requestAnimationFrame(animate);
-      controls.autoRotate = autoRotate;
       controls.update();
       renderer.render(scene, camera);
     };
