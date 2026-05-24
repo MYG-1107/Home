@@ -168,7 +168,12 @@
       context.font = `600 ${fontSize}px "Segoe UI", sans-serif`;
       context.textAlign = "center";
       context.textBaseline = "middle";
-      context.fillText(text, canvas.width / 2, canvas.height / 2, canvas.width - labelConfig.textPadding);
+      context.fillText(
+        text,
+        canvas.width / 2,
+        canvas.height / 2,
+        canvas.width - labelConfig.textPadding * 2
+      );
 
       const texture = new THREE.CanvasTexture(canvas);
       const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -192,21 +197,58 @@
       houseGroup.add(label);
     };
 
-    const leftCenterX = -halfWidth / 2;
-    const rightCenterX = halfWidth / 2;
-    const frontCenterZ = halfDepth / 2;
-    const backCenterZ = -halfDepth / 2;
-    const diningWidth = halfWidth / 2;
-    const kitchenWidth = halfWidth / 2;
-    const diningCenterX = rightCenterX - diningWidth / 2;
-    const kitchenCenterX = rightCenterX + kitchenWidth / 2;
+    const leftZoneCenterX = -halfWidth / 2;
+    const rightZoneCenterX = halfWidth / 2;
+    const frontZoneCenterZ = halfDepth / 2;
+    const backZoneCenterZ = -halfDepth / 2;
+    const quarterWidth = houseWidth / 4;
+    const diningWidth = quarterWidth;
+    const kitchenWidth = quarterWidth;
+    const rightZoneOffset = quarterWidth / 2;
+    const diningCenterX = rightZoneCenterX - rightZoneOffset;
+    const kitchenCenterX = rightZoneCenterX + rightZoneOffset;
 
     const rooms = [
-      { name: "Hall", width: halfWidth, depth: halfDepth, centerX: rightCenterX, centerZ: frontCenterZ, color: "#f5e6c8" },
-      { name: "Dining", width: diningWidth, depth: halfDepth, centerX: diningCenterX, centerZ: backCenterZ, color: "#f0d9d9" },
-      { name: "Kitchen", width: kitchenWidth, depth: halfDepth, centerX: kitchenCenterX, centerZ: backCenterZ, color: "#d9f0e8" },
-      { name: "Master Bedroom", width: halfWidth, depth: halfDepth, centerX: leftCenterX, centerZ: backCenterZ, color: "#e0ddf5" },
-      { name: "Child Bedroom", width: halfWidth, depth: halfDepth, centerX: leftCenterX, centerZ: frontCenterZ, color: "#dbeaf7" }
+      {
+        name: "Hall",
+        width: halfWidth,
+        depth: halfDepth,
+        centerX: rightZoneCenterX,
+        centerZ: frontZoneCenterZ,
+        color: "#f5e6c8"
+      },
+      {
+        name: "Dining",
+        width: diningWidth,
+        depth: halfDepth,
+        centerX: diningCenterX,
+        centerZ: backZoneCenterZ,
+        color: "#f0d9d9"
+      },
+      {
+        name: "Kitchen",
+        width: kitchenWidth,
+        depth: halfDepth,
+        centerX: kitchenCenterX,
+        centerZ: backZoneCenterZ,
+        color: "#d9f0e8"
+      },
+      {
+        name: "Master Bedroom",
+        width: halfWidth,
+        depth: halfDepth,
+        centerX: leftZoneCenterX,
+        centerZ: backZoneCenterZ,
+        color: "#e0ddf5"
+      },
+      {
+        name: "Child Bedroom",
+        width: halfWidth,
+        depth: halfDepth,
+        centerX: leftZoneCenterX,
+        centerZ: frontZoneCenterZ,
+        color: "#dbeaf7"
+      }
     ];
 
     rooms.forEach(addRoom);
