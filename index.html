@@ -584,7 +584,7 @@
       }
     };
 
-    const cameraMoveDuration = 900;
+    const CAMERA_MOVE_DURATION_MS = 900;
     const easeInOutQuad = (progress) =>
       progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
     let activeMove = null;
@@ -594,7 +594,7 @@
       pauseAutoRotate();
       activeMove = {
         start: performance.now(),
-        duration: cameraMoveDuration,
+        duration: CAMERA_MOVE_DURATION_MS,
         fromPosition: camera.position.clone(),
         toPosition: view.position.clone(),
         fromTarget: controls.target.clone(),
