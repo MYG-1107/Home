@@ -85,7 +85,7 @@
       <button data-view="play">Play Area</button>
       <button data-view="front">Front Porch</button>
     </div>
-    <div class="hint">Use mouse to orbit. Buttons navigate to rooms, the play area, or the porch.</div>
+    <div class="hint">Use the mouse to orbit. Buttons navigate to rooms, the play area, or the porch.</div>
   </div>
   <script type="importmap">
     {
@@ -614,8 +614,7 @@
     const updateCameraAnimation = () => {
       if (!activeMove) return;
       const elapsed = performance.now() - activeMove.start;
-      const duration = activeMove.duration || CAMERA_MOVE_DURATION_MS;
-      const progress = Math.min(elapsed / duration, 1);
+      const progress = Math.min(elapsed / activeMove.duration, 1);
       const eased = easeInOutQuad(progress);
       camera.position.lerpVectors(activeMove.fromPosition, activeMove.toPosition, eased);
       controls.target.lerpVectors(activeMove.fromTarget, activeMove.toTarget, eased);
