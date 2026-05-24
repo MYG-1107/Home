@@ -143,9 +143,10 @@
     houseGroup.add(doorFrame);
 
     const labelConfig = {
-      lengthThreshold: 12,
+      maxLargeFontTextLength: 12,
       fontSizeLarge: 30,
-      fontSizeSmall: 24
+      fontSizeSmall: 24,
+      textPadding: 16
     };
 
     const createLabel = (text, planeSize) => {
@@ -157,11 +158,11 @@
       context.fillRect(0, 0, canvas.width, canvas.height);
       context.fillStyle = "#f8fafc";
       const fontSize =
-        text.length > labelConfig.lengthThreshold ? labelConfig.fontSizeSmall : labelConfig.fontSizeLarge;
+        text.length > labelConfig.maxLargeFontTextLength ? labelConfig.fontSizeSmall : labelConfig.fontSizeLarge;
       context.font = `600 ${fontSize}px "Segoe UI", sans-serif`;
       context.textAlign = "center";
       context.textBaseline = "middle";
-      context.fillText(text, canvas.width / 2, canvas.height / 2, canvas.width - 16);
+      context.fillText(text, canvas.width / 2, canvas.height / 2, canvas.width - labelConfig.textPadding);
 
       const texture = new THREE.CanvasTexture(canvas);
       const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
