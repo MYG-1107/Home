@@ -12,6 +12,7 @@
       margin: 0;
       overflow: hidden;
       background: #0f172a;
+      font-family: "Segoe UI", system-ui, sans-serif;
     }
 
     canvas {
@@ -19,9 +20,73 @@
       width: 100%;
       height: 100%;
     }
+
+    #ui {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.78);
+      color: #f8fafc;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(6px);
+    }
+
+    #ui .title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    #ui .buttons {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(120px, 1fr));
+      gap: 8px;
+    }
+
+    #ui button {
+      border: none;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0f172a;
+      background: #e2e8f0;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    #ui button:hover {
+      transform: translateY(-1px);
+      background: #f8fafc;
+    }
+
+    #ui .hint {
+      font-size: 12px;
+      opacity: 0.75;
+    }
   </style>
 </head>
 <body>
+  <div id="ui">
+    <div class="title">Luxury 2-BHK Plan</div>
+    <div class="buttons">
+      <button data-view="overview">Overview</button>
+      <button data-view="hall">Hall</button>
+      <button data-view="dining">Dining</button>
+      <button data-view="kitchen">Kitchen</button>
+      <button data-view="master">Master Bedroom</button>
+      <button data-view="child">Child Bedroom</button>
+      <button data-view="play">Play Area</button>
+      <button data-view="front">Front Porch</button>
+    </div>
+    <div class="hint">Use the mouse to orbit. Buttons navigate to rooms, the play area, or the porch.</div>
+  </div>
   <script type="importmap">
     {
       "imports": {
@@ -34,11 +99,13 @@
     import * as THREE from "three";
     import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+    const SKY_COLOR = "#b7d6ff";
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#0f172a");
+    scene.background = new THREE.Color(SKY_COLOR);
+    scene.fog = new THREE.Fog(SKY_COLOR, 40, 85);
 
-    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 120);
-    camera.position.set(12, 8, 12);
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 140);
+    camera.position.set(16, 9, 16);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -50,10 +117,11 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.target.set(0, 1.2, 0);
-    controls.minDistance = 6;
-    controls.maxDistance = 26;
+    controls.minDistance = 5;
+    controls.maxDistance = 38;
     controls.minPolarAngle = 0.3;
     controls.maxPolarAngle = Math.PI * 0.48;
+    controls.enablePan = true;
 
     controls.autoRotate = true;
     controls.autoRotateSpeed = 0.6;
@@ -90,6 +158,8 @@
 
     const houseGroup = new THREE.Group();
     scene.add(houseGroup);
+    const propertyGroup = new THREE.Group();
+    scene.add(propertyGroup);
 
     const wallMaterial = new THREE.MeshStandardMaterial({ color: "#f1ede5", roughness: 0.8 });
     const interiorWallMaterial = new THREE.MeshStandardMaterial({ color: "#e8e2d8", roughness: 0.9 });
@@ -100,19 +170,151 @@
     const woodMaterial = new THREE.MeshStandardMaterial({ color: "#b08968", roughness: 0.7 });
     const fabricMaterial = new THREE.MeshStandardMaterial({ color: "#9ca3af", roughness: 0.8 });
     const metalMaterial = new THREE.MeshStandardMaterial({ color: "#6b7280", roughness: 0.4, metalness: 0.3 });
+    const roofMaterial = new THREE.MeshStandardMaterial({ color: "#e2e8f0", roughness: 0.55, metalness: 0.1 });
+    const glassMaterial = new THREE.MeshStandardMaterial({
+      color: "#bcd7ff",
+      roughness: 0.1,
+      metalness: 0.1,
+      transparent: true,
+      opacity: 0.7
+    });
+    const stoneMaterial = new THREE.MeshStandardMaterial({ color: "#c7c0b6", roughness: 0.95 });
+    const accentMaterial = new THREE.MeshStandardMaterial({ color: "#fef3c7", roughness: 0.7 });
+    const fenceMaterial = new THREE.MeshStandardMaterial({ color: "#8b9aa9", roughness: 0.8 });
 
-    const houseWidth = 10;
-    const houseDepth = 8;
+    const houseWidth = 12;
+    const houseDepth = 9;
     const halfWidth = houseWidth / 2;
     const halfDepth = houseDepth / 2;
     const wallThickness = 0.12;
     const outerWallHeight = 2.6;
-    const innerWallHeight = 1.6;
+    const innerWallHeight = 1.8;
+    const propertyWidth = 28;
+    const propertyDepth = 22;
+    const propertyHalfWidth = propertyWidth / 2;
+    const propertyHalfDepth = propertyDepth / 2;
+    const boundaryWallHeight = 1.4;
+    const boundaryThickness = 0.25;
+
+    const propertyGround = new THREE.Mesh(
+      new THREE.PlaneGeometry(propertyWidth, propertyDepth),
+      new THREE.MeshStandardMaterial({ color: "#5aa563", roughness: 0.9 })
+    );
+    propertyGround.rotation.x = -Math.PI * 0.5;
+    propertyGround.receiveShadow = true;
+    propertyGroup.add(propertyGround);
 
     const base = new THREE.Mesh(new THREE.BoxGeometry(houseWidth, 0.2, houseDepth), floorBaseMaterial);
     base.position.y = -0.1;
     base.receiveShadow = true;
     houseGroup.add(base);
+
+    const addPropertyWall = (width, depth, x, z) => {
+      const wall = new THREE.Mesh(new THREE.BoxGeometry(width, boundaryWallHeight, depth), fenceMaterial);
+      wall.position.set(x, boundaryWallHeight / 2, z);
+      wall.castShadow = true;
+      wall.receiveShadow = true;
+      propertyGroup.add(wall);
+      return wall;
+    };
+
+    const gateWidth = 4;
+    const gateCenterX = 3;
+    const leftGateSegmentWidth = gateCenterX - gateWidth / 2 + propertyHalfWidth;
+    const rightGateSegmentWidth = propertyHalfWidth - (gateCenterX + gateWidth / 2);
+    if (leftGateSegmentWidth > 0.2) {
+      addPropertyWall(
+        leftGateSegmentWidth,
+        boundaryThickness,
+        -propertyHalfWidth + leftGateSegmentWidth / 2,
+        propertyHalfDepth - boundaryThickness / 2
+      );
+    }
+    if (rightGateSegmentWidth > 0.2) {
+      addPropertyWall(
+        rightGateSegmentWidth,
+        boundaryThickness,
+        gateCenterX + gateWidth / 2 + rightGateSegmentWidth / 2,
+        propertyHalfDepth - boundaryThickness / 2
+      );
+    }
+    addPropertyWall(propertyWidth, boundaryThickness, 0, -propertyHalfDepth + boundaryThickness / 2);
+    addPropertyWall(boundaryThickness, propertyDepth, -propertyHalfWidth + boundaryThickness / 2, 0);
+    addPropertyWall(boundaryThickness, propertyDepth, propertyHalfWidth - boundaryThickness / 2, 0);
+
+    const gatePillarGeometry = new THREE.BoxGeometry(0.5, 1.8, 0.5);
+    const leftGatePillar = new THREE.Mesh(gatePillarGeometry, trimMaterial);
+    leftGatePillar.position.set(gateCenterX - gateWidth / 2, 0.9, propertyHalfDepth - boundaryThickness / 2);
+    leftGatePillar.castShadow = true;
+    leftGatePillar.receiveShadow = true;
+    propertyGroup.add(leftGatePillar);
+    const rightGatePillar = leftGatePillar.clone();
+    rightGatePillar.position.x = gateCenterX + gateWidth / 2;
+    propertyGroup.add(rightGatePillar);
+
+    const driveway = new THREE.Mesh(new THREE.PlaneGeometry(4, 6), stoneMaterial);
+    driveway.rotation.x = -Math.PI * 0.5;
+    driveway.position.set(gateCenterX, 0.01, propertyHalfDepth - 4);
+    driveway.receiveShadow = true;
+    propertyGroup.add(driveway);
+
+    const walkway = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 5.5), stoneMaterial);
+    walkway.rotation.x = -Math.PI * 0.5;
+    walkway.position.set(2.8, 0.015, propertyHalfDepth - 7);
+    walkway.receiveShadow = true;
+    propertyGroup.add(walkway);
+
+    const frontLawn = new THREE.Mesh(new THREE.PlaneGeometry(6.5, 3.8), grassMaterial);
+    frontLawn.rotation.x = -Math.PI * 0.5;
+    frontLawn.position.set(-6.5, 0.02, propertyHalfDepth - 5.5);
+    frontLawn.receiveShadow = true;
+    propertyGroup.add(frontLawn);
+
+    const playAreaWidth = 6.2;
+    const playAreaDepth = 4.6;
+    const playAreaCenterX = 8.4;
+    const playAreaCenterZ = 2.2;
+    const playGrass = new THREE.Mesh(
+      new THREE.PlaneGeometry(playAreaWidth, playAreaDepth),
+      new THREE.MeshStandardMaterial({ color: "#4ade80", roughness: 0.8 })
+    );
+    playGrass.rotation.x = -Math.PI * 0.5;
+    playGrass.position.set(playAreaCenterX, 0.02, playAreaCenterZ);
+    playGrass.receiveShadow = true;
+    propertyGroup.add(playGrass);
+
+    const fenceHeight = 0.7;
+    const fenceThickness = 0.08;
+    const addFence = (width, depth, x, z) => {
+      const fence = new THREE.Mesh(new THREE.BoxGeometry(width, fenceHeight, depth), fenceMaterial);
+      fence.position.set(x, fenceHeight / 2, z);
+      fence.castShadow = true;
+      fence.receiveShadow = true;
+      propertyGroup.add(fence);
+    };
+    addFence(playAreaWidth, fenceThickness, playAreaCenterX, playAreaCenterZ + playAreaDepth / 2);
+    addFence(playAreaWidth, fenceThickness, playAreaCenterX, playAreaCenterZ - playAreaDepth / 2);
+    addFence(fenceThickness, playAreaDepth, playAreaCenterX - playAreaWidth / 2, playAreaCenterZ);
+    addFence(fenceThickness, playAreaDepth, playAreaCenterX + playAreaWidth / 2, playAreaCenterZ);
+
+    const slideBase = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.4, 1.2), accentMaterial);
+    slideBase.position.set(playAreaCenterX - 1.3, 0.2, playAreaCenterZ);
+    slideBase.castShadow = true;
+    propertyGroup.add(slideBase);
+    const slideRamp = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.12, 0.8), trimMaterial);
+    slideRamp.position.set(playAreaCenterX - 0.2, 0.5, playAreaCenterZ + 0.5);
+    slideRamp.rotation.x = -0.5;
+    slideRamp.castShadow = true;
+    propertyGroup.add(slideRamp);
+
+    const swingFrame = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.6, 0.1), metalMaterial);
+    swingFrame.position.set(playAreaCenterX + 1.4, 0.9, playAreaCenterZ - 0.6);
+    swingFrame.castShadow = true;
+    propertyGroup.add(swingFrame);
+    const swingSeat = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.08, 0.3), woodMaterial);
+    swingSeat.position.set(playAreaCenterX + 1.4, 0.3, playAreaCenterZ - 0.6);
+    swingSeat.castShadow = true;
+    propertyGroup.add(swingSeat);
 
     const addWall = (width, depth, x, z, height, material) => {
       const wall = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), material);
@@ -121,6 +323,18 @@
       wall.receiveShadow = true;
       houseGroup.add(wall);
       return wall;
+    };
+
+    const addWindow = ({ width, height, x, y, z, rotationY = 0 }) => {
+      const window = new THREE.Mesh(new THREE.BoxGeometry(width, height, 0.06), glassMaterial);
+      window.position.set(x, y, z);
+      window.rotation.y = rotationY;
+      window.castShadow = true;
+      houseGroup.add(window);
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(width + 0.1, height + 0.1, 0.08), trimMaterial);
+      frame.position.copy(window.position);
+      frame.rotation.y = rotationY;
+      houseGroup.add(frame);
     };
 
     addWall(houseWidth, wallThickness, 0, halfDepth - wallThickness / 2, outerWallHeight, wallMaterial);
@@ -141,6 +355,41 @@
     const doorFrame = new THREE.Mesh(new THREE.BoxGeometry(1.25, 2.25, 0.04), trimMaterial);
     doorFrame.position.set(2.8, 1.13, halfDepth - wallThickness / 2 - 0.08);
     houseGroup.add(doorFrame);
+
+    const porch = new THREE.Mesh(new THREE.BoxGeometry(3.8, 0.2, 1.8), stoneMaterial);
+    porch.position.set(2.8, 0.1, halfDepth + 0.8);
+    porch.receiveShadow = true;
+    porch.castShadow = true;
+    houseGroup.add(porch);
+
+    const columnGeometry = new THREE.CylinderGeometry(0.15, 0.2, 2.6, 16);
+    const columnLeft = new THREE.Mesh(columnGeometry, trimMaterial);
+    columnLeft.position.set(1.5, 1.3, halfDepth + 0.6);
+    columnLeft.castShadow = true;
+    houseGroup.add(columnLeft);
+    const columnRight = columnLeft.clone();
+    columnRight.position.x = 4.1;
+    houseGroup.add(columnRight);
+
+    const porchRoof = new THREE.Mesh(new THREE.BoxGeometry(4.4, 0.22, 2.2), roofMaterial);
+    porchRoof.position.set(2.8, 2.55, halfDepth + 0.7);
+    porchRoof.castShadow = true;
+    houseGroup.add(porchRoof);
+
+    const mainRoof = new THREE.Mesh(new THREE.BoxGeometry(houseWidth + 0.6, 0.35, houseDepth + 0.6), roofMaterial);
+    mainRoof.position.set(0, outerWallHeight + 0.2, 0);
+    mainRoof.castShadow = true;
+    houseGroup.add(mainRoof);
+
+    const featureWall = new THREE.Mesh(new THREE.BoxGeometry(1.4, outerWallHeight + 0.4, 0.2), accentMaterial);
+    featureWall.position.set(5, (outerWallHeight + 0.4) / 2 - 0.1, halfDepth - 0.3);
+    featureWall.castShadow = true;
+    houseGroup.add(featureWall);
+
+    addWindow({ width: 1.3, height: 0.9, x: -3.5, y: 1.3, z: halfDepth - 0.05 });
+    addWindow({ width: 1.1, height: 0.9, x: 0.7, y: 1.3, z: halfDepth - 0.05 });
+    addWindow({ width: 1.3, height: 0.9, x: -halfWidth + 0.05, y: 1.3, z: -1.6, rotationY: Math.PI / 2 });
+    addWindow({ width: 1.1, height: 0.9, x: halfWidth - 0.05, y: 1.3, z: -2.8, rotationY: Math.PI / 2 });
 
     const labelConfig = {
       canvasWidth: 256,
@@ -301,13 +550,83 @@
 
     furnitureItems.forEach(addFurnitureBox);
 
-    const grass = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), grassMaterial);
-    grass.rotation.x = -Math.PI * 0.5;
-    grass.receiveShadow = true;
-    scene.add(grass);
+    const roomViews = {
+      overview: {
+        target: new THREE.Vector3(0, 1.2, 0),
+        position: new THREE.Vector3(16, 9, 16)
+      },
+      hall: {
+        target: new THREE.Vector3(rightZoneCenterX, 1.1, frontZoneCenterZ),
+        position: new THREE.Vector3(rightZoneCenterX + 3.2, 2.8, frontZoneCenterZ + 3.2)
+      },
+      dining: {
+        target: new THREE.Vector3(diningCenterX, 1.1, backZoneCenterZ),
+        position: new THREE.Vector3(diningCenterX + 3, 2.6, backZoneCenterZ + 2.6)
+      },
+      kitchen: {
+        target: new THREE.Vector3(kitchenCenterX, 1.1, backZoneCenterZ),
+        position: new THREE.Vector3(kitchenCenterX + 3, 2.6, backZoneCenterZ + 2.2)
+      },
+      master: {
+        target: new THREE.Vector3(leftZoneCenterX, 1.1, backZoneCenterZ),
+        position: new THREE.Vector3(leftZoneCenterX - 3.4, 2.6, backZoneCenterZ + 2.2)
+      },
+      child: {
+        target: new THREE.Vector3(leftZoneCenterX, 1.1, frontZoneCenterZ),
+        position: new THREE.Vector3(leftZoneCenterX - 3.4, 2.6, frontZoneCenterZ + 2.4)
+      },
+      play: {
+        target: new THREE.Vector3(playAreaCenterX, 0.6, playAreaCenterZ),
+        position: new THREE.Vector3(playAreaCenterX + 4.2, 3.4, playAreaCenterZ + 4.2)
+      },
+      front: {
+        target: new THREE.Vector3(2.8, 1.1, halfDepth + 0.6),
+        position: new THREE.Vector3(2.8, 2.8, halfDepth + 6)
+      }
+    };
+
+    const CAMERA_MOVE_DURATION_MS = 900;
+    const easeInOutQuad = (progress) =>
+      progress < 0.5
+        ? 2 * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+    let activeMove = null;
+    const moveCameraTo = (viewKey) => {
+      const view = roomViews[viewKey];
+      if (!view) return;
+      pauseAutoRotate();
+      activeMove = {
+        start: performance.now(),
+        duration: CAMERA_MOVE_DURATION_MS,
+        fromPosition: camera.position.clone(),
+        toPosition: view.position.clone(),
+        fromTarget: controls.target.clone(),
+        toTarget: view.target.clone()
+      };
+    };
+
+    document.querySelectorAll("#ui button").forEach((button) => {
+      button.addEventListener("click", () => {
+        moveCameraTo(button.dataset.view);
+      });
+    });
+
+    const updateCameraAnimation = () => {
+      if (!activeMove) return;
+      const elapsed = performance.now() - activeMove.start;
+      const progress = Math.min(elapsed / activeMove.duration, 1);
+      const eased = easeInOutQuad(progress);
+      camera.position.lerpVectors(activeMove.fromPosition, activeMove.toPosition, eased);
+      controls.target.lerpVectors(activeMove.fromTarget, activeMove.toTarget, eased);
+      if (progress >= 1) {
+        activeMove = null;
+        resumeAutoRotateSoon();
+      }
+    };
 
     const animate = () => {
       requestAnimationFrame(animate);
+      updateCameraAnimation();
       controls.update();
       renderer.render(scene, camera);
     };
