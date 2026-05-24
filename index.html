@@ -55,19 +55,16 @@
     controls.minPolarAngle = 0.3;
     controls.maxPolarAngle = Math.PI * 0.48;
 
-    let autoRotate = true;
-    controls.autoRotate = autoRotate;
+    controls.autoRotate = true;
     controls.autoRotateSpeed = 0.6;
     let autoRotateResumeTimer;
     const pauseAutoRotate = () => {
-      autoRotate = false;
       controls.autoRotate = false;
       clearTimeout(autoRotateResumeTimer);
     };
     const resumeAutoRotateSoon = () => {
       clearTimeout(autoRotateResumeTimer);
       autoRotateResumeTimer = setTimeout(() => {
-        autoRotate = true;
         controls.autoRotate = true;
       }, 1500);
     };
@@ -145,9 +142,9 @@
     doorFrame.position.set(2.8, 1.13, halfDepth - wallThickness / 2 - 0.08);
     houseGroup.add(doorFrame);
 
-    const SHORT_LABEL_LENGTH = 12;
-    const LARGE_LABEL_FONT = 30;
-    const SMALL_LABEL_FONT = 24;
+    const LABEL_LENGTH_THRESHOLD = 12;
+    const LABEL_FONT_SIZE_LARGE = 30;
+    const LABEL_FONT_SIZE_SMALL = 24;
 
     const createLabel = (text, size) => {
       const canvas = document.createElement("canvas");
@@ -157,7 +154,7 @@
       context.fillStyle = "rgba(15, 23, 42, 0.65)";
       context.fillRect(0, 0, canvas.width, canvas.height);
       context.fillStyle = "#f8fafc";
-      const fontSize = text.length > SHORT_LABEL_LENGTH ? SMALL_LABEL_FONT : LARGE_LABEL_FONT;
+      const fontSize = text.length > LABEL_LENGTH_THRESHOLD ? LABEL_FONT_SIZE_SMALL : LABEL_FONT_SIZE_LARGE;
       context.font = `600 ${fontSize}px "Segoe UI", sans-serif`;
       context.textAlign = "center";
       context.textBaseline = "middle";
@@ -195,7 +192,7 @@
 
     rooms.forEach(addRoom);
 
-    const addFurnitureBox = ({ name, width, height, depth, x, y = 0, z, material }) => {
+    const createFurnitureBox = ({ name, width, height, depth, x, y = 0, z, material }) => {
       const mesh = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), material);
       mesh.position.set(x, y + height / 2, z);
       mesh.castShadow = true;
@@ -222,7 +219,7 @@
       { name: "Child Storage", width: 0.6, height: 0.7, depth: 0.6, x: -1.2, z: 2.4, material: trimMaterial }
     ];
 
-    furnitureItems.forEach(addFurnitureBox);
+    furnitureItems.forEach(createFurnitureBox);
 
     const grass = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), grassMaterial);
     grass.rotation.x = -Math.PI * 0.5;
