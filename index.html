@@ -586,8 +586,11 @@
     };
 
     const CAMERA_MOVE_DURATION_MS = 900;
+    const EASE_MIDPOINT = 0.5;
     const easeInOutQuad = (progress) =>
-      progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+      progress < EASE_MIDPOINT
+        ? 2 * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
     let activeMove = null;
     const moveCameraTo = (viewKey) => {
       const view = roomViews[viewKey];
@@ -612,7 +615,7 @@
     const updateCameraAnimation = () => {
       if (!activeMove) return;
       const elapsed = performance.now() - activeMove.start;
-      const duration = Math.max(activeMove.duration, 1);
+      const duration = Math.max(activeMove.duration, 100);
       const progress = Math.min(elapsed / duration, 1);
       const eased = easeInOutQuad(progress);
       camera.position.lerpVectors(activeMove.fromPosition, activeMove.toPosition, eased);
