@@ -143,7 +143,7 @@
     houseGroup.add(doorFrame);
 
     const labelConfig = {
-      maxLargeFontTextLength: 12,
+      maxCharsForLargeFont: 12,
       fontSizeLarge: 30,
       fontSizeSmall: 24,
       textPadding: 16
@@ -157,8 +157,8 @@
       context.fillStyle = "rgba(15, 23, 42, 0.65)";
       context.fillRect(0, 0, canvas.width, canvas.height);
       context.fillStyle = "#f8fafc";
-      const fontSize =
-        text.length > labelConfig.maxLargeFontTextLength ? labelConfig.fontSizeSmall : labelConfig.fontSizeLarge;
+      const useLargeFont = text.length <= labelConfig.maxCharsForLargeFont;
+      const fontSize = useLargeFont ? labelConfig.fontSizeLarge : labelConfig.fontSizeSmall;
       context.font = `600 ${fontSize}px "Segoe UI", sans-serif`;
       context.textAlign = "center";
       context.textBaseline = "middle";
@@ -205,9 +205,9 @@
 
     rooms.forEach(addRoom);
 
-    const addFurnitureBox = ({ width, height, depth, x, y = 0, z, material }) => {
+    const addFurnitureBox = ({ width, height, depth, x, yOffset = 0, z, material }) => {
       const mesh = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), material);
-      mesh.position.set(x, y + height / 2, z);
+      mesh.position.set(x, yOffset + height / 2, z);
       mesh.castShadow = true;
       mesh.receiveShadow = true;
       houseGroup.add(mesh);
@@ -216,12 +216,12 @@
 
     const hallFurniture = [
       { width: 1.8, height: 0.45, depth: 0.8, x: 3.4, z: 2.6, material: fabricMaterial },
-      { width: 1.8, height: 0.35, depth: 0.3, x: 3.4, y: 0.45, z: 3.0, material: fabricMaterial },
+      { width: 1.8, height: 0.35, depth: 0.3, x: 3.4, yOffset: 0.45, z: 3.0, material: fabricMaterial },
       { width: 0.9, height: 0.35, depth: 0.6, x: 1.8, z: 2.1, material: woodMaterial }
     ];
 
     const diningFurniture = [
-      { width: 1.2, height: 0.12, depth: 0.8, x: 1.25, y: 0.42, z: -2.0, material: woodMaterial },
+      { width: 1.2, height: 0.12, depth: 0.8, x: 1.25, yOffset: 0.42, z: -2.0, material: woodMaterial },
       { width: 0.35, height: 0.45, depth: 0.35, x: 0.55, z: -1.5, material: woodMaterial },
       { width: 0.35, height: 0.45, depth: 0.35, x: 1.95, z: -1.5, material: woodMaterial },
       { width: 0.35, height: 0.45, depth: 0.35, x: 0.55, z: -2.5, material: woodMaterial },
