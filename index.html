@@ -146,7 +146,7 @@
     const labelFontSizeLarge = 30;
     const labelFontSizeSmall = 24;
 
-    const createLabel = (text, size) => {
+    const createLabel = (text, planeSize) => {
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
       canvas.width = 256;
@@ -162,7 +162,7 @@
 
       const texture = new THREE.CanvasTexture(canvas);
       const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-      const label = new THREE.Mesh(new THREE.PlaneGeometry(size * 0.8, size * 0.4), material);
+      const label = new THREE.Mesh(new THREE.PlaneGeometry(planeSize * 0.8, planeSize * 0.4), material);
       label.rotation.x = -Math.PI / 2;
       return label;
     };
@@ -192,7 +192,7 @@
 
     rooms.forEach(addRoom);
 
-    const createFurnitureBox = ({ width, height, depth, x, y = 0, z, material }) => {
+    const addFurnitureBox = ({ width, height, depth, x, y = 0, z, material }) => {
       const mesh = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), material);
       mesh.position.set(x, y + height / 2, z);
       mesh.castShadow = true;
@@ -238,7 +238,7 @@
       ...childBedroomFurniture
     ];
 
-    furnitureItems.forEach(createFurnitureBox);
+    furnitureItems.forEach(addFurnitureBox);
 
     const grass = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), grassMaterial);
     grass.rotation.x = -Math.PI * 0.5;
