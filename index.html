@@ -107,8 +107,9 @@
     const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 140);
     camera.position.set(16, 9, 16);
 
-    const isMobileView = window.innerWidth <= 768;
-    const getPixelRatio = () => Math.min(window.devicePixelRatio, window.innerWidth <= 768 ? 1.5 : 2);
+    const MOBILE_BREAKPOINT = 768;
+    const isMobileView = () => window.innerWidth <= MOBILE_BREAKPOINT;
+    const getPixelRatio = () => Math.min(window.devicePixelRatio, isMobileView() ? 1.5 : 2);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -143,10 +144,10 @@
     controls.addEventListener("start", pauseAutoRotate);
     controls.addEventListener("end", resumeAutoRotateSoon);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, isMobileView ? 0.65 : 0.5);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, isMobileView ? 0.95 : 0.85);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.85);
     directionalLight.position.set(10, 14, 8);
     directionalLight.castShadow = true;
     directionalLight.shadow.mapSize.set(2048, 2048);
@@ -156,9 +157,18 @@
     directionalLight.shadow.camera.bottom = -16;
     scene.add(directionalLight);
 
-    const hemisphereLight = new THREE.HemisphereLight(0xbcd7ff, 0x1f2937, isMobileView ? 0.45 : 0.35);
+    const hemisphereLight = new THREE.HemisphereLight(0xbcd7ff, 0x1f2937, 0.35);
     hemisphereLight.position.set(0, 20, 0);
     scene.add(hemisphereLight);
+
+    const updateLightingForView = () => {
+      const mobileView = isMobileView();
+      ambientLight.intensity = mobileView ? 0.65 : 0.5;
+      directionalLight.intensity = mobileView ? 0.95 : 0.85;
+      hemisphereLight.intensity = mobileView ? 0.45 : 0.35;
+    };
+
+    updateLightingForView();
 
     const houseGroup = new THREE.Group();
     scene.add(houseGroup);
@@ -677,6 +687,7 @@
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(getPixelRatio());
+      updateLightingForView();
     });
   </script>
 </body>
