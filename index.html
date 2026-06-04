@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luxury Dream Villa | Interactive 3D Experience</title>
+  <title>Indo-European Luxury Villa | 3D Space Visualizer</title>
   <style>
     html, body {
       width: 100vw;
       height: 100vh;
       margin: 0;
       overflow: hidden;
-      background: #090d16;
+      background: #0b0f19;
       font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
     }
 
@@ -30,11 +30,11 @@
       gap: 14px;
       padding: 20px;
       border-radius: 16px;
-      background: rgba(9, 13, 22, 0.75);
+      background: rgba(11, 15, 25, 0.82);
       color: #f8fafc;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       max-width: 320px;
     }
@@ -44,18 +44,18 @@
     }
 
     #ui .title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      background: linear-gradient(45deg, #ffffff, #94a3b8);
+      background: linear-gradient(45deg, #fcd34d, #ffffff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     #ui .subtitle {
-      font-size: 11px;
-      color: #38bdf8;
+      font-size: 10px;
+      color: #fb923c;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       margin-top: 2px;
@@ -71,7 +71,7 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 8px;
       padding: 10px 12px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: #cbd5e1;
       background: rgba(255, 255, 255, 0.03);
@@ -83,14 +83,13 @@
     #ui button:hover {
       background: rgba(255, 255, 255, 0.1);
       color: #ffffff;
-      transform: translateY(-1px);
     }
 
     #ui button.active {
-      background: #38bdf8;
-      color: #090d16;
-      border-color: #38bdf8;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+      background: #fb923c;
+      color: #0b0f19;
+      border-color: #fb923c;
+      box-shadow: 0 0 12px rgba(251, 146, 60, 0.3);
     }
 
     #ui .hint {
@@ -105,21 +104,19 @@
 <body>
   <div id="ui">
     <div class="title-area">
-      <div class="title">The Perfect House</div>
-      <div class="subtitle">Architectural Tour</div>
+      <div class="title">Indo-Euro Villa</div>
+      <div class="subtitle">Traditional Fusion Concept</div>
     </div>
     <div class="buttons">
-      <button class="active" data-view="overview">Overview</button>
-      <button data-view="hall">Living Hall</button>
-      <button data-view="dining">Dining Oasis</button>
-      <button data-view="kitchen">Chef Kitchen</button>
-      <button data-view="master">Master Suite</button>
-      <button data-view="child">Kids Sanctuary</button>
-      <button data-view="play">Leisure Yard</button>
-      <button data-view="front">Grand Veranda</button>
+      <button class="active" data-view="facade">Exterior Facade</button>
+      <button data-view="angan">Central Angan</button>
+      <button data-view="pooja">Pooja Mandir</button>
+      <button data-view="baithak">Euro-Baithak</button>
+      <button data-view="kitchen">Euro-Kitchen</button>
+      <button data-view="veranda">Front Veranda</button>
     </div>
     <div class="hint">
-      <strong>Controls:</strong> Left click & drag to orbit scene. Scroll to zoom in/out. Click any location tab to move the camera smoothly inside.
+      Inspired by <strong>image_23a4da.jpg</strong> layout. Integrates a classic inner open courtyard model with European architectural precision.
     </div>
   </div>
 
@@ -135,28 +132,28 @@
     import * as THREE from "three";
     import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-    // --- ARCHITECTURAL DIMENSIONS ---
-    const houseW = 14;
-    const houseD = 10;
+    // --- HOUSE DIMENSIONS ---
+    const houseW = 16;
+    const houseD = 12;
     const hW = houseW / 2;
     const hD = houseD / 2;
-    const wallThick = 0.18;
-    const wallH = 3.0;
+    const wallThick = 0.22;
+    const wallH = 3.4; // Elevated ceilings typical of premium Indian estates
 
     // --- ENGINE SETUP ---
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a0f1d);
-    scene.fog = new THREE.FogExp2(0x0a0f1d, 0.015);
+    scene.background = new THREE.Color(0x0f1424);
+    scene.fog = new THREE.FogExp2(0x0f1424, 0.012);
 
-    const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 200);
-    camera.position.set(22, 14, 22);
+    const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 200);
+    camera.position.set(26, 16, 26);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
+    renderer.toneMappingExposure = 1.1;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     document.body.appendChild(renderer.domElement);
@@ -164,255 +161,203 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.target.set(0, 0.6, 0);
-    controls.minDistance = 5;
-    controls.maxDistance = 50;
-    controls.maxPolarAngle = Math.PI * 0.46;
+    controls.target.set(0, 1.0, 0);
+    controls.maxPolarAngle = Math.PI * 0.45;
 
-    // --- ADVANCED PHYSICALLY-BASED LIGHTING ---
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+    // --- ENVIRONMENTAL SUNLIGHT SETUP ---
+    const ambientLight = new THREE.AmbientLight(0xfff7ed, 0.3);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xfffbeb, 1.6);
-    sunLight.position.set(22, 28, 14);
+    const sunLight = new THREE.DirectionalLight(0fedaa7, 1.8); // Warm gold tropical sunlight
+    sunLight.position.set(24, 30, 16);
     sunLight.castShadow = true;
-    sunLight.shadow.mapSize.set(4096, 4096); // Sharp crisp shadows
-    sunLight.shadow.camera.left = -16;
-    sunLight.shadow.camera.right = 16;
-    sunLight.shadow.camera.top = 16;
-    sunLight.shadow.camera.bottom = -16;
-    sunLight.shadow.camera.near = 0.5;
-    sunLight.shadow.camera.far = 70;
-    sunLight.shadow.bias = -0.0002;
+    sunLight.shadow.mapSize.set(4096, 4096);
+    sunLight.shadow.camera.left = -18;
+    sunLight.shadow.camera.right = 18;
+    sunLight.shadow.camera.top = 18;
+    sunLight.shadow.camera.bottom = -18;
+    sunLight.shadow.bias = -0.0001;
     scene.add(sunLight);
 
-    const skyLight = new THREE.HemisphereLight(0xe0f2fe, 0x1e293b, 0.7);
-    skyLight.position.set(0, 40, 0);
+    const skyLight = new THREE.HemisphereLight(0xbae6fd, 0x292524, 0.6);
     scene.add(skyLight);
 
-    // --- HIGH-FIDELITY LUXURY MATERIALS ---
+    // --- MATERIAL MATRIX ---
     const mat = {
-      outerWall: new THREE.MeshStandardMaterial({ color: "#f8fafc", roughness: 0.5, metalness: 0.0 }),
-      innerWall: new THREE.MeshStandardMaterial({ color: "#ffffff", roughness: 0.85 }),
-      accentWall: new THREE.MeshStandardMaterial({ color: "#1e293b", roughness: 0.2, metalness: 0.3 }),
-      foundation: new THREE.MeshStandardMaterial({ color: "#334155", roughness: 0.7 }),
-      lawn: new THREE.MeshStandardMaterial({ color: "#166534", roughness: 0.9 }),
-      terrace: new THREE.MeshStandardMaterial({ color: "#64748b", roughness: 0.6 }),
-      glass: new THREE.MeshStandardMaterial({ color: "#f0f9ff", roughness: 0.05, metalness: 0.95, transparent: true, opacity: 0.3 }),
-      frame: new THREE.MeshStandardMaterial({ color: "#0f172a", roughness: 0.3, metalness: 0.8 }),
-      hardwood: new THREE.MeshStandardMaterial({ color: "#451a03", roughness: 0.4, metalness: 0.1 }),
-      marbleLiving: new THREE.MeshStandardMaterial({ color: "#f1f5f9", roughness: 0.12, metalness: 0.1 }),
-      slateKitchen: new THREE.MeshStandardMaterial("#1e293b"),
-      carpetBed: new THREE.MeshStandardMaterial({ color: "#e2e8f0", roughness: 0.9 }),
-      woodLight: new THREE.MeshStandardMaterial({ color: "#b45309", roughness: 0.5 }),
-      fabricSofa: new THREE.MeshStandardMaterial({ color: "#475569", roughness: 0.8 }),
-      fabricWhite: new THREE.MeshStandardMaterial({ color: "#f8fafc", roughness: 0.75 }),
-      chrome: new THREE.MeshStandardMaterial({ color: "#cbd5e1", roughness: 0.1, metalness: 0.95 }),
-      poolWater: new THREE.MeshStandardMaterial({ color: "#0ea5e9", roughness: 0.1, metalness: 0.5, transparent: true, opacity: 0.7 })
+      stuccoWall: new THREE.MeshStandardMaterial({ color: "#fef3c7", roughness: 0.6 }), // Soft warm Indian stucco
+      terracottaTile: new THREE.MeshStandardMaterial({ color: "#c2410c", roughness: 0.55 }), // Authentic roof tiles
+      teakWood: new THREE.MeshStandardMaterial({ color: "#78350f", roughness: 0.35, metalness: 0.1 }), // Pillars & framing
+      euroMarble: new THREE.MeshStandardMaterial({ color: "#f8fafc", roughness: 0.1, metalness: 0.05 }), // Sleek flooring
+      brass: new THREE.MeshStandardMaterial({ color: "#d97706", roughness: 0.2, metalness: 0.8 }), // Traditional hardware
+      glass: new THREE.MeshStandardMaterial({ color: "#e0f2fe", roughness: 0.05, metalness: 0.9, transparent: true, opacity: 0.25 }),
+      frame: new THREE.MeshStandardMaterial({ color: "#1c1917", roughness: 0.4 }),
+      lawn: new THREE.MeshStandardMaterial({ color: "#15803d", roughness: 0.95 }),
+      driveway: new THREE.MeshStandardMaterial({ color: "#78716c", roughness: 0.7 })
     };
 
-    // --- SITE & ARCHITECTURE LAYOUT ---
-    const yard = new THREE.Mesh(new THREE.PlaneGeometry(36, 28), mat.lawn);
-    yard.rotation.x = -Math.PI * 0.5;
-    yard.receiveShadow = true;
-    scene.add(yard);
+    // --- BASE SITE PLAN ---
+    const terrain = new THREE.Mesh(new THREE.PlaneGeometry(42, 32), mat.lawn);
+    terrain.rotation.x = -Math.PI * 0.5;
+    terrain.receiveShadow = true;
+    scene.add(terrain);
 
-    const base = new THREE.Mesh(new THREE.BoxGeometry(houseW, 0.2, houseD), mat.foundation);
-    base.position.set(0, 0.1, 0);
-    base.receiveShadow = true;
-    scene.add(base);
+    const drive = new THREE.Mesh(new THREE.BoxGeometry(6.0, 0.02, 10.0), mat.driveway);
+    drive.position.set(4.5, 0.01, hD + 2);
+    drive.receiveShadow = true;
+    scene.add(drive);
 
-    // Procedural Architecture Builders
-    const makeWall = (w, d, h, x, z, material = mat.innerWall) => {
-      const wall = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
-      wall.position.set(x, h / 2 + 0.2, z);
-      wall.castShadow = true;
-      wall.receiveShadow = true;
-      scene.add(wall);
+    const foundation = new THREE.Mesh(new THREE.BoxGeometry(houseW, 0.3, houseD), mat.euroMarble);
+    foundation.position.set(0, 0.15, 0);
+    foundation.receiveShadow = true;
+    scene.add(foundation);
+
+    // --- STRUCTURAL FUNCTIONS ---
+    const createWall = (w, d, h, x, z, material = mat.stuccoWall) => {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
+      b.position.set(x, h/2 + 0.3, z);
+      b.castShadow = true;
+      b.receiveShadow = true;
+      scene.add(b);
     };
 
-    const makeApertureWindow = (w, h, x, y, z, rot = 0) => {
-      const glass = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.04), mat.glass);
-      glass.position.set(x, y + 0.2, z);
-      glass.rotation.y = rot;
-      scene.add(glass);
-
-      const frame = new THREE.Mesh(new THREE.BoxGeometry(w + 0.08, h + 0.08, 0.1), mat.frame);
-      frame.position.set(x, y + 0.2, z);
-      frame.rotation.y = rot;
-      frame.castShadow = true;
-      scene.add(frame);
+    const createPitchedRoof = (w, d, h, x, y, z, rotY = 0) => {
+      const geom = new THREE.ConeGeometry(w * 0.65, h, 4);
+      geom.rotateY(Math.PI * 0.25); // Form square hip-roof shape
+      geom.scale(1, 1, d / w);
+      const roofMesh = new THREE.Mesh(geom, mat.terracottaTile);
+      roofMesh.position.set(x, y + h/2, z);
+      roofMesh.rotation.y = rotY;
+      roofMesh.castShadow = true;
+      scene.add(roofMesh);
     };
 
-    // Structural Perimeter (With openings built natively into architecture)
-    makeWall(houseW, wallThick, wallH, 0, hD - wallThick/2, mat.outerWall); // Front
-    makeWall(houseW, wallThick, wallH, 0, -hD + wallThick/2, mat.outerWall); // Back
-    makeWall(wallThick, houseD, wallH, -hW + wallThick/2, 0, mat.outerWall); // Left
-    makeWall(wallThick, houseD, wallH, hW - wallThick/2, 0, mat.outerWall); // Right
-
-    // Interior Spatial Partitioning Matrix
-    makeWall(wallThick, houseD - 0.4, wallH - 0.4, 0, 0); // Core spine partition
-    makeWall(hW - 0.2, wallThick, wallH - 0.4, -hW / 2, 0); // Master/Kids room boundary
-    makeWall(hW - 0.2, wallThick, wallH - 0.4, hW / 2, 0); // Living/Kitchen divider
-    makeWall(wallThick, hD - 0.2, wallH - 0.4, hW / 2, -hD / 2); // Kitchen/Dining boundary
-
-    // Luxury Modern Panoramic Window Apertures
-    makeApertureWindow(3.5, 2.2, 2.5, 1.1, hD - 0.02); // Main Lounge Window
-    makeApertureWindow(2.2, 2.0, -3.5, 1.2, hD - 0.02); // Kids Sanctuary Window
-    makeApertureWindow(2.5, 2.0, -hW + 0.02, 1.2, -2.5, Math.PI / 2); // Master Suite Panoramic Window
-    makeApertureWindow(2.5, 1.4, hW - 0.02, 1.5, -2.5, Math.PI / 2); // Kitchen Modern Splashback Window
-
-    // Grand Entrance Veranda & Concrete Design Details
-    const veranda = new THREE.Mesh(new THREE.BoxGeometry(4.5, 0.12, 2.5), mat.terrace);
-    veranda.position.set(2.5, 0.16, hD + 1.25);
-    veranda.receiveShadow = true;
-    scene.add(veranda);
-
-    const pillar = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, wallH, 16), mat.frame);
-    pillar.position.set(0.6, wallH / 2 + 0.2, hD + 2.2);
-    pillar.castShadow = true;
-    scene.add(pillar);
-
-    // Architectural Roof Slab Design
-    const roof = new THREE.Mesh(new THREE.BoxGeometry(houseW + 0.5, 0.15, houseD + 0.5), mat.outerWall);
-    roof.position.set(0, wallH + 0.2, 0);
-    roof.castShadow = true;
-    scene.add(roof);
-
-    // --- REFINED PREMIUM INTERIOR SURFACE ZONES ---
-    const surfaces = [
-      { w: hW, d: hD, cx: hW / 2, cz: hD / 2, floorMat: mat.marbleLiving }, // Living Hall
-      { w: hW / 2, d: hD, cx: hW / 4, cz: -hD / 2, floorMat: mat.hardwood }, // Dining Space
-      { w: hW / 2, d: hD, cx: (3 * hW) / 4 - hW / 2, cz: -hD / 2, floorMat: mat.slateKitchen }, // Kitchen
-      { w: hW, d: hD, cx: -hW / 2, cz: -hD / 2, floorMat: mat.carpetBed }, // Master Bedroom
-      { w: hW, d: hD, cx: -hW / 2, cz: hD / 2, floorMat: mat.carpetBed } // Kids Sanctuary
-    ];
-
-    surfaces.forEach(s => {
-      const surfaceFloor = new THREE.Mesh(new THREE.PlaneGeometry(s.w - 0.05, s.d - 0.05), s.floorMat);
-      surfaceFloor.rotation.x = -Math.PI * 0.5;
-      surfaceFloor.position.set(s.cx, 0.21, s.cz);
-      surfaceFloor.receiveShadow = true;
-      scene.add(surfaceFloor);
-    });
-
-    // --- ACCURATE FURNITURE MODELS COMPOSITIONS ---
-    const makeComplexObject = (w, h, d, x, y, z, material) => {
-      const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
-      mesh.position.set(x, y + h / 2 + 0.21, z);
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-      scene.add(mesh);
+    const createTeakPillar = (x, z, height = wallH) => {
+      const p = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.12, height, 8), mat.teakWood);
+      p.position.set(x, height/2 + 0.3, z);
+      p.castShadow = true;
+      scene.add(p);
+      
+      // Brass structural baseline rings
+      const baseRing = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.15, 12), mat.brass);
+      baseRing.position.set(x, 0.38, z);
+      scene.add(baseRing);
     };
 
-    // Living Room Setup (Sectional Sofa + Table + Feature Wall)
-    makeComplexObject(3.0, 0.45, 0.9, 3.5, 0, 3.2, mat.fabricSofa); // Long Sectional Sofa Base
-    makeComplexObject(0.9, 0.45, 1.6, 1.6, 0, 2.5, mat.fabricSofa); // Chaise Lounge Section
-    makeComplexObject(1.4, 0.3, 0.7, 3.5, 0, 1.6, mat.woodLight); // Minimalist Coffee Table
+    // --- EXTERIOR ARCHITECTURE (Inspired by image_23a4da.jpg) ---
+    // Perimeter Shell Setup
+    createWall(houseW, wallThick, wallH, 0, hD - wallThick/2); // Front Exterior
+    createWall(houseW, wallThick, wallH, 0, -hD + wallThick/2); // Back Exterior
+    createWall(wallThick, houseD, wallH, -hW + wallThick/2, 0); // Left Wing
+    createWall(wallThick, houseD, wallH, hW - wallThick/2, 0); // Right Wing (Garage Side)
 
-    // Master Bedroom Setup (Luxury Bed Frame + Headboard Assembly)
-    makeComplexObject(2.1, 0.4, 1.9, -3.5, 0, -2.5, mat.woodLight); // King Size Bed Frame
-    makeComplexObject(1.9, 0.3, 1.7, -3.4, 0.2, -2.5, mat.fabricWhite); // Mattress Overlay
-    makeComplexObject(2.2, 1.2, 0.1, -4.5, 0, -2.5, mat.accentWall); // Decorative Bedside Headboard Pane
+    // Pitched Spanish/Mediterranean Clay Roofs from image_23a4da.jpg
+    createPitchedRoof(hW + 1, houseD + 0.8, 2.2, -4.0, wallH + 0.3, 0); // Left Elevated Block
+    createPitchedRoof(hW + 1, houseD + 0.8, 1.8, 4.0, wallH + 0.3, 0);  // Right Symmetrical Block
 
-    // Designer Kitchen Hub
-    makeComplexObject(2.6, 0.9, 0.65, 5.0, 0, -3.8, mat.accentWall); // Premium Granite Kitchen Island
-    makeComplexObject(0.75, 1.9, 0.75, 6.0, 0, -1.5, mat.chrome); // Industrial Grade Double Refrigerator
+    // --- INTERIOR SPATIAL MATRIX: TRADITIONAL INDIAN ANGAN FUSION ---
+    // Creating the open central sky courtyard (Angan) right in the center
+    const anganW = 3.5;
+    const anganD = 3.5;
 
-    // Minimalist Luxury Dining Area
-    makeComplexObject(1.6, 0.75, 0.9, 1.8, 0, -2.2, mat.hardwood); // Solid Wood Dining Slab
-    makeComplexObject(0.4, 0.45, 0.4, 1.2, 0, -1.4, mat.fabricSofa); // Set of Modern Dining Chairs
-    makeComplexObject(0.4, 0.45, 0.4, 2.4, 0, -1.4, mat.fabricSofa);
-    makeComplexObject(0.4, 0.45, 0.4, 1.2, 0, -3.0, mat.fabricSofa);
-    makeComplexObject(0.4, 0.45, 0.4, 2.4, 0, -3.0, mat.fabricSofa);
+    // Cutout look for courtyard interior limits
+    createWall(wallThick, anganD, wallH, -anganW/2, 0);
+    createWall(wallThick, anganD, wallH, anganW/2, 0);
+    createWall(anganW, wallThick, wallH, 0, -anganD/2);
+    createWall(anganW, wallThick, wallH, 0, anganD/2);
 
-    // Outdoor Resort Elements (Sun Deck & Integrated Swimming Pool)
-    const deck = new THREE.Mesh(new THREE.BoxGeometry(6.5, 0.08, 5.0), mat.hardwood);
-    deck.position.set(-11, 0.1, 2.0);
-    deck.receiveShadow = true;
-    scene.add(deck);
+    // Place traditional pillars on the perimeter corners of the courtyard boundary
+    createTeakPillar(-anganW/2 - 0.2, -anganD/2 - 0.2);
+    createTeakPillar(anganW/2 + 0.2, -anganD/2 - 0.2);
+    createTeakPillar(-anganW/2 - 0.2, anganD/2 + 0.2);
+    createTeakPillar(anganW/2 + 0.2, anganD/2 + 0.2);
 
-    const poolRim = new THREE.Mesh(new THREE.BoxGeometry(4.5, 0.2, 3.5), mat.foundation);
-    poolRim.position.set(-11, 0.15, 2.0);
-    scene.add(poolRim);
+    // Center courtyard flooring accent (sunken look)
+    const courtyardFloor = new THREE.Mesh(new THREE.BoxGeometry(anganW - 0.1, 0.05, anganD - 0.1), mat.terracottaTile);
+    courtyardFloor.position.set(0, 0.28, 0);
+    scene.add(courtyardFloor);
 
-    const waterSurface = new THREE.Mesh(new THREE.PlaneGeometry(4.1, 3.1), mat.poolWater);
-    waterSurface.rotation.x = -Math.PI * 0.5;
-    waterSurface.position.set(-11, 0.22, 2.0);
-    scene.add(waterSurface);
+    // --- INDO-EUROPEAN INTERNAL DIVISION SECTIONS ---
+    // Traditional Pooja Mandir Room (North East alignment)
+    createWall(2.5, wallThick, wallH, -hW + 1.25, -2.5);
+    createWall(wallThick, 2.5, wallH, -hW + 2.5, -hD + 1.25);
+    // Brass Pooja shrine structural box inside
+    const mandir = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.4, 0.8), mat.brass);
+    mandir.position.set(-hW + 1.0, 0.3 + 0.7, -hD + 1.0);
+    scene.add(mandir);
 
-    // --- INTERACTIVE NAVIGATIONAL CAMERA GRID COORDINATES ---
+    // European Minimalist Open-Concept Kitchen (Sleek handleless layout)
+    createWall(4.5, wallThick, wallH, hW - 2.25, -2.2); // Divider wall
+    const counterTop = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.9, 0.75), mat.frame);
+    counterTop.position.set(hW - 2.0, 0.3 + 0.45, -hD + 1.5);
+    scene.add(counterTop);
+
+    // Main Baithak (Traditional Indian Low-seating lounge styled with European glass framework)
+    const sofaBase = new THREE.Mesh(new THREE.BoxGeometry(3.8, 0.35, 2.2), mat.teakWood);
+    sofaBase.position.set(-4.5, 0.3 + 0.175, 2.8);
+    scene.add(sofaBase);
+
+    // --- FLOATING CAMERA NAVIGATION PATH MATRIX ---
     const views = {
-      overview: { target: [0, 0.5, 0], pos: [22, 14, 22] },
-      hall: { target: [3.2, 0.6, 2.4], pos: [5.0, 3.0, 6.2] },
-      dining: { target: [1.8, 0.7, -2.2], pos: [4.2, 2.8, -0.2] },
-      kitchen: { target: [5.0, 0.8, -3.0], pos: [2.2, 3.2, -1.2] },
-      master: { target: [-3.5, 0.6, -2.5], pos: [-0.5, 2.8, -0.2] },
-      child: { target: [-3.5, 0.6, 2.5], pos: [-0.5, 2.8, 0.5] },
-      play: { target: [-11.0, 0.3, 2.0], pos: [-16.5, 4.0, 7.5] },
-      front: { target: [2.5, 0.8, 4.5], pos: [2.5, 2.2, 8.8] }
+      facade: { target: [0, 1.5, 0], pos: [24, 12, 24] },
+      angan: { target: [0, 1.1, 0], pos: [4.0, 3.5, 4.0] },
+      pooja: { target: [-hW + 1.0, 1.0, -hD + 1.0], pos: [-4.2, 2.2, -1.8] },
+      baithak: { target: [-4.5, 0.8, 2.8], pos: [-1.5, 2.4, 1.5] },
+      kitchen: { target: [hW - 2.0, 1.1, -hD + 1.5], pos: [2.5, 2.6, -1.0] },
+      veranda: { target: [0, 1.2, hD], pos: [0, 2.0, hD + 6.0] }
     };
 
-    // Smooth Vector Lerp Interpolation Engine
-    const INTERPOLATION_WINDOW = 1200; 
-    let activeTween = null;
+    const TWEEN_DURATION = 1400;
+    let cameraTween = null;
 
-    const lerpMath = (vStart, vEnd, ratio) => {
-      return new THREE.Vector3().lerpVectors(vStart, vEnd, ratio);
-    };
+    const executeViewTransition = (viewKey) => {
+      const config = views[viewKey];
+      if (!config) return;
 
-    const runCameraTween = (targetKey) => {
-      const targetNode = views[targetKey];
-      if (!targetNode) return;
-
-      activeTween = {
-        startEpoch: performance.now(),
+      cameraTween = {
+        start: performance.now(),
         fromPos: camera.position.clone(),
-        toPos: new THREE.Vector3(...targetNode.pos),
+        toPos: new THREE.Vector3(...config.pos),
         fromLook: controls.target.clone(),
-        toLook: new THREE.Vector3(...targetNode.target)
+        toLook: new THREE.Vector3(...config.target)
       };
     };
 
-    // UI Click Event Binding Distribution Loop
-    const inputButtons = document.querySelectorAll("#ui button");
-    inputButtons.forEach(btn => {
+    const uiButtons = document.querySelectorAll("#ui button");
+    uiButtons.forEach(btn => {
       btn.addEventListener("click", () => {
-        inputButtons.forEach(b => b.classList.remove("active"));
+        uiButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        runCameraTween(btn.dataset.view);
+        executeViewTransition(btn.dataset.view);
       });
     });
 
-    // --- REALTIME ANIMATION RENDER LOOP ---
-    const runLoop = () => {
-      requestAnimationFrame(runLoop);
+    // --- ANIMATION REFRESH ENGINE ---
+    const animate = () => {
+      requestAnimationFrame(animate);
 
-      if (activeTween) {
-        const delta = performance.now() - activeTween.startEpoch;
-        const timelineProgress = Math.min(delta / INTERPOLATION_WINDOW, 1.0);
+      if (cameraTween) {
+        const elapsed = performance.now() - cameraTween.start;
+        const progress = Math.min(elapsed / TWEEN_DURATION, 1.0);
         
-        // Custom Smooth-Step Transform Interpolation S-Curve
-        const sCurveAlpha = timelineProgress * timelineProgress * (3 - 2 * timelineProgress);
+        // Custom cubic smooth-step camera path tracking
+        const t = progress * progress * (3 - 2 * progress);
 
-        camera.position.copy(lerpMath(activeTween.fromPos, activeTween.toPos, sCurveAlpha));
-        controls.target.copy(lerpMath(activeTween.fromLook, activeTween.toLook, sCurveAlpha));
+        camera.position.lerpVectors(cameraTween.fromPos, cameraTween.toPos, t);
+        controls.target.lerpVectors(cameraTween.fromLook, cameraTween.toLook, t);
 
-        if (timelineProgress >= 1.0) activeTween = null;
+        if (progress >= 1.0) cameraTween = null;
       }
 
       controls.update();
       renderer.render(scene, camera);
     };
 
-    runLoop();
+    animate();
 
-    // High Density Display Window Resizing Event Handler
     window.addEventListener("resize", () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     });
   </script>
 </body>
