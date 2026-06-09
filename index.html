@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-L0PH9ZXWXT"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L0PH9ZXWXT"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -12,23 +11,111 @@
 </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Indo-European Luxury Villa | Immersive Virtual Tour</title>
+  <title>Indo-European Luxury Estate | Complete Spatial Visualizer</title>
   <style>
     html, body {
       width: 100vw;
       height: 100vh;
       margin: 0;
       overflow: hidden;
-      background: #0f1424;
+      background: #090d16;
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      user-select: none;
     }
+
     canvas {
       display: block;
       width: 100%;
       height: 100%;
     }
+
+    /* Floating Immersive HUD Menu */
+    #nav-hud {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+      border-radius: 40px;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+
+    #nav-hud button {
+      border: none;
+      outline: none;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      white-space: nowrap;
+    }
+
+    #nav-hud button:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    #nav-hud button.active {
+      color: #0f172a;
+      background: #f59e0b;
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.4);
+    }
+
+    /* Minimal Walk Controls Reminder Overlay */
+    #controls-tip {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(10px);
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      font-size: 11px;
+      line-height: 1.5;
+      pointer-events: none;
+    }
+    #controls-tip strong { color: #f59e0b; }
+
+    /* Hide scrollbar tracking on navigation panel */
+    #nav-hud::-webkit-scrollbar { display: none; }
   </style>
 </head>
 <body>
+
+  <div id="controls-tip">
+    <strong>Navigation Array Active:</strong><br />
+    • Click HUD spaces below to jump inside rooms<br />
+    • Use <b>W, A, S, D</b> or <b>Arrow Keys</b> to walk through doors<br />
+    • Left Click + Drag to look around 360°
+  </div>
+
+  <div id="nav-hud">
+    <button class="active" data-view="facade">Facade</button>
+    <button data-view="angan">Central Angan</button>
+    <button data-view="baithak">Teal Baithak</button>
+    <button data-view="master">Ivory Suite</button>
+    <button data-view="child">Mint Sanctuary</button>
+    <button data-view="kitchen">Euro Kitchen</button>
+  </div>
+
   <script type="importmap">
     {
       "imports": {
@@ -41,28 +128,28 @@
     import * as THREE from "three";
     import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-    // --- HOUSE DIMENSIONS ---
+    // --- ARCHITECTURAL DIMENSIONS ---
     const houseW = 16;
     const houseD = 12;
     const hW = houseW / 2;
     const hD = houseD / 2;
     const wallThick = 0.22;
-    const wallH = 3.4; 
+    const wallH = 3.4;
 
-    // --- ENGINE SETUP ---
+    // --- INITIAL ENGINE PIPELINE ---
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xbae6fd); // Daylight sky color to prevent black screen drops
-    scene.fog = new THREE.FogExp2(0xbae6fd, 0.015);
+    scene.background = new THREE.Color(0xbae6fd);
+    scene.fog = new THREE.FogExp2(0xbae6fd, 0.012);
 
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 200);
-    camera.position.set(24, 14, 24);
+    camera.position.set(24, 15, 26);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
+    renderer.toneMappingExposure = 1.15;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     document.body.appendChild(renderer.domElement);
@@ -70,190 +157,318 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.target.set(0, 1.0, 0);
-    controls.maxPolarAngle = Math.PI * 0.47;
+    controls.target.set(0, 1.2, 0);
+    controls.maxPolarAngle = Math.PI * 0.46;
+    controls.minDistance = 1.5;
+    controls.maxDistance = 45;
 
-    // --- LIGHTING INFRASTRUCTURE ---
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    // --- ILLUMINATION AND MATRIX LIGHTING ---
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.55);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xfff7ed, 1.8);
-    sunLight.position.set(20, 25, 15);
+    const sunLight = new THREE.DirectionalLight(0xfffbeb, 1.6);
+    sunLight.position.set(20, 28, 16);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.set(2048, 2048);
-    sunLight.shadow.bias = -0.0005;
+    sunLight.shadow.bias = -0.0004;
     scene.add(sunLight);
 
-    // --- PREMIUM MATERIAL PALETTE ---
+    // --- CLIENT CHROMATIC & MATERIAL PROPERTIES ---
     const mat = {
-      stuccoWall: new THREE.MeshStandardMaterial({ color: 0xfef3c7, roughness: 0.5 }), 
-      terracottaTile: new THREE.MeshStandardMaterial({ color: 0xc2410c, roughness: 0.6 }), 
-      teakWood: new THREE.MeshStandardMaterial({ color: 0x78350f, roughness: 0.4 }), 
-      euroMarble: new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.15 }), 
-      brass: new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.2, metalness: 0.8 }), 
-      lawn: new THREE.MeshStandardMaterial({ color: 0x15803d, roughness: 0.9 }),
-      driveway: new THREE.MeshStandardMaterial({ color: 0x57534e, roughness: 0.8 })
+      stuccoOuter: new THREE.MeshStandardMaterial({ color: 0xfef3c7, roughness: 0.5 }), // Warm Indian Stucco (image_23a4da.jpg)
+      roofTile: new THREE.MeshStandardMaterial({ color: 0xc2410c, roughness: 0.6 }), 
+      teak: new THREE.MeshStandardMaterial({ color: 0x5c2407, roughness: 0.4 }),
+      brass: new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.15, metalness: 0.85 }),
+      glass: new THREE.MeshStandardMaterial({ color: 0xbae6fd, roughness: 0.05, metalness: 0.95, transparent: true, opacity: 0.3 }),
+      frame: new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.5 }),
+      lawn: new THREE.MeshStandardMaterial({ color: 0x16a34a, roughness: 0.9 }),
+      driveway: new THREE.MeshStandardMaterial({ color: 0x57534e, roughness: 0.75 }),
+      leaf: new THREE.MeshStandardMaterial({ color: 0x15803d, roughness: 0.6 }),
+      potMat: new THREE.MeshStandardMaterial({ color: 0xa44a27, roughness: 0.7 }),
+
+      // Distinct Room Colors Requested by Client
+      floorMarble: new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.12 }),
+      colorAngan: new THREE.MeshStandardMaterial({ color: 0xea580c, roughness: 0.6 }), // Traditional Terracotta
+      colorBaithak: new THREE.MeshStandardMaterial({ color: 0x0f766e, roughness: 0.5 }), // Royal Velvet Teal
+      colorMaster: new THREE.MeshStandardMaterial({ color: 0xfef08a, roughness: 0.6 }),  // Rich Ivory Crema
+      colorChild: new THREE.MeshStandardMaterial({ color: 0x6ee7b7, roughness: 0.6 }),   // Mint Oasis
+      colorKitchen: new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.3, metalness: 0.2 }) // Euro Slate Grey
     };
 
-    // --- STRUCTURAL BUILDERS ---
-    const createWall = (w, d, h, x, z, material = mat.stuccoWall) => {
-      const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
-      b.position.set(x, h/2 + 0.3, z);
-      b.castShadow = true;
-      b.receiveShadow = true;
-      scene.add(b);
+    // --- DETAILED STRUCTURAL BUILDERS ---
+    const createWallBlock = (w, d, h, x, z, material = mat.stuccoOuter) => {
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
+      mesh.position.set(x, h/2 + 0.3, z);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      scene.add(mesh);
+    };
+
+    // Advanced Architectural Room Wall segment compiler with integrated Door and Window cutouts
+    const compileWallWithOpenings = (length, x, z, angle = 0, hasDoor = false, hasWindow = false, material = mat.stuccoOuter) => {
+      const group = new THREE.Group();
+      
+      if (!hasDoor && !hasWindow) {
+        const wall = new THREE.Mesh(new THREE.BoxGeometry(length, wallH, wallThick), material);
+        wall.position.y = wallH / 2;
+        wall.castShadow = true;
+        wall.receiveShadow = true;
+        group.add(wall);
+      } else {
+        // Programmatic architecture parsing for door openings and window glass framing blocks
+        let runningX = -length / 2;
+        
+        if (hasDoor) {
+          const segment1W = (length - 1.2) / 2;
+          const leftSeg = new THREE.Mesh(new THREE.BoxGeometry(segment1W, wallH, wallThick), material);
+          leftSeg.position.set(runningX + segment1W/2, wallH/2, 0);
+          leftSeg.castShadow = true; leftSeg.receiveShadow = true;
+          group.add(leftSeg);
+          
+          runningX += segment1W + 1.2;
+          
+          const rightSeg = new THREE.Mesh(new THREE.BoxGeometry(segment1W, wallH, wallThick), material);
+          rightSeg.position.set(runningX + segment1W/2, wallH/2, 0);
+          rightSeg.castShadow = true; rightSeg.receiveShadow = true;
+          group.add(rightSeg);
+
+          const transom = new THREE.Mesh(new THREE.BoxGeometry(1.2, wallH - 2.2, wallThick), material);
+          transom.position.set(-length/2 + segment1W + 0.6, wallH - (wallH - 2.2)/2, 0);
+          transom.castShadow = true;
+          group.add(transom);
+          
+          // Framed Teak Structural Door-posts
+          const frame = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2.2, 0.05), mat.teak);
+          frame.position.set(-length/2 + segment1W + 0.6, 1.1, 0);
+          group.add(frame);
+        } else if (hasWindow) {
+          const sideW = (length - 1.8) / 2;
+          const leftSeg = new THREE.Mesh(new THREE.BoxGeometry(sideW, wallH, wallThick), material);
+          leftSeg.position.set(-length/2 + sideW/2, wallH/2, 0);
+          leftSeg.castShadow = true; leftSeg.receiveShadow = true;
+          group.add(leftSeg);
+
+          const rightSeg = new THREE.Mesh(new THREE.BoxGeometry(sideW, wallH, wallThick), material);
+          rightSeg.position.set(length/2 - sideW/2, wallH/2, 0);
+          rightSeg.castShadow = true; rightSeg.receiveShadow = true;
+          group.add(rightSeg);
+
+          const sill = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.9, wallThick), material);
+          sill.position.set(0, 0.45, 0);
+          sill.castShadow = true; sill.receiveShadow = true;
+          group.add(sill);
+
+          const header = new THREE.Mesh(new THREE.BoxGeometry(1.8, wallH - 2.4, wallThick), material);
+          header.position.set(0, wallH - (wallH - 2.4)/2, 0);
+          header.castShadow = true;
+          group.add(header);
+
+          // Realized physical Glass panes & outer Window casing assemblies
+          const glassPane = new THREE.Mesh(new THREE.BoxGeometry(1.74, 1.5, 0.04), mat.glass);
+          glassPane.position.set(0, 1.65, 0);
+          group.add(glassPane);
+
+          const frame = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.56, 0.08), mat.frame);
+          frame.position.set(0, 1.65, 0);
+          group.add(frame);
+        }
+      }
+
+      group.position.set(x, 0.3, z);
+      group.rotation.y = angle;
+      scene.add(group);
     };
 
     const createPitchedRoof = (w, d, h, x, y, z) => {
-      const geom = new THREE.ConeGeometry(w * 0.7, h, 4);
+      const geom = new THREE.ConeGeometry(w * 0.72, h, 4);
       geom.rotateY(Math.PI * 0.25);
       geom.scale(1, 1, d / w);
-      const roofMesh = new THREE.Mesh(geom, mat.terracottaTile);
-      roofMesh.position.set(x, y + h/2, z);
-      roofMesh.castShadow = true;
-      scene.add(roofMesh);
+      const mesh = new THREE.Mesh(geom, mat.roofTile);
+      mesh.position.set(x, y + h/2, z);
+      mesh.castShadow = true;
+      scene.add(mesh);
     };
 
-    const createTeakPillar = (x, z) => {
-      const p = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.13, wallH, 12), mat.teakWood);
-      p.position.set(x, wallH/2 + 0.3, z);
-      p.castShadow = true;
-      scene.add(p);
+    // Procedural House Plant Model Builder Requested by Client
+    const placeInteriorPlantPot = (x, z) => {
+      const plantGroup = new THREE.Group();
       
-      const ring = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.2, 12), mat.brass);
-      ring.position.set(x, 0.4, z);
-      scene.add(ring);
+      const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.16, 0.45, 12), mat.potMat);
+      pot.position.y = 0.225;
+      pot.castShadow = true;
+      plantGroup.add(pot);
+
+      for(let i=0; i<5; i++) {
+        const leafMesh = new THREE.Mesh(new THREE.SphereGeometry(0.24, 8, 8), mat.leaf);
+        leafMesh.scale.set(0.3, 1.4, 0.8);
+        leafMesh.rotation.x = Math.PI * 0.15 + (Math.random() * 0.2);
+        leafMesh.rotation.y = (i * (Math.PI * 2 / 5));
+        leafMesh.position.set(0, 0.4, 0);
+        leafMesh.castShadow = true;
+        plantGroup.add(leafMesh);
+      }
+
+      plantGroup.position.set(x, 0.3, z);
+      scene.add(plantGroup);
     };
 
-    // --- ASSEMBLY LAYER (Inspired by image_23a4da.jpg) ---
-    // Ground and Site Layout
-    const terrain = new THREE.Mesh(new THREE.PlaneGeometry(50, 40), mat.lawn);
-    terrain.rotation.x = -Math.PI * 0.5;
-    terrain.receiveShadow = true;
-    scene.add(terrain);
+    // --- ESTATE GROUND LAYOUT ASSEMBLY ---
+    const siteLawn = new THREE.Mesh(new THREE.PlaneGeometry(54, 42), mat.lawn);
+    siteLawn.rotation.x = -Math.PI * 0.5;
+    siteLawn.receiveShadow = true;
+    scene.add(siteLawn);
 
-    const drive = new THREE.Mesh(new THREE.BoxGeometry(6.0, 0.02, 12.0), mat.driveway);
-    drive.position.set(4.5, 0.01, hD + 3);
-    drive.receiveShadow = true;
-    scene.add(drive);
-
-    const foundation = new THREE.Mesh(new THREE.BoxGeometry(houseW, 0.3, houseD), mat.euroMarble);
+    const foundation = new THREE.Mesh(new THREE.BoxGeometry(houseW, 0.3, houseD), mat.floorMarble);
     foundation.position.set(0, 0.15, 0);
     foundation.receiveShadow = true;
     scene.add(foundation);
 
-    // Main Structural Shell
-    createWall(houseW, wallThick, wallH, 0, hD - wallThick/2); 
-    createWall(houseW, wallThick, wallH, 0, -hD + wallThick/2); 
-    createWall(wallThick, houseD, wallH, -hW + wallThick/2, 0); 
-    createWall(wallThick, houseD, wallH, hW - wallThick/2, 0); 
+    const drive = new THREE.Mesh(new THREE.BoxGeometry(5.5, 0.02, 14.0), mat.driveway);
+    drive.position.set(4.5, 0.01, hD + 4);
+    drive.receiveShadow = true;
+    scene.add(drive);
 
-    // Dynamic split pitched roofs from image_23a4da.jpg
-    createPitchedRoof(hW + 1, houseD + 0.8, 2.4, -4.0, wallH + 0.3, 0); 
-    createPitchedRoof(hW + 1, houseD + 0.8, 2.0, 4.0, wallH + 0.3, 0);  
+    // --- CLIENT SECURITY WALL AND FRONT GATE ---
+    createWallBlock(houseW + 4.0, 0.25, 1.4, 0, hD + 5.0, mat.stuccoOuter); // Symmetrical Boundary Wall
+    createWallBlock(0.6, 0.6, 2.0, -2.5, hD + 5.0, mat.teak); // Left Gate Pillar Stone
+    createWallBlock(0.6, 0.6, 2.0, 1.5, hD + 5.0, mat.teak);  // Right Gate Pillar Stone
+    
+    // Front Ornamental Entry Gates (Partially ajar)
+    const leftGateDoor = new THREE.Mesh(new THREE.BoxGeometry(1.9, 1.6, 0.06), mat.brass);
+    leftGateDoor.position.set(-1.5, 0.3 + 0.8, hD + 5.2);
+    leftGateDoor.rotation.y = Math.PI * 0.12;
+    scene.add(leftGateDoor);
 
-    // Traditional Central Indian Courtyard (Angan Core)
-    const anganW = 3.8;
-    const anganD = 3.8;
-    createTeakPillar(-anganW/2, -anganD/2);
-    createTeakPillar(anganW/2, -anganD/2);
-    createTeakPillar(-anganW/2, anganD/2);
-    createTeakPillar(anganW/2, anganD/2);
+    const rightGateDoor = new THREE.Mesh(new THREE.BoxGeometry(1.9, 1.6, 0.06), mat.brass);
+    rightGateDoor.position.set(0.5, 0.3 + 0.8, hD + 5.2);
+    rightGateDoor.rotation.y = -Math.PI * 0.08;
+    scene.add(rightGateDoor);
 
-    const courtyardFloor = new THREE.Mesh(new THREE.BoxGeometry(anganW - 0.2, 0.04, anganD - 0.2), mat.terracottaTile);
-    courtyardFloor.position.set(0, 0.31, 0);
-    scene.add(courtyardFloor);
+    // Placed Interior Protective Wall Greenery Arrays requested by client
+    for(let wX = -hW + 1.5; wX < hW; wX += 3.5) {
+      placeInteriorPlantPot(wX, hD + 4.4);
+    }
 
-    // Indoor Spaces & Partitions
-    createWall(2.5, wallThick, wallH, -hW + 1.25, -2.5); // Mandir partitions
-    createWall(wallThick, 2.5, wallH, -hW + 2.5, -hD + 1.25);
-    const mandirShrine = new THREE.Mesh(new THREE.BoxGeometry(1.0, 1.5, 0.8), mat.brass);
-    mandirShrine.position.set(-hW + 1.2, 0.3 + 0.75, -hD + 1.2);
-    scene.add(mandirShrine);
+    // --- VILLA ROOM PARTITIONS & SPECIFIC COLOR MATRIX LAYOUT ---
+    
+    // Exterior Primary Shell
+    compileWallWithOpenings(houseW, 0, hD - wallThick/2, 0, true, false, mat.stuccoOuter); // Front Wall + Main Door
+    compileWallWithOpenings(houseW, 0, -hD + wallThick/2, 0, false, true, mat.stuccoOuter); // Back Wall + Window
+    compileWallWithOpenings(houseD, -hW + wallThick/2, 0, Math.PI / 2, false, true, mat.stuccoOuter); // Left Structural Wing
+    compileWallWithOpenings(houseD, hW - wallThick/2, 0, Math.PI / 2, false, true, mat.stuccoOuter);  // Right Structural Wing
 
-    createWall(4.5, wallThick, wallH, hW - 2.25, -2.2); // European Kitchen divider
-    const kitchenIsland = new THREE.Mesh(new THREE.BoxGeometry(3.5, 0.9, 0.8), mat.teakWood);
-    kitchenIsland.position.set(hW - 2.2, 0.3 + 0.45, -hD + 1.8);
-    scene.add(kitchenIsland);
+    // Interior Room Partitions matching the custom requested color profiles
+    compileWallWithOpenings(houseD - 0.5, 0, 0, Math.PI / 2, true, false, mat.colorAngan);   // Core Courtyard Left Boundary
+    compileWallWithOpenings(hW - 0.2, -hW / 2, 2.0, 0, true, false, mat.colorMaster);     // Ivory Suite Divide
+    compileWallWithOpenings(hW - 0.2, -hW / 2, -2.0, 0, false, true, mat.colorChild);      // Mint Sanctuary Boundary
+    compileWallWithOpenings(hW - 0.2, hW / 2, -1.5, 0, true, false, mat.colorKitchen);     // Euro Slate Kitchen partition
+    compileWallWithOpenings(houseD - 0.5, -2.5, 0, Math.PI / 2, true, false, mat.colorBaithak); // Royal Teal Baithak Entryway
 
-    // --- AUTOMATED VIRTUAL TOUR SCRIPTING MATRIX ---
-    // Waypoints that cycle smoothly through the space automatically
-    const tourWaypoints = [
-      { pos: [0, 8, 22], target: [0, 1.5, 0] },       // Exterior Facade
-      { pos: [4, 3, 4], target: [0, 1.2, 0] },         // Angan Left View
-      { pos: [-3, 2, -2], target: [-hW+1.2, 1.2, -hD+1.2] }, // Pooja Mandir Focus
-      { pos: [3, 2.5, -2], target: [hW-2.2, 1.0, -hD+1.8] },  // Modern Euro-Kitchen
-      { pos: [-2, 3, 3], target: [-4, 1.0, 2] },       // Deep Interior Living Area
-      { pos: [0, 14, 26], target: [0, 1.0, 0] }       // Aerial Returning Loop Entry
-    ];
+    // Multi-tier Spanish Pitched Roof Construction
+    createPitchedRoof(hW + 1.2, houseD + 0.8, 2.4, -4.0, wallH + 0.3, 0);
+    createPitchedRoof(hW + 1.2, houseD + 0.8, 2.0, 4.0, wallH + 0.3, 0);
 
-    let currentWaypointIndex = 0;
-    let transitionStartTime = performance.now();
-    const WAYPOINT_STAY_DURATION = 3500; // Time spent pausing at each space (ms)
-    const TRANSITION_FLIGHT_TIME = 2500; // Time traveling between spaces (ms)
-    let isTransitioning = true;
+    // Traditional Central Angan Columns
+    const createTeakColumn = (x, z) => {
+      const col = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.12, wallH, 12), mat.teak);
+      col.position.set(x, wallH/2 + 0.3, z);
+      col.castShadow = true;
+      scene.add(col);
+    };
+    createTeakColumn(-1.5, -1.5); createTeakColumn(1.5, -1.5);
+    createTeakColumn(-1.5, 1.5);  createTeakColumn(1.5, 1.5);
 
-    // Track user mouse interaction to pause tour temporarily if they manually orbit
-    let userInteracting = false;
-    let interactionTimeout;
+    // Indoor Room Potted Plants
+    placeInteriorPlantPot(-hW + 1.5, -hD + 1.5); // Master bedroom corner plant
+    placeInteriorPlantPot(-2.0, hD - 1.5);       // Baithak indoor shrub element
 
-    controls.addEventListener('start', () => {
-      userInteracting = true;
-      clearTimeout(interactionTimeout);
+    // --- INTERACTIVE SYSTEM & SMOOTH TELEPORTATION CORE ---
+    const rooms = {
+      facade: { target: [0, 1.2, 2], pos: [0, 10, 24] },
+      angan: { target: [0, 1.4, 0], pos: [2.5, 1.8, 2.5] },
+      baithak: { target: [-5.0, 1.4, 2.5], pos: [-2.8, 1.8, 2.8] },
+      master: { target: [-5.0, 1.4, -3.0], pos: [-2.5, 1.8, -2.5] },
+      child: { target: [-4.0, 1.4, 0.5], pos: [-2.0, 1.8, 0.8] },
+      kitchen: { target: [5.0, 1.4, -3.0], pos: [2.5, 1.8, -2.5] }
+    };
+
+    let viewTween = null;
+    const TWEEN_MS = 1000;
+
+    const navigateToRoom = (key) => {
+      const config = rooms[key];
+      if (!config) return;
+
+      viewTween = {
+        start: performance.now(),
+        fromPos: camera.position.clone(),
+        toPos: new THREE.Vector3(...config.pos),
+        fromLook: controls.target.clone(),
+        toLook: new THREE.Vector3(...config.target)
+      };
+    };
+
+    const hudButtons = document.querySelectorAll("#nav-hud button");
+    hudButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        hudButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        navigateToRoom(btn.dataset.view);
+      });
     });
 
-    controls.addEventListener('end', () => {
-      interactionTimeout = setTimeout(() => {
-        userInteracting = false;
-        transitionStartTime = performance.now();
-        // Snap system back to closest point smoothly
-        tourWaypoints[currentWaypointIndex].pos = [camera.position.x, camera.position.y, camera.position.z];
-      }, 5000); // Resume auto-tour 5 seconds after user releases mouse controls
-    });
+    // --- FIRST PERSON SMOOTH WALK KEYBOARD MATRIX ---
+    const pressedKeys = { w: false, a: false, s: false, d: false, ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
+    const walkSpeed = 0.12;
 
-    // --- ANIMATION RENDERING MATRIX ENGINE ---
-    const animate = (currentTime) => {
-      requestAnimationFrame(animate);
+    window.addEventListener("keydown", (e) => { if (e.key in pressedKeys) pressedKeys[e.key] = true; });
+    window.addEventListener("keyup", (e) => { if (e.key in pressedKeys) pressedKeys[e.key] = false; });
 
-      if (!userInteracting) {
-        const elapsed = currentTime - transitionStartTime;
+    const processWalkMovement = () => {
+      const forwardDir = new THREE.Vector3();
+      camera.getWorldDirection(forwardDir);
+      forwardDir.y = 0; // Flatten directional velocity axis to mimic walking on floor
+      forwardDir.normalize();
 
-        if (isTransitioning) {
-          const progress = Math.min(elapsed / TRANSITION_FLIGHT_TIME, 1.0);
-          // Smooth architectural camera path ease curve
-          const t = progress * progress * (3 - 2 * progress);
+      const sideDir = new THREE.Vector3();
+      sideDir.crossVectors(forwardDir, camera.up).normalize().negate();
 
-          const prevIndex = (currentWaypointIndex - 1 + tourWaypoints.length) % tourWaypoints.length;
-          const startPoint = new THREE.Vector3(...tourWaypoints[prevIndex].pos);
-          const endPoint = new THREE.Vector3(...tourWaypoints[currentWaypointIndex].pos);
-          const startLook = new THREE.Vector3(...tourWaypoints[prevIndex].target);
-          const endLook = new THREE.Vector3(...tourWaypoints[currentWaypointIndex].target);
+      const movementMove = new THREE.Vector3(0, 0, 0);
 
-          camera.position.lerpVectors(startPoint, endPoint, t);
-          controls.target.lerpVectors(startLook, endLook, t);
+      if (pressedKeys.w || pressedKeys.ArrowUp) movementMove.addScaledVector(forwardDir, walkSpeed);
+      if (pressedKeys.s || pressedKeys.ArrowDown) movementMove.addScaledVector(forwardDir, -walkSpeed);
+      if (pressedKeys.a || pressedKeys.ArrowLeft) movementMove.addScaledVector(sideDir, walkSpeed);
+      if (pressedKeys.d || pressedKeys.ArrowRight) movementMove.addScaledVector(sideDir, -walkSpeed);
 
-          if (progress >= 1.0) {
-            isTransitioning = false;
-            transitionStartTime = currentTime;
-          }
-        } else {
-          // Standing still holding perspective angle
-          if (elapsed >= WAYPOINT_STAY_DURATION) {
-            isTransitioning = true;
-            currentWaypointIndex = (currentWaypointIndex + 1) % tourWaypoints.length;
-            transitionStartTime = currentTime;
-          }
-        }
+      if (movementMove.lengthSq() > 0) {
+        camera.position.add(movementMove);
+        controls.target.add(movementMove); // Continuously shifts target focus vector ahead to keep orbit sync accurate
+      }
+    };
+
+    // --- REALTIME ANIMATION RENDER ENGINE LOOP ---
+    const runUpdateFrame = (timestamp) => {
+      requestAnimationFrame(runUpdateFrame);
+
+      if (viewTween) {
+        const delta = timestamp - viewTween.start;
+        const alpha = Math.min(delta / TWEEN_MS, 1.0);
+        const sCurve = alpha * alpha * (3 - 2 * alpha); // Cubic interpolation curve
+
+        camera.position.lerpVectors(viewTween.fromPos, viewTween.toPos, sCurve);
+        controls.target.lerpVectors(viewTween.fromLook, viewTween.toLook, sCurve);
+
+        if (alpha >= 1.0) viewTween = null;
       }
 
+      processWalkMovement();
       controls.update();
       renderer.render(scene, camera);
     };
 
-    // Kickstart the rendering loops safely
-    requestAnimationFrame(animate);
+    requestAnimationFrame(runUpdateFrame);
 
-    // Handle Viewport Resizing instantly
+    // Instant Viewport Adaptability Resizer
     window.addEventListener("resize", () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
