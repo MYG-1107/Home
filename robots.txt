@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /Home/
+Allow: /Home/index.html
+
+Disallow: /*.json
+Disallow: /*.md
+
+Sitemap: https://myg-1107.github.io/Home/sitemap.xml
