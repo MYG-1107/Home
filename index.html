@@ -610,15 +610,15 @@
         box(scene,34,.95,.35,0,.34,-14.0,mat.warmWall);
         box(scene,.35,.95,28, -17,.34,0,mat.warmWall);
         box(scene,.35,.95,28, 17,.34,0,mat.warmWall);
-        box(scene,9,.95,.35,-12.5,.34,14,mat.warmWall);
-        box(scene,9,.95,.35,12.5,.34,14,mat.warmWall);
-        for(const x of [-8,-4,4,8]) box(scene,.55,1.55,.58,x,.64,14,mat.accent);
-        // Main gate is on the north edge.
-        box(scene,3.3,1.55,.14,-1.8,.8,14.05,mat.wood);
-        box(scene,3.3,1.55,.14,1.8,.8,14.05,mat.wood);
-        // Walkway between front gate and north-facing house entrance.
-        box(scene,5.0,.08,8.7,0,.0,9.3,mat.concrete,false);
-        for(let i=0;i<5;i++) box(scene,4.7,.025,.72,0,.06,6.0+i*.88,mat.warmWall,false);
+        box(scene,18.5,.95,.35,-7.75,.34,14,mat.warmWall);
+        box(scene,7.5,.95,.35,13.25,.34,14,mat.warmWall);
+        for(const x of [1.5,9.5]) box(scene,.55,1.55,.58,x,.64,14,mat.accent);
+        // Main compound gate is aligned with the north-east house entrance.
+        box(scene,4.0,1.55,.14,3.5,.8,14.05,mat.wood);
+        box(scene,4.0,1.55,.14,7.5,.8,14.05,mat.wood);
+        // Walkway aligns the gate, front approach and the north-east entrance door.
+        box(scene,4.6,.08,8.7,5.5,.0,9.3,mat.concrete,false);
+        for(let i=0;i<5;i++) box(scene,4.3,.025,.72,5.5,.06,6.0+i*.88,mat.warmWall,false);
         addTree(scene,-13,-8,1.25);
         addTree(scene,13,-8,1.2);
         addTree(scene,13,10,1.05);
@@ -646,10 +646,10 @@
         wallZ(group,-9.9,0,HOUSE_D,WALL_H,mat.wall);
         wallZ(group,9.9,0,HOUSE_D,WALL_H,mat.wall);
         // North facade parapet and columns, with a main entrance opening on the NE side.
-        wallX(group,-5.0,7.9,9.5,1.05,mat.warmWall,.78);
-        wallX(group,1.25,7.9,5.0,1.05,mat.warmWall,.78);
-        wallX(group,8.75,7.9,2.3,1.05,mat.warmWall,.78);
-        for(const x of [-9.55,-.05,3.8,7.5,9.45]) box(group,.18,2.65,.18,x,1.55,7.9,mat.accent);
+        wallX(group,-5.45,7.9,8.9,1.05,mat.warmWall,.78);
+        wallX(group,1.75,7.9,5.5,1.05,mat.warmWall,.78);
+        wallX(group,8.2,7.9,3.4,1.05,mat.warmWall,.78);
+        for(const x of [-9.55,-1.0,4.5,6.5,9.45]) box(group,.18,2.65,.18,x,1.55,7.9,mat.accent);
         // North-facing framed entry leaf.
         box(group,1.28,2.15,.12,5.55,1.35,7.98,mat.wood);
         box(group,.06,.42,.07,5.95,1.35,8.06,mat.brass);
