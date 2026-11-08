@@ -221,6 +221,7 @@
     .north-compass strong{font-size:8px}.north-compass .arrow{width:21px;height:21px;font-size:14px}.north-compass small{display:none!important}
     .road-label,.interaction-hint,.disclaimer{display:none!important}
     .toolbar{bottom:12px;gap:5px;padding:6px;border-radius:13px;box-shadow:0 12px 34px rgba(26,42,34,.14);width:auto;max-width:calc(100% - 24px)}
+    .tool-btn:disabled{opacity:.34;cursor:not-allowed}
     .tool-btn{width:37px;min-width:37px;height:36px;min-height:36px;padding:0;font-size:0;gap:0;border-radius:9px}
     .tool-btn svg{width:16px;height:16px}.zoom-btn{font-size:17px!important;font-weight:500!important}.tool-sep{height:22px}
     .loading{font-size:0}.loading span{font-size:0}
@@ -1052,6 +1053,7 @@
           group.visible=id==="all"||key===id;
         }
         roofGroup.visible=roofOn && (id==="all"||id==="third") && !planMode;
+        $("roof-btn").disabled=planMode || !(id==="all"||id==="third");
         $("roof-btn").classList.toggle("active",roofOn);
         $("roof-btn").setAttribute("aria-pressed",String(roofOn));
         document.querySelectorAll(".floor-btn").forEach(b=>b.classList.toggle("active",b.dataset.floor===id));
@@ -1090,6 +1092,7 @@
       $("roof-btn").addEventListener("click",()=>{
         roofOn=!roofOn;
         roofGroup.visible=roofOn && (selectedFloor==="all"||selectedFloor==="third") && !planMode;
+        $("roof-btn").disabled=planMode || !(selectedFloor==="all"||selectedFloor==="third");
         $("roof-btn").classList.toggle("active",roofOn);
         $("roof-btn").setAttribute("aria-pressed",String(roofOn));
       });
