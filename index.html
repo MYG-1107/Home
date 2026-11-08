@@ -53,7 +53,7 @@
     .north-badge .n { display:grid; place-items:center; width:19px; height:19px; border-radius:50%; color:white; background:var(--forest); font-size:11px; }
     .top-caption { color:#7c8980; font-size:9px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; white-space:nowrap; }
     #viewport { position:fixed; inset:72px 0 0; overflow:hidden; background:#dce7e0; }
-    #house-canvas { width:100%; height:100%; display:block; outline:none; touch-action:pan-y; }
+    #house-canvas { width:100%; height:100%; display:block; outline:none; touch-action:none; }
     .atmosphere { position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg,rgba(239,242,234,.18),transparent 40%,transparent 72%,rgba(242,243,237,.12)); }
     .panel {
       position:absolute; z-index:8; background:var(--card); border:1px solid rgba(255,255,255,.85);
@@ -738,7 +738,7 @@
         roomLabel(group,"Wash + utility",6.1,-1.2,"#52736b");
 
         // West-central stair core leading to the residential floors.
-        addStaircase(group,-8.8,.2);
+        addStaircase(group,-8.5,.2);
         // Screened manure / compost bay sits outside the family and fodder routes.
         box(scene,2.8,1.05,2.0,-12.2,.55,-10.5,mat.wood);
         box(scene,2.95,.12,2.15,-12.2,1.14,-10.5,mat.roof);
@@ -754,7 +754,7 @@
         if(!upper) floorPatch(group,.75,-4.85,5.25,5.7,mat.tile); // third bedroom
         else floorPatch(group,.75,-4.85,5.25,5.7,mat.floorLight); // family / study
         floorPatch(group,6.15,-4.85,6.0,5.7,mat.tile); // SE kitchen
-        floorPatch(group,4.3,4.45,8.4,5.9,mat.floorLight); // north living
+        floorPatch(group,4.3,4.85,8.4,5.1,mat.floorLight); // north living
         floorPatch(group,5.35,.35,6.8,3.9,mat.tile); // dining
         floorPatch(group,-1.25,.3,3.2,4.0,mat.bathTile); // baths / lobby
 
@@ -883,9 +883,9 @@
         ground:{
           kicker:"Ground floor · livestock + utility",
           title:"A proper cattle yard",
-          description:"An open-sided covered shed, fenced exercise yard, feeding manger, drinking trough, grass, calf corner, wash area and enclosed storage room.",
-          note:"The livestock layout is conceptual. Confirm animal count, safe clearances, cleaning route, floor falls, shade, ventilation, water supply and local animal-welfare needs before building.",
-          rooms:["Cattle shed","Grass paddock","Feed manger","Water trough","Storage room","Wash + utility","Staircase"]
+          description:"A three-sided covered cattle shed, gated grass paddock, feeding manger, clean-water trough, calf pen, drainage channel, wash area, fodder storage and a screened manure / compost bay.",
+          note:"Use non-slip washable flooring, a properly drained wash channel, shade, cross-ventilation, clean water and an open loafing yard. Final space per cow / buffalo depends on animal type and herd size; have the shed checked against current local husbandry guidance.",
+          rooms:["Cattle shed","Grass paddock","Feed manger","Water trough","Fodder storage","Wash + utility","Manure / compost bay","Staircase"]
         },
         second:{
           kicker:"Second floor · 3BHK",
@@ -909,9 +909,11 @@
           "Grass paddock":[[2.0,2.5,9.0],[2.0,1.1,4.0]],
           "Feed manger":[[-8.2,3.0,7.8],[-8.2,1.1,4.0]],
           "Water trough":[[-3.0,2.5,6.0],[-3.0,1.1,3.0]],
+          "Fodder storage":[[-5.8,2.8,-10.5],[-5.8,1.1,-4.2]],
           "Storage room":[[-5.8,2.8,-10.5],[-5.8,1.1,-4.2]],
           "Wash + utility":[[6.0,2.6,-10.0],[6.0,1.1,-4.3]],
-          "Staircase":[[-8.5,3.4,6.3],[-8.5,1.1,.2]]
+          "Staircase":[[-8.5,3.4,6.3],[-8.5,1.1,.2]],
+          "Manure / compost bay":[[-12.2,2.8,-13.0],[-12.2,1.1,-10.5]]
         },
         second:{
           "Master bedroom":[[-6,4.7,-10.5],[-6,1.1,-4.4]],
@@ -1064,11 +1066,12 @@
       $("tour-btn").addEventListener("click",()=>{
         if(selectedFloor==="all") setFloor("ground");
         const list=floorInfo[selectedFloor].rooms;
-        tourMode=!tourMode;
-        tourIndex=0;
-        $("tour-btn").classList.toggle("active",tourMode);
-        $("tour-btn").setAttribute("aria-pressed",String(tourMode));
-        if(tourMode) focusRoom(list[tourIndex]);
+        if(!tourMode){tourMode=true;tourIndex=0;}
+        else {tourIndex=(tourIndex+1)%list.length;}
+        $("tour-btn").classList.add("active");
+        $("tour-btn").setAttribute("aria-pressed","true");
+        $("tour-btn").title="Next room in the selected floor";
+        focusRoom(list[tourIndex]);
       });
       $("rotate-btn").addEventListener("click",()=>{
         controls.autoRotate=!controls.autoRotate;
