@@ -1059,6 +1059,7 @@
         const base=selectedFloor==="ground"?0:selectedFloor==="second"?LEVEL_GAP:LEVEL_GAP*2;
         animateCamera([pos[0],pos[1]+base,pos[2]],[tgt[0],tgt[1]+base,tgt[2]],850);
         planMode=false;
+        roofGroup.visible=roofOn && selectedFloor==="third";
         $("plan-btn").classList.remove("active");
         $("plan-btn").setAttribute("aria-pressed","false");
       }
@@ -1081,6 +1082,8 @@
         planMode=!planMode;
         $("plan-btn").classList.toggle("active",planMode);
         $("plan-btn").setAttribute("aria-pressed",String(planMode));
+        roofGroup.visible=roofOn && (selectedFloor==="all"||selectedFloor==="third") && !planMode;
+        $("roof-btn").classList.toggle("active",roofOn);
         if(selectedFloor==="all"){
           setFloor("second",planMode);
         } else {
