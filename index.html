@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#17241f" />
-  <meta name="description" content="Explore an interactive 3D concept of a three-level Indian family home: a practical ground floor with storage, cattle shelter and planting space, a 3BHK first floor, and a 2BHK second floor." />
-  <meta name="keywords" content="3D house design, three floor house plan, 3BHK house design, 2BHK floor plan, Indian home design, dream house visualizer" />
+  <meta name="description" content="Explore a north-facing, Vastu-inspired three-level Indian family home in interactive 3D, with ground-floor storage, cattle shelter and planting, a 3BHK first floor and a 2BHK second floor." />
+  <meta name="keywords" content="north facing house plan, Vastu house design, Vastu 3BHK plan, Vastu 2BHK plan, 3D house design, three floor Indian house, dream home visualizer" />
   <meta property="og:title" content="My Dream Home | Interactive 3D House Concept" />
-  <meta property="og:description" content="Explore the ground floor, 3BHK first floor and 2BHK second floor in an interactive 3D house model." />
+  <meta property="og:description" content="Explore a north-facing Vastu-inspired home with ground-floor utility space, 3BHK and 2BHK residential floors in 3D." />
   <meta property="og:type" content="website" />
-  <title>My Dream Home | Interactive 3D House Concept</title>
+  <title>North-Facing Vastu House | Interactive 3D Dream Home</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="canonical" href="https://myg-1107.github.io/Home/" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-L0PH9ZXWXT"></script>
@@ -142,6 +142,21 @@
     .loading span { display: flex; align-items: center; gap: 10px; }
     .spinner { width: 17px; height: 17px; border: 2px solid #cbd8cc; border-top-color: #355448; border-radius: 50%; animation: spin .8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    .north-marker {
+      position: absolute; left: 28px; bottom: 148px; z-index: 6;
+      display: flex; align-items: center; gap: 9px; padding: 9px 12px 9px 9px;
+      border-radius: 12px; background: rgba(250,250,246,.9);
+      border: 1px solid rgba(255,255,255,.8); box-shadow: 0 8px 24px rgba(26,42,34,.1);
+      color: var(--forest); backdrop-filter: blur(12px);
+    }
+    .north-arrow {
+      display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px;
+      color: #fff; background: var(--forest); font-size: 21px; font-weight: 800; line-height: 1;
+    }
+    .north-marker strong { display: block; font-size: 9px; letter-spacing: .16em; }
+    .north-marker small { display: block; margin-top: 3px; color: #819087; font-size: 7px; letter-spacing: .1em; font-weight: 800; }
+
     .disclaimer {
       position: absolute; bottom: 93px; right: 28px; z-index: 5; max-width: 285px;
       color: rgba(56,75,64,.78); font-size: 8px; line-height: 1.5; text-align: right;
@@ -156,6 +171,7 @@
       .detail-card { right: 16px; top: 16px; width: 250px; padding: 15px; }
       .right-tools { right: 16px; bottom: 111px; }
       .hint { left: 16px; bottom: 101px; }
+      .north-marker { left: 16px; bottom: 141px; }
       .disclaimer { right: 16px; bottom: 79px; max-width: 245px; }
       .bottom-dock { bottom: 12px; width: calc(100% - 24px); gap: 8px; padding: 9px; }
       .dock-label { min-width: 70px; }
@@ -187,6 +203,10 @@
       .tool-btn { width: 34px; height: 34px; border-radius: 10px; }
       .tool-btn svg { width: 14px; height: 14px; }
       .hint { left: 10px; bottom: 107px; font-size: 7px; padding: 6px 8px; }
+      .north-marker { left: 10px; bottom: 150px; padding: 6px 8px 6px 6px; gap: 6px; }
+      .north-arrow { width: 23px; height: 23px; font-size: 17px; }
+      .north-marker strong { font-size: 7px; }
+      .north-marker small { font-size: 6px; }
       .disclaimer { display: none; }
       .bottom-dock { bottom: 8px; width: calc(100% - 16px); padding: 8px; display: grid; grid-template-columns: 1fr; gap: 7px; border-radius: 15px; }
       .dock-label { display: none; }
@@ -226,7 +246,7 @@
     </div>
     <div class="top-meta">
       <span><i class="status-dot"></i><strong>3D CONCEPT</strong></span>
-      <span class="meta-location">INDIAN FAMILY HOME · THREE LEVELS</span>
+      <span class="meta-location">NORTH-FACING · VASTU-INSPIRED HOME</span>
     </div>
   </header>
 
@@ -235,9 +255,9 @@
     <div class="veil"></div>
 
     <section class="intro-card" aria-label="Project overview">
-      <div class="eyebrow">The home you imagine</div>
-      <h1>Designed around<br>your everyday life.</h1>
-      <p>A three-level family home with a useful ground floor, a generous 3BHK residence and an independent 2BHK upper home.</p>
+      <div class="eyebrow">North-facing family home</div>
+      <h1>Rooted in tradition.<br>Made for your family.</h1>
+      <p>A three-level home concept arranged around commonly followed Vastu directions, with the road and main entrance to the north.</p>
       <div class="model-meta">
         <div><strong>03</strong><span>Levels</span></div>
         <div><strong>05</strong><span>Bedrooms</span></div>
@@ -269,12 +289,14 @@
       </button>
     </div>
 
+    <div class="north-marker" aria-label="North direction. The front road and main entrance face north."><span class="north-arrow">↑</span><span><strong>NORTH</strong><small>ROAD + MAIN ENTRY</small></span></div>
+
     <div class="hint">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M8 12V6a2 2 0 0 1 4 0v5-6a2 2 0 0 1 4 0v7-4a2 2 0 0 1 4 0v7a7 7 0 0 1-7 7h-1a7 7 0 0 1-6-3.4L3 15a2 2 0 0 1 3-2.5z"/></svg>
-      Drag to rotate · Scroll to zoom · Select a floor to explore
+      North is at the front · Drag to rotate · Scroll to zoom
     </div>
 
-    <div class="disclaimer">Illustrative 3D concept only. Not a structural, approval or construction drawing.</div>
+    <div class="disclaimer">Vastu-inspired concept. Illustrative only — not a structural, approval or construction drawing.</div>
 
     <nav class="bottom-dock" aria-label="Select floor and model view">
       <div class="dock-label"><strong>Explore levels</strong><span>Choose a floor</span></div>
@@ -535,132 +557,164 @@
       for (let i = 0; i < 5; i++) addPlant(scene, -8.2 + i * 1.2, 8.3, 0.72);
     }
 
+    function addPujaMandir(parent, x, z) {
+      // Compact pooja niche in the north-east (Ishan) zone.
+      addBox(parent, 1.55, 0.16, 1.45, x, 0.24, z, materials.concrete);
+      addBox(parent, 1.25, 1.55, 0.22, x, 1.05, z - 0.48, materials.wood);
+      addBox(parent, 1.05, 0.11, 0.62, x, 0.72, z - 0.30, materials.brass);
+      addBox(parent, 0.12, 0.75, 0.12, x - 0.48, 1.02, z - 0.28, materials.brass);
+      addBox(parent, 0.12, 0.75, 0.12, x + 0.48, 1.02, z - 0.28, materials.brass);
+      addSphere(parent, 0.16, 0.2, 0.12, x, 1.05, z - 0.12, materials.ceramic);
+      addPlant(parent, x + 0.95, z + 0.15, 0.48);
+    }
+
+    function addVastuStaircase(parent, x = -7.0, z = -0.2) {
+      // West / south-west stair zone; flight rises towards the north.
+      for (let i = 0; i < 11; i++) {
+        const rise = (i + 1) * 0.215;
+        addBox(parent, 2.0, rise, 0.43, x, rise / 2, z - 2.35 + i * 0.47, materials.wood);
+      }
+      addBox(parent, 0.11, 2.65, 0.11, x - 1.0, 1.32, z - 0.1, materials.metal);
+      addBox(parent, 0.11, 2.65, 0.11, x + 1.0, 1.32, z - 0.1, materials.metal);
+      addBox(parent, 2.1, 0.1, 0.12, x, 2.05, z + 2.65, materials.wood);
+    }
+
     function makeExterior(group, frontOpen = true) {
+      // The positive-Z edge is NORTH. The road, main entry and front balconies face north.
       addWallX(group, 0, -D / 2 + 0.08, W, WALL_H, materials.wallWarm);
       addWallZ(group, -W / 2 + 0.08, 0, D, WALL_H, materials.wall);
       addWallZ(group, W / 2 - 0.08, 0, D, WALL_H, materials.wall);
       if (!frontOpen) {
-        addWallX(group, -5.6, D / 2 - 0.08, 6.8, WALL_H, materials.wallWarm);
-        addWallX(group, 5.6, D / 2 - 0.08, 6.8, WALL_H, materials.wallWarm);
+        addWallX(group, 0, D / 2 - 0.08, W, WALL_H, materials.wallWarm);
       } else {
-        addWallX(group, -7.7, D / 2 - 0.08, 2.5, 1.05, materials.wallWarm, 0.52);
-        addWallX(group, 7.7, D / 2 - 0.08, 2.5, 1.05, materials.wallWarm, 0.52);
-        for (const x of [-8.2, -1.7, 1.7, 8.2]) addBox(group, 0.2, 2.9, 0.2, x, 1.45, D / 2 - 0.08, materials.trim);
+        // North facade remains visually open for the cutaway, with a defined NE entrance portal.
+        addWallX(group, -2.65, D / 2 - 0.08, 12.7, 1.05, materials.wallWarm, 0.52);
+        addWallX(group, 7.6, D / 2 - 0.08, 2.8, 1.05, materials.wallWarm, 0.52);
+        for (const x of [-8.2, 3.7, 6.2, 8.2]) {
+          addBox(group, 0.18, 2.8, 0.18, x, 1.4, D / 2 - 0.08, materials.trim);
+        }
+        addBox(group, 2.55, 0.16, 0.22, 4.95, 2.72, D / 2 - 0.08, materials.wood);
+        addBox(group, 1.35, 2.25, 0.1, 5.05, 1.15, D / 2 + 0.02, materials.darkWood);
       }
       addBox(group, W + 0.35, 0.24, D + 0.35, 0, -0.02, 0, materials.concrete);
+      // North-facing entry step / threshold in the north-east half.
+      addBox(group, 2.25, 0.12, 0.72, 5.0, 0.08, D / 2 + 0.35, materials.path);
     }
 
     function buildGroundFloor(group) {
       makeExterior(group, true);
-      addFloorZone(group, -5.2, -3.45, 6.6, 5.55, materials.storageFloor);
-      addFloorZone(group, 3.8, -2.55, 7.0, 7.2, materials.cowsFloor);
-      addFloorZone(group, -5.1, 3.75, 6.8, 4.0, materials.gardenFloor);
-      addFloorZone(group, 4.6, 4.0, 5.9, 3.0, materials.floorGround);
 
-      addWallZ(group, -1.55, -3.25, 6.2, 2.15, materials.wallWarm);
-      addWallX(group, 3.9, 1.22, 6.8, 1.65, materials.wallWarm, 0.86);
-      addWallZ(group, 0.15, 3.55, 4.0, 1.55, materials.wallWarm, 0.78);
+      // Vastu-inspired ground zoning: storage SW, cattle NW, garden NE, stair to west.
+      addFloorZone(group, -5.15, -3.55, 6.7, 5.45, materials.storageFloor);
+      addFloorZone(group, -5.15, 3.65, 6.8, 5.15, materials.cowsFloor);
+      addFloorZone(group, 5.15, 3.7, 6.7, 5.0, materials.gardenFloor);
+      addFloorZone(group, 5.0, -3.55, 6.2, 5.35, materials.floorGround);
+      addFloorZone(group, 0.4, 0.0, 4.2, 4.3, materials.concrete);
 
-      // Secure feed and equipment storage.
+      // Low partitions keep the central Brahmasthan relatively clear.
+      addWallZ(group, -1.65, -3.55, 5.45, 1.95, materials.wallWarm);
+      addWallZ(group, -1.65, 3.55, 5.25, 1.65, materials.wallWarm, 0.82);
+      addWallX(group, 3.8, -3.8, 6.4, 1.5, materials.wallWarm, 0.75);
+
+      // Storage occupies the heavier south-west zone.
       for (let row = 0; row < 2; row++) {
-        addBox(group, 3.2, 0.12, 0.55, -5.4, 0.65 + row * 0.9, -5.45, materials.wood);
-        for (let i = 0; i < 4; i++) addBox(group, 0.52, 0.48, 0.42, -6.55 + i * 0.78, 0.96 + row * 0.9, -5.45, materials.wallWarm);
+        addBox(group, 3.45, 0.12, 0.55, -5.25, 0.65 + row * 0.9, -5.45, materials.wood);
+        for (let i = 0; i < 4; i++) {
+          addBox(group, 0.54, 0.48, 0.42, -6.55 + i * 0.86, 0.96 + row * 0.9, -5.45, materials.wallWarm);
+        }
       }
       addBox(group, 1.7, 0.85, 0.7, -3.2, 0.58, -2.2, materials.wood);
       addBox(group, 1.35, 0.5, 0.12, -3.2, 1.14, -2.58, materials.darkWood);
 
-      // Ventilated cattle bay and feed trough.
-      addBox(group, 5.8, 0.48, 0.55, 3.8, 0.34, -5.25, materials.concrete);
-      addBox(group, 5.8, 0.08, 0.6, 3.8, 0.61, -5.25, materials.wood);
-      addCow(group, 1.9, -2.4, materials.cow);
-      addCow(group, 4.7, -2.1, materials.cowBrown);
-      addBox(group, 0.18, 1.2, 4.2, 7.45, 0.75, -1.5, materials.trim);
-      addBox(group, 0.18, 1.2, 4.2, 0.8, 0.75, -1.5, materials.trim);
-      for (let i = 0; i < 5; i++) addBox(group, 0.12, 1.15, 0.12, 1.3 + i * 1.1, 0.72, -0.15, materials.wood);
-
-      // Planting and potting space in the front garden bay.
-      addBox(group, 5.5, 0.22, 0.9, -5.1, 0.27, 5.2, materials.wood);
-      for (let i = 0; i < 5; i++) addPlant(group, -7.3 + i * 1.15, 3.5, 0.72);
-      for (let i = 0; i < 4; i++) addPlant(group, -7.0 + i * 1.25, 5.0, 0.62);
-      addPlant(group, -2.3, 3.0, 0.85);
-      addBox(group, 1.7, 0.8, 0.9, 4.8, 0.55, 4.0, materials.wood);
-      addBox(group, 1.2, 0.15, 0.7, 4.8, 1.02, 4.0, materials.concrete);
-      addPlant(group, 7.2, 4.5, 0.8);
-
-      // The stair core connects the three levels.
-      for (let i = 0; i < 12; i++) {
-        const rise = (i + 1) * 0.235;
-        addBox(group, 2.25, rise, 0.42, 7.1, rise / 2, 3.55 - i * 0.52, materials.wood);
+      // Ventilated cattle bay in the north-west with a feeding / washing trough.
+      addBox(group, 5.7, 0.42, 0.55, -5.1, 0.32, 5.35, materials.concrete);
+      addBox(group, 5.7, 0.08, 0.6, -5.1, 0.57, 5.35, materials.wood);
+      addCow(group, -6.25, 3.25, materials.cow);
+      addCow(group, -3.75, 3.25, materials.cowBrown);
+      addBox(group, 0.14, 1.15, 4.35, -8.0, 0.72, 3.6, materials.trim);
+      addBox(group, 0.14, 1.15, 4.35, -1.9, 0.72, 3.6, materials.trim);
+      for (let i = 0; i < 5; i++) {
+        addBox(group, 0.1, 1.1, 0.1, -7.1 + i * 1.0, 0.7, 5.6, materials.wood);
       }
-      addWallZ(group, 5.8, 0.15, 3.5, 1.0, materials.trim, 0.5);
-      addBox(group, 0.12, 3.0, 0.12, 6.0, 1.5, 2.0, materials.metal);
-      addBox(group, 0.12, 3.0, 0.12, 8.15, 1.5, 2.0, materials.metal);
+
+      // Light planting / kitchen-garden zone towards north and east.
+      addBox(group, 5.5, 0.22, 0.85, 5.2, 0.27, 5.55, materials.wood);
+      for (let i = 0; i < 4; i++) addPlant(group, 3.25 + i * 1.2, 3.65, 0.7);
+      for (let i = 0; i < 4; i++) addPlant(group, 3.5 + i * 1.25, 5.05, 0.62);
+      addPlant(group, 7.65, 1.0, 0.82);
+      addPlant(group, 7.25, -1.0, 0.7);
+
+      // Utility wash point remains east / south-east of the open centre.
+      addBox(group, 1.8, 0.78, 0.8, 5.9, 0.55, -2.2, materials.wood);
+      addBox(group, 1.3, 0.15, 0.7, 5.9, 1.02, -2.2, materials.concrete);
+
+      // Keep the centre open; the staircase is placed along the west side.
+      addVastuStaircase(group, -7.05, -0.25);
     }
 
     function buildResidentialFloor(group, upper = false) {
       makeExterior(group, true);
-      addFloorZone(group, -5.0, -3.65, 6.8, 5.25, materials.masterFloor);
-      addFloorZone(group, 4.65, -3.65, 6.5, 5.25, materials.bedFloor);
-      addFloorZone(group, -5.0, 3.62, 6.8, 4.55, materials.bedFloor);
-      addFloorZone(group, 4.6, 3.6, 7.1, 4.55, materials.livingFloor);
-      addFloorZone(group, -0.1, 0.5, 4.1, 3.05, materials.kitchenFloor);
-      addFloorZone(group, 2.8, -0.2, 2.25, 2.2, materials.bathFloor);
-      addFloorZone(group, -2.7, -0.2, 2.1, 2.2, materials.bathFloor);
 
-      // Internal walls define room edges while the front remains open for a cutaway view.
-      addWallX(group, -5.0, -0.95, 6.8, 2.05, materials.wallWarm);
-      addWallX(group, 4.65, -0.95, 6.5, 2.05, materials.wallWarm);
-      addWallX(group, -5.0, 1.15, 6.8, 1.75, materials.wallWarm, 0.88);
-      addWallX(group, 4.6, 1.15, 7.1, 1.75, materials.wallWarm, 0.88);
-      addWallZ(group, -1.45, -3.65, 5.25, 2.0, materials.wallWarm);
-      addWallZ(group, 1.35, -3.65, 5.25, 2.0, materials.wallWarm);
-      addWallZ(group, -1.4, 3.55, 4.5, 1.7, materials.wallWarm, 0.85);
-      addWallZ(group, 1.0, 3.55, 4.5, 1.7, materials.wallWarm, 0.85);
+      // Direction map: north = +Z, east = +X, south = -Z, west = -X.
+      // 3BHK and 2BHK room zoning follows common north-facing Vastu preferences.
+      addFloorZone(group, -5.15, -3.7, 6.7, 5.35, materials.masterFloor);      // SW master
+      addFloorZone(group, -5.15, 3.65, 6.7, 5.25, materials.bedFloor);         // NW bedroom
+      addFloorZone(group, 0.35, -3.7, 4.15, 5.35, materials.bedFloor);          // South bedroom (3BHK only)
+      addFloorZone(group, 5.15, -3.7, 6.55, 5.35, materials.kitchenFloor);     // SE kitchen
+      addFloorZone(group, 0.1, 3.55, 5.65, 4.7, materials.livingFloor);        // North living
+      addFloorZone(group, 4.0, 0.45, 4.0, 3.0, materials.livingFloor);         // East dining
+      addFloorZone(group, -1.75, 1.45, 2.1, 2.15, materials.bathFloor);        // West / NW bath
+      addFloorZone(group, -1.75, -1.35, 2.1, 2.15, materials.bathFloor);       // West bath
+      addFloorZone(group, 7.0, 4.75, 2.1, 2.2, materials.terraceFloor);        // NE pooja niche
 
-      // Bedrooms, wardrobes and bedside units.
-      addBed(group, -5.0, -3.55, materials.wood);
-      addWardrobe(group, -7.35, -5.45, 1.45);
-      addBed(group, 4.7, -3.55, materials.darkWood);
-      addWardrobe(group, 6.95, -5.45, 1.35);
+      // Partial internal walls define rooms without closing the cutaway view.
+      addWallX(group, -5.1, -0.85, 6.7, 1.9, materials.wallWarm);
+      addWallZ(group, -1.75, -3.65, 5.2, 1.9, materials.wallWarm);
+      addWallZ(group, -1.75, 3.6, 5.0, 1.75, materials.wallWarm, 0.88);
+      addWallX(group, 5.1, -0.8, 5.2, 1.55, materials.wallWarm, 0.78);
+      addWallZ(group, 2.1, -3.65, 5.2, 1.65, materials.wallWarm, 0.82);
+
+      // Bedrooms: master in SW; second bedroom in NW; third bedroom in the south on 3BHK.
+      addBed(group, -5.15, -3.65, materials.wood);
+      addWardrobe(group, -7.45, -5.35, 1.3);
+      addBed(group, -5.15, 3.55, materials.darkWood);
+      addWardrobe(group, -7.45, 5.25, 1.25);
 
       if (!upper) {
-        addBed(group, -5.0, 3.6, materials.wood);
-        addWardrobe(group, -7.35, 5.05, 1.35);
-        addSofa(group, 4.5, 4.1, 3.4);
-        addBox(group, 2.4, 0.18, 1.15, 4.5, 0.58, 2.3, materials.wood);
-        addDiningSet(group, 4.5, 5.45, 6);
-        addKitchen(group, -0.1, 0.38, 3.65);
-        addBath(group, 2.8, -0.2);
-        addBath(group, -2.7, -0.2);
-        addPlant(group, 7.25, 5.55, 0.68);
-      } else {
-        addSofa(group, -4.8, 3.7, 3.2);
-        addBox(group, 2.1, 0.16, 1.0, -4.8, 0.58, 2.0, materials.wood);
-        addDiningSet(group, -4.7, 5.35, 4);
-        addKitchen(group, 4.7, 3.55, 3.4);
-        addBath(group, 2.8, -0.2);
-        addBath(group, -2.7, -0.2);
-        addPlant(group, -7.5, 5.55, 0.65);
-        addPlant(group, 7.5, 5.55, 0.65);
+        addBed(group, 0.35, -3.7, materials.wood);
+        addWardrobe(group, 1.5, -5.35, 1.2);
       }
 
-      // Stair opening and compact landing.
-      addBox(group, 2.5, 0.08, 3.9, 7.0, 0.2, 0.1, materials.concrete);
-      for (let i = 0; i < 11; i++) {
-        const rise = (i + 1) * 0.245;
-        addBox(group, 2.0, rise, 0.4, 7.0, rise / 2, 2.0 - i * 0.48, materials.wood);
-      }
+      // Living, dining and the SE kitchen; keep the central zone visually open.
+      addSofa(group, 0.15, 4.15, 3.5);
+      addBox(group, 2.3, 0.16, 1.05, 0.15, 0.55, 2.65, materials.wood);
+      addDiningSet(group, 4.15, 0.65, upper ? 4 : 6);
+      addKitchen(group, 5.15, -3.75, upper ? 3.25 : 3.65);
 
-      // Shaded front balcony with a light metal-and-glass balustrade.
+      // Two toilets are kept to west-side zones; the NE is reserved for pooja / light.
+      addBath(group, -1.75, 1.45);
+      addBath(group, -1.75, -1.35);
+      addPujaMandir(group, 7.0, 4.75);
+
+      // West / south-west staircase core, kept away from the north-east corner.
+      addVastuStaircase(group, -7.05, -0.25);
+
+      // North-facing balcony and light open terrace space.
       addBox(group, 9.1, 0.18, 1.7, 1.5, -0.02, 7.18, materials.concrete);
       addBox(group, 9.1, 0.1, 0.1, 1.5, 0.72, 8.0, materials.trim);
-      for (let i = 0; i < 13; i++) addBox(group, 0.07, 0.72, 0.07, -2.9 + i * 0.73, 0.39, 8.0, materials.metal);
-      addPlant(group, -2.1, 7.35, 0.55);
-      addPlant(group, 5.1, 7.35, 0.55);
+      for (let i = 0; i < 13; i++) {
+        addBox(group, 0.07, 0.72, 0.07, -2.9 + i * 0.73, 0.39, 8.0, materials.metal);
+      }
+      addPlant(group, -2.1, 7.35, 0.52);
+      addPlant(group, 5.1, 7.35, 0.52);
+
       if (upper) {
-        // Upper-floor terrace pergola: open above, so the room layout stays visible.
-        for (let i = 0; i < 5; i++) addBox(group, 0.16, 0.15, 3.3, -1.4 + i * 0.72, 2.7, 4.25, materials.wood);
-        addBox(group, 4.1, 0.15, 0.16, 0.0, 2.7, 2.65, materials.wood);
+        // North-east and east remain lighter with an open terrace pergola.
+        for (let i = 0; i < 5; i++) {
+          addBox(group, 0.14, 0.14, 3.4, 7.5, 2.7, -1.25 + i * 0.68, materials.wood);
+        }
+        addBox(group, 0.14, 0.14, 3.6, 5.95, 2.7, 0.1, materials.wood);
+        addPlant(group, 7.7, 2.5, 0.58);
       }
     }
 
@@ -686,32 +740,32 @@
 
     const detail = {
       all: {
-        kicker: "Whole house · overview",
-        title: "Three levels.<br>One connected home.",
-        description: "Explore the complete structure, then select a floor below to focus on its layout and spaces.",
-        rooms: ["Ground-floor utility", "3BHK residence", "2BHK upper home", "Balconies", "Garden"],
-        note: "This is a concept model. Plot dimensions, setbacks and room sizes can be adjusted once your site details are known."
+        kicker: "North-facing · Vastu-inspired concept",
+        title: "North-facing.<br>Vastu-informed.",
+        description: "The road and main entrance face north. Explore a traditional direction-based arrangement across the utility ground floor, 3BHK family floor and 2BHK upper floor.",
+        rooms: ["North / NE entry", "NE pooja", "SE kitchen", "SW master", "West staircase"],
+        note: "Orientation in this model: north is the front (+Z), east is right (+X), south is the rear (-Z), and west is left (-X). This is a traditional design preference, not a scientific guarantee."
       },
       ground: {
-        kicker: "Ground floor · utility + outdoor",
-        title: "A practical base<br>for daily life.",
-        description: "The ground level is planned for storage, a ventilated cattle shelter and a dedicated planting / potting area, with a stair core for access above.",
-        rooms: ["Storage room", "Cattle shelter", "Feed / wash area", "Planting space", "Staircase"],
-        note: "The cattle zone should be detailed for drainage, cross-ventilation, shade, feed storage and safe separation from the family entrance."
+        kicker: "Ground floor · north-facing",
+        title: "Utility spaces<br>in Vastu zones.",
+        description: "Storage is placed towards the south-west, the ventilated cattle bay towards the north-west, and the planting area towards the north-east / east. The entry is on the north side.",
+        rooms: ["SW storage", "NW cattle shelter", "NE / east planting", "North entry", "West staircase"],
+        note: "Keep the cattle area dry, shaded and ventilated, with washable drainage and a separate clean route from the family entrance."
       },
       first: {
-        kicker: "First floor · 3BHK",
-        title: "Your main family<br>home.",
-        description: "Three bedrooms are arranged around a shared living and dining area, with a kitchen, two bathrooms and a front balcony.",
-        rooms: ["Master bedroom", "Bedroom 2", "Bedroom 3", "Living + dining", "Kitchen", "2 bathrooms"],
-        note: "The room arrangement is illustrative. An architect can tune privacy, daylight, ventilation and Vastu preferences to your plot."
+        kicker: "First floor · 3BHK · Vastu-inspired",
+        title: "A family home<br>with clear zoning.",
+        description: "Master bedroom in the south-west, second bedroom in the north-west, third bedroom in the south, kitchen in the south-east, pooja in the north-east, and living towards the north.",
+        rooms: ["SW master bedroom", "NW bedroom", "South bedroom", "SE kitchen", "NE pooja", "West-side baths"],
+        note: "The central Brahmasthan is kept comparatively open. Traditional Vastu sources differ on exact door pada and room placements; verify the plot grid with a local Vastu consultant if that is important to your family."
       },
       second: {
-        kicker: "Second floor · 2BHK",
-        title: "A quieter upper<br>family home.",
-        description: "A separate two-bedroom layout with its own living space, kitchen, two bathrooms and an open front terrace / balcony.",
-        rooms: ["Master bedroom", "Bedroom 2", "Living area", "Kitchen", "2 bathrooms", "Terrace"],
-        note: "Confirm independent access, plumbing alignment and terrace waterproofing before finalising the upper-floor design."
+        kicker: "Second floor · 2BHK · Vastu-inspired",
+        title: "An independent<br>upper home.",
+        description: "Two bedrooms occupy the south-west and north-west zones, with the kitchen in the south-east, pooja in the north-east and living space towards the north / east.",
+        rooms: ["SW master bedroom", "NW bedroom", "North living", "SE kitchen", "NE pooja", "West-side baths"],
+        note: "A north-side balcony and open east / north terrace are included. Check plumbing stacks, waterproofing, independent access and structural loads before construction."
       }
     };
 
@@ -791,9 +845,11 @@
     const briefText = [
       "MY DREAM HOME — THREE-LEVEL HOUSE CONCEPT",
       "",
-      "GROUND FLOOR: Storage room, ventilated cattle shelter for cows, feed / wash space, planting and potting area, and staircase.",
-      "FIRST FLOOR — 3BHK: Master bedroom, two additional bedrooms, living and dining area, kitchen, two bathrooms, and front balcony.",
-      "SECOND FLOOR — 2BHK: Master bedroom, one additional bedroom, living area, kitchen, two bathrooms, and terrace / balcony.",
+      "ORIENTATION: North-facing. In this 3D model north is the front (+Z), east is right (+X), south is the rear (-Z), and west is left (-X).",
+      "VASTU ZONING: North / north-east entry; pooja in north-east; kitchen in south-east; master bedroom in south-west; secondary bedroom in north-west / west; staircase in west / south-west; keep the centre relatively open.",
+      "GROUND FLOOR: South-west storage, north-west ventilated cattle shelter, north-east / east planting area, north-side family entry, west-side staircase.",
+      "FIRST FLOOR — 3BHK: South-west master bedroom, north-west bedroom, south bedroom, north-side living, south-east kitchen, north-east pooja niche, west-side bathrooms and north balcony.",
+      "SECOND FLOOR — 2BHK: South-west master bedroom, north-west bedroom, north / east living, south-east kitchen, north-east pooja niche, west-side bathrooms and north balcony / terrace.",
       "",
       "DESIGN NOTE: This is an illustrative 3D concept, not a construction drawing. Final room sizes, column grid, foundation, stair design, plumbing, drainage, ventilation, setbacks and approvals must be designed and checked by qualified local professionals.",
       "",
