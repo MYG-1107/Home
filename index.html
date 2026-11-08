@@ -591,7 +591,7 @@
         box(parent,.12,2.45,.12,x-1.08,1.46,z+.03,mat.metal);
         box(parent,.12,2.45,.12,x+1.08,1.46,z+.03,mat.metal);
         box(parent,2.1,.12,.16,x,2.62,z+2.18,mat.wood);
-        roomLabel(parent,"Staircase",x,z+2.75,"#6a655a");
+        roomLabel(parent,"Staircase",x,z+.75,"#6a655a");
       }
       function addBalcony(parent) {
         box(parent,10.4,.18,1.45,2.3,.3,8.05,mat.concrete);
@@ -663,23 +663,23 @@
       function buildGround(group) {
         makeFloorShell(group);
         // South-west: enclosed storage room.
-        floorPatch(group,-5.75,-4.45,7.4,6.0,mat.tile);
+        floorPatch(group,-5.75,-4.85,7.4,5.7,mat.tile);
         // Storage room north wall is split around a proper 1.5 m door opening.
-        wallX(group,-7.1,-1.45,4.4,2.25,mat.warmWall);
-        wallX(group,-2.7,-1.45,1.3,2.25,mat.warmWall);
-        box(group,.08,2.08,.08,-4.9,1.28,-1.45,mat.brass);
-        wallZ(group,-2.05,-4.55,5.8,2.25,mat.warmWall);
+        wallX(group,-7.1,-1.9,4.4,2.25,mat.warmWall);
+        wallX(group,-2.7,-1.9,1.3,2.25,mat.warmWall);
+        box(group,.08,2.08,.08,-4.9,1.28,-1.9,mat.brass);
+        wallZ(group,-2.05,-4.85,5.7,2.25,mat.warmWall);
         box(group,3.2,.14,.55,-6.0,1.08,-6.55,mat.wood);
         box(group,3.2,.14,.55,-6.0,1.95,-6.55,mat.wood);
         for(let i=0;i<5;i++){
           box(group,.42,.5,.4,-7.2+i*.58,1.4,-6.55,i%2?mat.warmWall:mat.wood);
         }
         box(group,1.5,.86,.65,-3.8,.7,-5.1,mat.wood);
-        roomLabel(group,"Storage room",-5.8,-1.2,"#7b6652");
+        roomLabel(group,"Storage room",-5.8,-2.35,"#7b6652");
 
         // North-west: cattle shed and fenced loose-housing yard.
-        floorPatch(group,-5.5,4.15,8.2,7.1,mat.concrete);
-        addGrassPatch(group,-5.1,1.85,7.4,2.0);
+        floorPatch(group,-5.5,4.9,8.2,4.8,mat.concrete);
+        addGrassPatch(group,-5.1,3.0,7.4,.9);
         // Three-sided open shed canopy with posts, transparent roofing and a shaded resting strip.
         for(const x of [-9.1,-5.6,-2.1]){
           box(group,.16,2.5,.16,x,1.5,5.35,mat.metal);
@@ -692,19 +692,19 @@
         // North fence is split to leave a real double-gate opening.
         wallX(group,-8.55,7.35,2.0,.85,mat.accent,.68);
         wallX(group,-2.85,7.35,2.0,.85,mat.accent,.68);
-        wallX(group,-5.7,.62,7.7,.85,mat.accent,.68);
-        wallZ(group,-9.55,3.95,6.7,.85,mat.accent,.68);
-        wallZ(group,-1.85,3.95,6.7,.85,mat.accent,.68);
+        wallX(group,-5.7,2.5,7.7,.85,mat.accent,.68);
+        wallZ(group,-9.55,4.925,4.85,.85,mat.accent,.68);
+        wallZ(group,-1.85,4.925,4.85,.85,mat.accent,.68);
         box(group,1.75,1.15,.12,-6.65,.82,7.38,mat.wood);
         box(group,1.75,1.15,.12,-4.75,.82,7.38,mat.wood);
         // Feeding manger on the western edge, with water point alongside.
-        addManger(group,-7.25,5.1,4.2);
-        addWaterTrough(group,-3.0,2.25,1.8);
+        addManger(group,-7.25,5.35,4.2);
+        addWaterTrough(group,-3.0,3.0,1.8);
         // Two cows and two buffaloes in a generous, visible loose-housing area.
-        addAnimal(group,-7.1,3.15,"cow");
-        addAnimal(group,-4.7,3.15,"cow");
-        addAnimal(group,-7.0,1.25,"buffalo");
-        addAnimal(group,-4.55,1.25,"buffalo");
+        addAnimal(group,-7.1,4.25,"cow");
+        addAnimal(group,-4.7,4.25,"cow");
+        addAnimal(group,-7.0,3.05,"buffalo");
+        addAnimal(group,-4.55,3.05,"buffalo");
         // Calf pen / protected resting corner.
         wallX(group,-2.85,5.55,1.9,.72,mat.wood,.58);
         wallZ(group,-3.8,4.35,2.4,.72,mat.wood,.58);
@@ -738,7 +738,7 @@
         roomLabel(group,"Wash + utility",6.1,-1.2,"#52736b");
 
         // West-central stair core leading to the residential floors.
-        addStaircase(group,-7.25,-.1);
+        addStaircase(group,-7.25,.2);
         // Screened manure / compost bay sits outside the family and fodder routes.
         box(scene,2.8,1.05,2.0,-12.2,.55,-10.5,mat.wood);
         box(scene,2.95,.12,2.15,-12.2,1.14,-10.5,mat.roof);
@@ -749,24 +749,24 @@
         makeFloorShell(group);
         const bedAccent=upper?mat.darkWood:mat.wood;
         // Bedrooms and living zones have separate floor finishes for easy visual reading.
-        floorPatch(group,-5.95,-4.55,6.9,5.9,mat.floorLight); // SW master
-        floorPatch(group,-5.95,4.45,6.9,5.9,mat.floorLight); // NW room
-        if(!upper) floorPatch(group,.75,-4.55,5.25,5.9,mat.tile); // third bedroom
-        else floorPatch(group,.75,-4.55,5.25,5.9,mat.floorLight); // family / study
-        floorPatch(group,6.15,-4.55,6.0,5.9,mat.tile); // SE kitchen
+        floorPatch(group,-5.95,-4.85,6.9,5.7,mat.floorLight); // SW master
+        floorPatch(group,-5.95,4.95,6.9,4.9,mat.floorLight); // NW room
+        if(!upper) floorPatch(group,.75,-4.85,5.25,5.7,mat.tile); // third bedroom
+        else floorPatch(group,.75,-4.85,5.25,5.7,mat.floorLight); // family / study
+        floorPatch(group,6.15,-4.85,6.0,5.7,mat.tile); // SE kitchen
         floorPatch(group,4.3,4.45,8.4,5.9,mat.floorLight); // north living
         floorPatch(group,5.35,.35,6.8,3.9,mat.tile); // dining
         floorPatch(group,-1.25,.3,3.2,4.0,mat.bathTile); // baths / lobby
 
         // Room partitions with deliberate openings; walls are kept low on the cutaway side.
         // Master bedroom partition with a wide doorway facing the family lobby.
-        wallX(group,-7.0,-1.55,4.8,2.0,mat.warmWall);
-        wallX(group,-2.8,-1.55,.8,2.0,mat.warmWall);
-        wallZ(group,-2.4,-4.65,5.8,2.0,mat.warmWall);
+        wallX(group,-7.0,-2.0,4.8,2.0,mat.warmWall);
+        wallX(group,-2.8,-2.0,.8,2.0,mat.warmWall);
+        wallZ(group,-2.4,-4.85,5.7,2.0,mat.warmWall);
         // North-west bedroom opens to the passage through a separate doorway.
-        wallX(group,-7.0,1.35,4.8,1.95,mat.warmWall);
-        wallX(group,-2.8,1.35,.8,1.95,mat.warmWall);
-        wallZ(group,-2.4,4.45,5.8,1.95,mat.warmWall);
+        wallX(group,-7.0,2.5,4.8,1.95,mat.warmWall);
+        wallX(group,-2.8,2.5,.8,1.95,mat.warmWall);
+        wallZ(group,-2.4,4.95,4.9,1.95,mat.warmWall);
         // Third bedroom and kitchen retain a clear door opening into the dining space.
         wallZ(group,3.45,-5.25,3.4,1.95,mat.warmWall);
         wallZ(group,3.45,-1.7,.8,1.95,mat.warmWall);
@@ -774,10 +774,10 @@
         wallX(group,8.55,-1.55,1.3,1.85,mat.warmWall);
         wallX(group,4.6,2.1,2.8,1.55,mat.warmWall);
         wallX(group,7.65,2.1,1.4,1.55,mat.warmWall);
-        // Stair enclosure west / south-west.
-        wallX(group,-7.25,-2.35,3.0,1.65,mat.accent);
-        wallX(group,-7.25,2.25,3.0,1.65,mat.accent);
-        wallZ(group,-8.75,-.05,4.6,1.65,mat.accent);
+        // Stair enclosure on the west side, isolated from the storage room and cattle yard.
+        wallX(group,-7.25,-1.85,3.0,1.65,mat.accent);
+        wallX(group,-7.25,2.5,3.0,1.65,mat.accent);
+        wallZ(group,-8.75,.325,4.35,1.65,mat.accent);
         // Attached toilet is enclosed within the master suite; the opening faces the bedroom.
         wallX(group,-3.75,-7.08,2.5,1.8,mat.warmWall);
         wallZ(group,-5.02,-5.8,2.55,1.8,mat.warmWall);
@@ -792,16 +792,16 @@
         // Master bedroom (south-west).
         addBed(group,-6.25,-4.75,bedAccent);
         addWardrobe(group,-8.45,-6.45,1.2);
-        roomLabel(group,"Master bedroom",-6.0,-1.85);
+        roomLabel(group,"Master bedroom",-6.0,-2.35);
         // Bedroom 2 in north-west.
         addBed(group,-6.0,4.45,bedAccent);
         addWardrobe(group,-8.4,6.4,1.25);
-        roomLabel(group,"Bedroom 2",-6.0,1.9);
+        roomLabel(group,"Bedroom 2",-6.0,2.8);
         if(!upper){
           // Bedroom 3 on south side, with wardrobe and side table.
           addBed(group,.75,-4.7,mat.wood);
           addWardrobe(group,2.55,-6.3,1.1);
-          roomLabel(group,"Bedroom 3",.75,-1.85);
+          roomLabel(group,"Bedroom 3",.75,-2.35);
         } else {
           // Third-floor 2BHK gets a flexible study / family room in place of Bedroom 3.
           box(group,3.0,.18,1.5,.75,.48,-4.2,mat.wood);
