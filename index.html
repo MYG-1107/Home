@@ -293,6 +293,24 @@
     </div>
   </main>
 
+  <script>
+    (function(){
+      function reveal3DError(){
+        var loading=document.getElementById("loading");
+        var error=document.getElementById("error-box");
+        if(loading) loading.style.display="none";
+        if(error) error.style.display="block";
+      }
+      window.addEventListener("error",function(event){
+        if(event.target && event.target.tagName==="SCRIPT" && event.target.type==="module"){
+          reveal3DError();
+        }
+      },true);
+      window.addEventListener("unhandledrejection",function(){
+        reveal3DError();
+      });
+    })();
+  </script>
   <script type="importmap">
     {
       "imports": {
