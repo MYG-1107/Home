@@ -738,7 +738,7 @@
         roomLabel(group,"Wash + utility",6.1,-1.2,"#52736b");
 
         // West-central stair core leading to the residential floors.
-        addStaircase(group,-7.25,.2);
+        addStaircase(group,-8.8,.2);
         // Screened manure / compost bay sits outside the family and fodder routes.
         box(scene,2.8,1.05,2.0,-12.2,.55,-10.5,mat.wood);
         box(scene,2.95,.12,2.15,-12.2,1.14,-10.5,mat.roof);
@@ -750,7 +750,7 @@
         const bedAccent=upper?mat.darkWood:mat.wood;
         // Bedrooms and living zones have separate floor finishes for easy visual reading.
         floorPatch(group,-5.95,-4.85,6.9,5.7,mat.floorLight); // SW master
-        floorPatch(group,-5.95,4.95,6.9,4.9,mat.floorLight); // NW room
+        floorPatch(group,-4.9,4.95,5.5,4.9,mat.floorLight); // NW room
         if(!upper) floorPatch(group,.75,-4.85,5.25,5.7,mat.tile); // third bedroom
         else floorPatch(group,.75,-4.85,5.25,5.7,mat.floorLight); // family / study
         floorPatch(group,6.15,-4.85,6.0,5.7,mat.tile); // SE kitchen
@@ -764,7 +764,7 @@
         wallX(group,-2.8,-2.0,.8,2.0,mat.warmWall);
         wallZ(group,-2.4,-4.85,5.7,2.0,mat.warmWall);
         // North-west bedroom opens to the passage through a separate doorway.
-        wallX(group,-7.0,2.5,4.8,1.95,mat.warmWall);
+        wallX(group,-5.95,2.5,3.4,1.95,mat.warmWall);
         wallX(group,-2.8,2.5,.8,1.95,mat.warmWall);
         wallZ(group,-2.4,4.95,4.9,1.95,mat.warmWall);
         // Third bedroom and kitchen retain a clear door opening into the dining space.
@@ -775,9 +775,9 @@
         wallX(group,4.6,2.1,2.8,1.55,mat.warmWall);
         wallX(group,7.65,2.1,1.4,1.55,mat.warmWall);
         // Stair enclosure on the west side, isolated from the storage room and cattle yard.
-        wallX(group,-7.25,-1.85,3.0,1.65,mat.accent);
-        wallX(group,-7.25,2.5,3.0,1.65,mat.accent);
-        wallZ(group,-8.75,.325,4.35,1.65,mat.accent);
+        wallX(group,-8.8,-1.85,2.0,1.65,mat.accent);
+        // Keep the north end of the stairwell open to the common landing.
+        wallZ(group,-9.85,.325,4.35,1.65,mat.accent);
         // Attached toilet is enclosed within the master suite; the opening faces the bedroom.
         wallX(group,-3.75,-7.08,2.5,1.8,mat.warmWall);
         wallZ(group,-5.02,-5.8,2.55,1.8,mat.warmWall);
@@ -794,9 +794,9 @@
         addWardrobe(group,-8.45,-6.45,1.2);
         roomLabel(group,"Master bedroom",-6.0,-2.35);
         // Bedroom 2 in north-west.
-        addBed(group,-6.0,4.45,bedAccent);
-        addWardrobe(group,-8.4,6.4,1.25);
-        roomLabel(group,"Bedroom 2",-6.0,2.8);
+        addBed(group,-4.9,4.45,bedAccent);
+        addWardrobe(group,-7.0,6.4,1.25);
+        roomLabel(group,"Bedroom 2",-4.9,2.8);
         if(!upper){
           // Bedroom 3 on south side, with wardrobe and side table.
           addBed(group,.75,-4.7,mat.wood);
@@ -916,7 +916,7 @@
         },
         second:{
           "Master bedroom":[[-6,4.7,-10.5],[-6,1.1,-4.4]],
-          "Bedroom 2":[[-6,4.5,10.0],[-6,1.1,4.2]],
+          "Bedroom 2":[[-4.9,4.5,10.0],[-4.9,1.1,4.2]],
           "Bedroom 3":[[.8,4.3,-10.2],[.8,1.1,-4.5]],
           "Hall + living":[[5,5.5,11.5],[5,1.1,4.5]],
           "Dining":[[6,4.0,3.8],[5,1.1,.2]],
