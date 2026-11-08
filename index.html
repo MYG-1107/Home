@@ -1,121 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/x-icon" href="favicon.ico" />
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L0PH9ZXWXT"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-L0PH9ZXWXT');
-</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Indo-European Luxury Estate | Complete Spatial Visualizer</title>
+  <meta name="theme-color" content="#17241f" />
+  <meta name="description" content="Explore an interactive 3D concept of a three-level Indian family home: a practical ground floor with storage, cattle shelter and planting space, a 3BHK first floor, and a 2BHK second floor." />
+  <meta name="keywords" content="3D house design, three floor house plan, 3BHK house design, 2BHK floor plan, Indian home design, dream house visualizer" />
+  <meta property="og:title" content="My Dream Home | Interactive 3D House Concept" />
+  <meta property="og:description" content="Explore the ground floor, 3BHK first floor and 2BHK second floor in an interactive 3D house model." />
+  <meta property="og:type" content="website" />
+  <title>My Dream Home | Interactive 3D House Concept</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <style>
-    html, body {
-      width: 100vw;
-      height: 100vh;
-      margin: 0;
+    :root {
+      color-scheme: light;
+      --ink: #1d2924;
+      --muted: #718078;
+      --forest: #243b32;
+      --forest-2: #355448;
+      --sage: #dce7dc;
+      --paper: #f4f3ed;
+      --line: rgba(36, 59, 50, .13);
+      --gold: #c9954b;
+      --shadow: 0 18px 50px rgba(26, 42, 34, .13);
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; }
+    body {
       overflow: hidden;
-      background: #090d16;
-      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-      user-select: none;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-
-    canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
+    button { font: inherit; }
+    .topbar {
+      position: fixed; inset: 0 0 auto 0; height: 76px; z-index: 20;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 34px; background: rgba(247, 247, 241, .91);
+      border-bottom: 1px solid var(--line); backdrop-filter: blur(18px);
     }
-
-    /* Floating Immersive HUD Menu */
-    #nav-hud {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 100;
-      display: flex;
-      gap: 8px;
-      padding: 10px;
-      border-radius: 40px;
-      background: rgba(15, 23, 42, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-      max-width: 90vw;
-      overflow-x: auto;
+    .brand { display: flex; align-items: center; gap: 13px; min-width: 0; }
+    .brand-mark {
+      width: 40px; height: 40px; display: grid; place-items: center;
+      border-radius: 12px; color: #f8f5e9; background: var(--forest);
+      box-shadow: 0 7px 18px rgba(36,59,50,.2);
     }
-
-    #nav-hud button {
-      border: none;
-      outline: none;
-      padding: 10px 18px;
-      border-radius: 30px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: #94a3b8;
-      background: transparent;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      white-space: nowrap;
+    .brand-mark svg { width: 22px; height: 22px; }
+    .brand-name { font-size: 13px; font-weight: 800; letter-spacing: .14em; line-height: 1.3; }
+    .brand-sub { color: var(--muted); font-size: 9px; letter-spacing: .18em; font-weight: 700; margin-top: 3px; }
+    .top-meta { display: flex; align-items: center; gap: 24px; color: #6a7770; font-size: 11px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
+    .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #86a98a; margin-right: 8px; box-shadow: 0 0 0 4px rgba(134,169,138,.14); }
+    .top-meta strong { color: var(--forest); }
+    #viewport { position: fixed; inset: 76px 0 0; overflow: hidden; background: #dce7e2; }
+    #house-canvas { width: 100%; height: 100%; display: block; outline: none; }
+    .veil {
+      position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(90deg, rgba(238,242,235,.28) 0%, transparent 36%, transparent 70%, rgba(238,242,235,.12) 100%);
     }
-
-    #nav-hud button:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.05);
+    .intro-card, .detail-card {
+      position: absolute; z-index: 5; background: rgba(250,250,246,.91);
+      border: 1px solid rgba(255,255,255,.76); border-radius: 18px;
+      box-shadow: var(--shadow); backdrop-filter: blur(16px);
     }
-
-    #nav-hud button.active {
-      color: #0f172a;
-      background: #f59e0b;
-      box-shadow: 0 0 14px rgba(245, 158, 11, 0.4);
+    .intro-card { left: 28px; top: 26px; width: 280px; padding: 20px 21px 18px; }
+    .eyebrow { color: #8b795f; font-size: 9px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; }
+    .intro-card h1 { font-family: Georgia, "Times New Roman", serif; font-size: 27px; line-height: 1.08; letter-spacing: -.04em; font-weight: 500; margin: 9px 0 9px; }
+    .intro-card p { margin: 0; color: #66736c; font-size: 11px; line-height: 1.65; }
+    .model-meta { display: flex; gap: 16px; border-top: 1px solid var(--line); margin-top: 15px; padding-top: 13px; }
+    .model-meta div { display: flex; flex-direction: column; gap: 3px; }
+    .model-meta strong { font-size: 12px; color: var(--forest); }
+    .model-meta span { font-size: 8px; text-transform: uppercase; color: #829087; font-weight: 700; letter-spacing: .12em; }
+    .detail-card { right: 28px; top: 26px; width: 292px; padding: 19px 20px 18px; }
+    .detail-top { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+    .detail-kicker { font-size: 9px; color: #937b58; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+    .detail-card h2 { margin: 8px 0 6px; font-family: Georgia, "Times New Roman", serif; font-size: 22px; line-height: 1.12; font-weight: 500; letter-spacing: -.025em; }
+    .detail-card p { margin: 0; font-size: 10px; line-height: 1.65; color: #718078; }
+    .room-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 13px; }
+    .room-chip { display: inline-flex; align-items: center; border-radius: 99px; padding: 6px 9px; background: #edf1e9; color: #52665b; font-size: 9px; font-weight: 700; }
+    .detail-note { display: flex; gap: 9px; align-items: flex-start; padding: 10px 11px; border-radius: 10px; background: #f1eee5; color: #7b6a4f; font-size: 9px; line-height: 1.55; }
+    .detail-note svg { width: 14px; height: 14px; flex: 0 0 auto; }
+    .right-tools { position: absolute; right: 28px; bottom: 124px; z-index: 6; display: flex; flex-direction: column; gap: 8px; }
+    .tool-btn {
+      width: 42px; height: 42px; border-radius: 13px; border: 1px solid rgba(255,255,255,.8);
+      color: var(--forest); background: rgba(250,250,246,.9); box-shadow: 0 8px 24px rgba(26,42,34,.1);
+      display: grid; place-items: center; cursor: pointer; transition: .2s ease;
     }
-
-    /* Minimal Walk Controls Reminder Overlay */
-    #controls-tip {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 100;
-      background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(10px);
-      padding: 12px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #cbd5e1;
-      font-size: 11px;
-      line-height: 1.5;
-      pointer-events: none;
+    .tool-btn:hover { transform: translateY(-2px); background: #fff; }
+    .tool-btn.active { color: white; background: var(--forest); }
+    .tool-btn svg { width: 17px; height: 17px; }
+    .bottom-dock {
+      position: absolute; z-index: 8; left: 50%; bottom: 22px; transform: translateX(-50%);
+      width: min(840px, calc(100% - 48px)); display: flex; align-items: center; gap: 16px;
+      padding: 12px 14px; border-radius: 18px; background: rgba(250,250,246,.94);
+      border: 1px solid rgba(255,255,255,.8); box-shadow: 0 18px 50px rgba(26,42,34,.16);
+      backdrop-filter: blur(18px);
     }
-    #controls-tip strong { color: #f59e0b; }
-
-    /* Hide scrollbar tracking on navigation panel */
-    #nav-hud::-webkit-scrollbar { display: none; }
+    .dock-label { padding: 0 8px 0 5px; min-width: 86px; }
+    .dock-label strong { display: block; color: var(--forest); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+    .dock-label span { display: block; color: #89958d; font-size: 8px; margin-top: 4px; }
+    .floor-tabs { flex: 1; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 6px; }
+    .floor-tab {
+      min-height: 46px; text-align: left; padding: 7px 10px; border: 1px solid transparent; border-radius: 12px;
+      background: transparent; color: #718078; cursor: pointer; transition: .2s ease;
+    }
+    .floor-tab:hover { background: #f0f2eb; }
+    .floor-tab.active { border-color: rgba(36,59,50,.15); background: #e6ede4; color: var(--forest); }
+    .floor-tab strong { display: block; font-size: 10px; font-weight: 800; }
+    .floor-tab span { display: block; font-size: 8px; margin-top: 4px; opacity: .78; white-space: nowrap; }
+    .dock-divider { width: 1px; align-self: stretch; background: var(--line); }
+    .dock-actions { display: flex; gap: 6px; }
+    .action-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px;
+      padding: 0 12px; border: 1px solid var(--line); border-radius: 11px; background: #fff;
+      color: var(--forest); font-size: 9px; font-weight: 800; cursor: pointer; white-space: nowrap;
+      transition: .2s ease;
+    }
+    .action-btn:hover { border-color: #aebcaf; background: #f7f8f3; }
+    .action-btn.primary { color: white; background: var(--forest); border-color: var(--forest); }
+    .action-btn.primary:hover { background: #345346; }
+    .action-btn svg { width: 14px; height: 14px; }
+    .hint {
+      position: absolute; left: 28px; bottom: 107px; z-index: 5; color: #4d6258;
+      font-size: 9px; letter-spacing: .02em; display: flex; align-items: center; gap: 7px;
+      background: rgba(248,249,243,.7); border: 1px solid rgba(255,255,255,.65);
+      padding: 8px 11px; border-radius: 999px; backdrop-filter: blur(10px);
+    }
+    .hint svg { width: 13px; height: 13px; }
+    .loading {
+      position: absolute; inset: 0; display: grid; place-items: center; z-index: 30;
+      background: #e8eee8; color: var(--forest); font-size: 12px; letter-spacing: .08em;
+    }
+    .loading span { display: flex; align-items: center; gap: 10px; }
+    .spinner { width: 17px; height: 17px; border: 2px solid #cbd8cc; border-top-color: #355448; border-radius: 50%; animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .disclaimer {
+      position: absolute; bottom: 93px; right: 28px; z-index: 5; max-width: 285px;
+      color: rgba(56,75,64,.78); font-size: 8px; line-height: 1.5; text-align: right;
+      text-shadow: 0 1px 8px rgba(255,255,255,.8); pointer-events: none;
+    }
+    @media (max-width: 900px) {
+      .topbar { height: 66px; padding: 0 18px; }
+      #viewport { inset: 66px 0 0; }
+      .top-meta { gap: 10px; font-size: 9px; }
+      .intro-card { left: 16px; top: 16px; width: 244px; padding: 15px; }
+      .intro-card h1 { font-size: 23px; }
+      .detail-card { right: 16px; top: 16px; width: 250px; padding: 15px; }
+      .right-tools { right: 16px; bottom: 111px; }
+      .hint { left: 16px; bottom: 101px; }
+      .disclaimer { right: 16px; bottom: 79px; max-width: 245px; }
+      .bottom-dock { bottom: 12px; width: calc(100% - 24px); gap: 8px; padding: 9px; }
+      .dock-label { min-width: 70px; }
+      .dock-actions .action-btn { padding: 0 9px; }
+    }
+    @media (max-width: 620px) {
+      .topbar { height: 58px; padding: 0 13px; }
+      #viewport { inset: 58px 0 0; }
+      .brand-mark { width: 34px; height: 34px; border-radius: 10px; }
+      .brand-name { font-size: 11px; }
+      .brand-sub { font-size: 7px; }
+      .top-meta { font-size: 8px; gap: 0; }
+      .top-meta .meta-location { display: none; }
+      .intro-card { left: 10px; top: 10px; width: 190px; padding: 12px; border-radius: 14px; }
+      .intro-card h1 { font-size: 20px; margin: 6px 0; }
+      .intro-card p { font-size: 9px; line-height: 1.45; }
+      .intro-card .model-meta { margin-top: 9px; padding-top: 8px; gap: 11px; }
+      .model-meta strong { font-size: 10px; }
+      .model-meta span { font-size: 7px; }
+      .detail-card { right: 10px; top: 10px; width: 170px; padding: 11px; border-radius: 14px; }
+      .detail-card h2 { font-size: 17px; margin: 6px 0 4px; }
+      .detail-card p { font-size: 8px; line-height: 1.45; }
+      .detail-kicker { font-size: 7px; }
+      .room-list { gap: 4px; margin: 9px 0; }
+      .room-chip { font-size: 7px; padding: 4px 6px; }
+      .detail-note { font-size: 7px; padding: 7px; gap: 5px; }
+      .detail-note svg { width: 11px; height: 11px; }
+      .right-tools { right: 10px; bottom: 118px; gap: 6px; }
+      .tool-btn { width: 34px; height: 34px; border-radius: 10px; }
+      .tool-btn svg { width: 14px; height: 14px; }
+      .hint { left: 10px; bottom: 107px; font-size: 7px; padding: 6px 8px; }
+      .disclaimer { display: none; }
+      .bottom-dock { bottom: 8px; width: calc(100% - 16px); padding: 8px; display: grid; grid-template-columns: 1fr; gap: 7px; border-radius: 15px; }
+      .dock-label { display: none; }
+      .floor-tabs { gap: 4px; }
+      .floor-tab { min-height: 40px; padding: 6px 5px; text-align: center; border-radius: 9px; }
+      .floor-tab strong { font-size: 8px; }
+      .floor-tab span { font-size: 7px; margin-top: 3px; }
+      .dock-divider { display: none; }
+      .dock-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+      .action-btn { min-height: 34px; font-size: 8px; border-radius: 9px; }
+      .action-btn svg { width: 12px; height: 12px; }
+    }
+    @media (max-width: 380px) {
+      .intro-card { width: 164px; }
+      .intro-card p { max-width: 145px; }
+      .detail-card { width: 152px; }
+      .room-chip { font-size: 6px; }
+      .top-meta { letter-spacing: .05em; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
   </style>
 </head>
 <body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 11.2 12 4l9 7.2V21H3z"/><path d="M8.5 21v-6.5h7V21M3 11.2h18"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">MY DREAM HOME</div>
+        <div class="brand-sub">A PERSONAL ARCHITECTURE CONCEPT</div>
+      </div>
+    </div>
+    <div class="top-meta">
+      <span><i class="status-dot"></i><strong>3D CONCEPT</strong></span>
+      <span class="meta-location">INDIAN FAMILY HOME · THREE LEVELS</span>
+    </div>
+  </header>
 
-  <div id="controls-tip">
-    <strong>Navigation Array Active:</strong><br />
-    • Click HUD spaces below to jump inside rooms<br />
-    • Use <b>W, A, S, D</b> or <b>Arrow Keys</b> to walk through doors<br />
-    • Left Click + Drag to look around 360°
-  </div>
+  <main id="viewport" aria-label="Interactive three-dimensional house model">
+    <canvas id="house-canvas" tabindex="0" aria-label="3D model. Drag to rotate, scroll to zoom."></canvas>
+    <div class="veil"></div>
 
-  <div id="nav-hud">
-    <button class="active" data-view="facade">Facade</button>
-    <button data-view="angan">Central Angan</button>
-    <button data-view="baithak">Teal Baithak</button>
-    <button data-view="master">Ivory Suite</button>
-    <button data-view="child">Mint Sanctuary</button>
-    <button data-view="kitchen">Euro Kitchen</button>
-  </div>
+    <section class="intro-card" aria-label="Project overview">
+      <div class="eyebrow">The home you imagine</div>
+      <h1>Designed around<br>your everyday life.</h1>
+      <p>A three-level family home with a useful ground floor, a generous 3BHK residence and an independent 2BHK upper home.</p>
+      <div class="model-meta">
+        <div><strong>03</strong><span>Levels</span></div>
+        <div><strong>05</strong><span>Bedrooms</span></div>
+        <div><strong>01</strong><span>Family vision</span></div>
+      </div>
+    </section>
+
+    <section class="detail-card" aria-live="polite">
+      <div class="detail-top">
+        <span class="detail-kicker" id="detail-kicker">Whole house · overview</span>
+      </div>
+      <h2 id="detail-title">Three levels.<br>One connected home.</h2>
+      <p id="detail-description">Explore the complete structure, then select a floor below to focus on its layout and spaces.</p>
+      <div class="room-list" id="room-list">
+        <span class="room-chip">Storage</span><span class="room-chip">Cattle shelter</span><span class="room-chip">3BHK</span><span class="room-chip">2BHK</span>
+      </div>
+      <div class="detail-note" id="detail-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg>
+        <span>Concept dimensions and room positions are illustrative and can be refined to your actual plot.</span>
+      </div>
+    </section>
+
+    <div class="right-tools" aria-label="Camera controls">
+      <button class="tool-btn" id="rotate-btn" type="button" aria-label="Toggle automatic rotation" title="Auto rotate">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3"/></svg>
+      </button>
+      <button class="tool-btn" id="reset-btn" type="button" aria-label="Reset camera" title="Reset view">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11a9 9 0 1 0 3-6.7L3 7"/><path d="M3 3v4h4"/></svg>
+      </button>
+    </div>
+
+    <div class="hint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M8 12V6a2 2 0 0 1 4 0v5-6a2 2 0 0 1 4 0v7-4a2 2 0 0 1 4 0v7a7 7 0 0 1-7 7h-1a7 7 0 0 1-6-3.4L3 15a2 2 0 0 1 3-2.5z"/></svg>
+      Drag to rotate · Scroll to zoom · Select a floor to explore
+    </div>
+
+    <div class="disclaimer">Illustrative 3D concept only. Not a structural, approval or construction drawing.</div>
+
+    <nav class="bottom-dock" aria-label="Select floor and model view">
+      <div class="dock-label"><strong>Explore levels</strong><span>Choose a floor</span></div>
+      <div class="floor-tabs">
+        <button class="floor-tab active" data-floor="all" type="button"><strong>All levels</strong><span>Full 3D view</span></button>
+        <button class="floor-tab" data-floor="ground" type="button"><strong>Ground</strong><span>Storage + cows</span></button>
+        <button class="floor-tab" data-floor="first" type="button"><strong>First floor</strong><span>3BHK home</span></button>
+        <button class="floor-tab" data-floor="second" type="button"><strong>Second floor</strong><span>2BHK home</span></button>
+      </div>
+      <div class="dock-divider"></div>
+      <div class="dock-actions">
+        <button class="action-btn" id="plan-btn" type="button" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 10h9M12 15h9"/></svg>
+          Floor plan
+        </button>
+        <button class="action-btn primary" id="brief-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-4-4 4 4 4-4"/><path d="M4 17v4h16v-4"/></svg>
+          Copy brief
+        </button>
+      </div>
+    </nav>
+
+    <div class="loading" id="loading"><span><i class="spinner"></i> BUILDING YOUR 3D HOME...</span></div>
+  </main>
 
   <script type="importmap">
     {
@@ -129,352 +304,537 @@
     import * as THREE from "three";
     import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-    // --- ARCHITECTURAL DIMENSIONS ---
-    const houseW = 16;
-    const houseD = 12;
-    const hW = houseW / 2;
-    const hD = houseD / 2;
-    const wallThick = 0.22;
-    const wallH = 3.4;
-
-    // --- INITIAL ENGINE PIPELINE ---
+    const canvas = document.getElementById("house-canvas");
+    const loading = document.getElementById("loading");
+    const W = 18;
+    const D = 13;
+    const LEVEL_GAP = 3.55;
+    const WALL_H = 2.85;
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xbae6fd);
-    scene.fog = new THREE.FogExp2(0xbae6fd, 0.012);
+    scene.background = new THREE.Color(0xdce8e2);
+    scene.fog = new THREE.Fog(0xdce8e2, 34, 78);
 
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 200);
-    camera.position.set(24, 15, 26);
+    const camera = new THREE.PerspectiveCamera(39, 1, 0.1, 140);
+    camera.position.set(26, 20, 28);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.7));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.12;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    document.body.appendChild(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.target.set(0, 1.2, 0);
-    controls.maxPolarAngle = Math.PI * 0.46;
-    controls.minDistance = 1.5;
-    controls.maxDistance = 45;
+    controls.dampingFactor = 0.06;
+    controls.target.set(0, 4.9, 0);
+    controls.minDistance = 8;
+    controls.maxDistance = 52;
+    controls.maxPolarAngle = Math.PI * 0.49;
+    controls.autoRotate = false;
+    controls.autoRotateSpeed = 0.45;
 
-    // --- ILLUMINATION AND MATRIX LIGHTING ---
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.55);
-    scene.add(ambientLight);
+    scene.add(new THREE.HemisphereLight(0xf5fbff, 0x899783, 1.35));
+    const sun = new THREE.DirectionalLight(0xfff0d7, 2.4);
+    sun.position.set(-18, 30, 22);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.camera.left = -28;
+    sun.shadow.camera.right = 28;
+    sun.shadow.camera.top = 32;
+    sun.shadow.camera.bottom = -28;
+    sun.shadow.bias = -0.00025;
+    scene.add(sun);
+    const fill = new THREE.DirectionalLight(0xdbe9ff, 0.65);
+    fill.position.set(18, 12, -20);
+    scene.add(fill);
 
-    const sunLight = new THREE.DirectionalLight(0xfffbeb, 1.6);
-    sunLight.position.set(20, 28, 16);
-    sunLight.castShadow = true;
-    sunLight.shadow.mapSize.set(2048, 2048);
-    sunLight.shadow.bias = -0.0004;
-    scene.add(sunLight);
-
-    // --- CLIENT CHROMATIC & MATERIAL PROPERTIES ---
-    const mat = {
-      stuccoOuter: new THREE.MeshStandardMaterial({ color: 0xfef3c7, roughness: 0.5 }), // Warm Indian Stucco (image_23a4da.jpg)
-      roofTile: new THREE.MeshStandardMaterial({ color: 0xc2410c, roughness: 0.6 }), 
-      teak: new THREE.MeshStandardMaterial({ color: 0x5c2407, roughness: 0.4 }),
-      brass: new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.15, metalness: 0.85 }),
-      glass: new THREE.MeshStandardMaterial({ color: 0xbae6fd, roughness: 0.05, metalness: 0.95, transparent: true, opacity: 0.3 }),
-      frame: new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.5 }),
-      lawn: new THREE.MeshStandardMaterial({ color: 0x16a34a, roughness: 0.9 }),
-      driveway: new THREE.MeshStandardMaterial({ color: 0x57534e, roughness: 0.75 }),
-      leaf: new THREE.MeshStandardMaterial({ color: 0x15803d, roughness: 0.6 }),
-      potMat: new THREE.MeshStandardMaterial({ color: 0xa44a27, roughness: 0.7 }),
-
-      // Distinct Room Colors Requested by Client
-      floorMarble: new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.12 }),
-      colorAngan: new THREE.MeshStandardMaterial({ color: 0xea580c, roughness: 0.6 }), // Traditional Terracotta
-      colorBaithak: new THREE.MeshStandardMaterial({ color: 0x0f766e, roughness: 0.5 }), // Royal Velvet Teal
-      colorMaster: new THREE.MeshStandardMaterial({ color: 0xfef08a, roughness: 0.6 }),  // Rich Ivory Crema
-      colorChild: new THREE.MeshStandardMaterial({ color: 0x6ee7b7, roughness: 0.6 }),   // Mint Oasis
-      colorKitchen: new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.3, metalness: 0.2 }) // Euro Slate Grey
+    const materials = {
+      ground: new THREE.MeshStandardMaterial({ color: 0x8eaa83, roughness: 1 }),
+      path: new THREE.MeshStandardMaterial({ color: 0xbab7a9, roughness: 0.95 }),
+      concrete: new THREE.MeshStandardMaterial({ color: 0xd7d4c8, roughness: 0.86 }),
+      wall: new THREE.MeshStandardMaterial({ color: 0xf0eadc, roughness: 0.82 }),
+      wallWarm: new THREE.MeshStandardMaterial({ color: 0xe6d8c2, roughness: 0.84 }),
+      trim: new THREE.MeshStandardMaterial({ color: 0x48594d, roughness: 0.62 }),
+      wood: new THREE.MeshStandardMaterial({ color: 0x805b3d, roughness: 0.68 }),
+      darkWood: new THREE.MeshStandardMaterial({ color: 0x49382c, roughness: 0.65 }),
+      metal: new THREE.MeshStandardMaterial({ color: 0x5d6c66, metalness: 0.48, roughness: 0.42 }),
+      glass: new THREE.MeshStandardMaterial({ color: 0x9cc5c4, metalness: 0.18, roughness: 0.15, transparent: true, opacity: 0.48 }),
+      lawn: new THREE.MeshStandardMaterial({ color: 0x78966d, roughness: 1 }),
+      leaf: new THREE.MeshStandardMaterial({ color: 0x477b4d, roughness: 0.8 }),
+      leafLight: new THREE.MeshStandardMaterial({ color: 0x7a9e60, roughness: 0.8 }),
+      pot: new THREE.MeshStandardMaterial({ color: 0xa66d4d, roughness: 0.88 }),
+      floorGround: new THREE.MeshStandardMaterial({ color: 0xc9b89b, roughness: 0.88 }),
+      storageFloor: new THREE.MeshStandardMaterial({ color: 0xd8d0bf, roughness: 0.92 }),
+      cowsFloor: new THREE.MeshStandardMaterial({ color: 0xd4c49f, roughness: 1 }),
+      gardenFloor: new THREE.MeshStandardMaterial({ color: 0x9fb68e, roughness: 1 }),
+      masterFloor: new THREE.MeshStandardMaterial({ color: 0xe4d7c7, roughness: 0.8 }),
+      bedFloor: new THREE.MeshStandardMaterial({ color: 0xe3e4d8, roughness: 0.82 }),
+      livingFloor: new THREE.MeshStandardMaterial({ color: 0xd5ddd0, roughness: 0.82 }),
+      kitchenFloor: new THREE.MeshStandardMaterial({ color: 0xd3d9d6, roughness: 0.72 }),
+      bathFloor: new THREE.MeshStandardMaterial({ color: 0xb8cecd, roughness: 0.7 }),
+      terraceFloor: new THREE.MeshStandardMaterial({ color: 0xc8d0bc, roughness: 0.9 }),
+      rug: new THREE.MeshStandardMaterial({ color: 0x9a735b, roughness: 0.96 }),
+      sofa: new THREE.MeshStandardMaterial({ color: 0x677e70, roughness: 0.9 }),
+      cushion: new THREE.MeshStandardMaterial({ color: 0xd3b88e, roughness: 0.9 }),
+      mattress: new THREE.MeshStandardMaterial({ color: 0xf4eee1, roughness: 0.95 }),
+      white: new THREE.MeshStandardMaterial({ color: 0xf8f6ef, roughness: 0.85 }),
+      ceramic: new THREE.MeshStandardMaterial({ color: 0xecece5, roughness: 0.25 }),
+      cow: new THREE.MeshStandardMaterial({ color: 0xe8e0cf, roughness: 0.95 }),
+      cowBrown: new THREE.MeshStandardMaterial({ color: 0x79523b, roughness: 0.95 }),
+      cowPatch: new THREE.MeshStandardMaterial({ color: 0x6b4b39, roughness: 1 })
     };
 
-    // --- DETAILED STRUCTURAL BUILDERS ---
-    const createWallBlock = (w, d, h, x, z, material = mat.stuccoOuter) => {
-      const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
-      mesh.position.set(x, h/2 + 0.3, z);
-      mesh.castShadow = true;
+    const addBox = (parent, width, height, depth, x, y, z, material, cast = true) => {
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), material);
+      mesh.position.set(x, y, z);
+      mesh.castShadow = cast;
       mesh.receiveShadow = true;
-      scene.add(mesh);
+      parent.add(mesh);
+      return mesh;
     };
-
-    // Advanced Architectural Room Wall segment compiler with integrated Door and Window cutouts
-    const compileWallWithOpenings = (length, x, z, angle = 0, hasDoor = false, hasWindow = false, material = mat.stuccoOuter) => {
-      const group = new THREE.Group();
-      
-      if (!hasDoor && !hasWindow) {
-        const wall = new THREE.Mesh(new THREE.BoxGeometry(length, wallH, wallThick), material);
-        wall.position.y = wallH / 2;
-        wall.castShadow = true;
-        wall.receiveShadow = true;
-        group.add(wall);
-      } else {
-        // Programmatic architecture parsing for door openings and window glass framing blocks
-        let runningX = -length / 2;
-        
-        if (hasDoor) {
-          const segment1W = (length - 1.2) / 2;
-          const leftSeg = new THREE.Mesh(new THREE.BoxGeometry(segment1W, wallH, wallThick), material);
-          leftSeg.position.set(runningX + segment1W/2, wallH/2, 0);
-          leftSeg.castShadow = true; leftSeg.receiveShadow = true;
-          group.add(leftSeg);
-          
-          runningX += segment1W + 1.2;
-          
-          const rightSeg = new THREE.Mesh(new THREE.BoxGeometry(segment1W, wallH, wallThick), material);
-          rightSeg.position.set(runningX + segment1W/2, wallH/2, 0);
-          rightSeg.castShadow = true; rightSeg.receiveShadow = true;
-          group.add(rightSeg);
-
-          const transom = new THREE.Mesh(new THREE.BoxGeometry(1.2, wallH - 2.2, wallThick), material);
-          transom.position.set(-length/2 + segment1W + 0.6, wallH - (wallH - 2.2)/2, 0);
-          transom.castShadow = true;
-          group.add(transom);
-          
-          // Framed Teak Structural Door-posts
-          const frame = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2.2, 0.05), mat.teak);
-          frame.position.set(-length/2 + segment1W + 0.6, 1.1, 0);
-          group.add(frame);
-        } else if (hasWindow) {
-          const sideW = (length - 1.8) / 2;
-          const leftSeg = new THREE.Mesh(new THREE.BoxGeometry(sideW, wallH, wallThick), material);
-          leftSeg.position.set(-length/2 + sideW/2, wallH/2, 0);
-          leftSeg.castShadow = true; leftSeg.receiveShadow = true;
-          group.add(leftSeg);
-
-          const rightSeg = new THREE.Mesh(new THREE.BoxGeometry(sideW, wallH, wallThick), material);
-          rightSeg.position.set(length/2 - sideW/2, wallH/2, 0);
-          rightSeg.castShadow = true; rightSeg.receiveShadow = true;
-          group.add(rightSeg);
-
-          const sill = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.9, wallThick), material);
-          sill.position.set(0, 0.45, 0);
-          sill.castShadow = true; sill.receiveShadow = true;
-          group.add(sill);
-
-          const header = new THREE.Mesh(new THREE.BoxGeometry(1.8, wallH - 2.4, wallThick), material);
-          header.position.set(0, wallH - (wallH - 2.4)/2, 0);
-          header.castShadow = true;
-          group.add(header);
-
-          // Realized physical Glass panes & outer Window casing assemblies
-          const glassPane = new THREE.Mesh(new THREE.BoxGeometry(1.74, 1.5, 0.04), mat.glass);
-          glassPane.position.set(0, 1.65, 0);
-          group.add(glassPane);
-
-          const frame = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.56, 0.08), mat.frame);
-          frame.position.set(0, 1.65, 0);
-          group.add(frame);
-        }
-      }
-
-      group.position.set(x, 0.3, z);
-      group.rotation.y = angle;
-      scene.add(group);
-    };
-
-    const createPitchedRoof = (w, d, h, x, y, z) => {
-      const geom = new THREE.ConeGeometry(w * 0.72, h, 4);
-      geom.rotateY(Math.PI * 0.25);
-      geom.scale(1, 1, d / w);
-      const mesh = new THREE.Mesh(geom, mat.roofTile);
-      mesh.position.set(x, y + h/2, z);
+    const addCylinder = (parent, radiusTop, radiusBottom, height, x, y, z, material, segments = 12) => {
+      const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radiusTop, radiusBottom, height, segments), material);
+      mesh.position.set(x, y, z);
       mesh.castShadow = true;
-      scene.add(mesh);
+      parent.add(mesh);
+      return mesh;
     };
+    const addSphere = (parent, rx, ry, rz, x, y, z, material) => {
+      const mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 12), material);
+      mesh.scale.set(rx, ry, rz);
+      mesh.position.set(x, y, z);
+      mesh.castShadow = true;
+      parent.add(mesh);
+      return mesh;
+    };
+    const addWallX = (parent, x, z, length, height = WALL_H, material = materials.wall, y = height / 2) =>
+      addBox(parent, length, height, 0.18, x, y, z, material);
+    const addWallZ = (parent, x, z, length, height = WALL_H, material = materials.wall, y = height / 2) =>
+      addBox(parent, 0.18, height, length, x, y, z, material);
 
-    // Procedural House Plant Model Builder Requested by Client
-    const placeInteriorPlantPot = (x, z) => {
-      const plantGroup = new THREE.Group();
-      
-      const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.16, 0.45, 12), mat.potMat);
-      pot.position.y = 0.225;
-      pot.castShadow = true;
-      plantGroup.add(pot);
-
-      for(let i=0; i<5; i++) {
-        const leafMesh = new THREE.Mesh(new THREE.SphereGeometry(0.24, 8, 8), mat.leaf);
-        leafMesh.scale.set(0.3, 1.4, 0.8);
-        leafMesh.rotation.x = Math.PI * 0.15 + (Math.random() * 0.2);
-        leafMesh.rotation.y = (i * (Math.PI * 2 / 5));
-        leafMesh.position.set(0, 0.4, 0);
-        leafMesh.castShadow = true;
-        plantGroup.add(leafMesh);
+    function addFloorZone(parent, x, z, width, depth, material) {
+      addBox(parent, width, 0.055, depth, x, 0.145, z, material, false);
+    }
+    function addPlant(parent, x, z, scale = 1) {
+      const group = new THREE.Group();
+      parent.add(group);
+      group.position.set(x, 0.18, z);
+      addCylinder(group, 0.28 * scale, 0.36 * scale, 0.48 * scale, 0, 0.24 * scale, 0, materials.pot);
+      addCylinder(group, 0.035 * scale, 0.05 * scale, 0.72 * scale, 0, 0.78 * scale, 0, materials.wood, 7);
+      for (let i = 0; i < 7; i++) {
+        const angle = i * Math.PI * 2 / 7;
+        const leaf = addSphere(group, 0.19 * scale, 0.42 * scale, 0.15 * scale,
+          Math.cos(angle) * 0.2 * scale, (0.86 + (i % 3) * 0.08) * scale, Math.sin(angle) * 0.2 * scale,
+          i % 2 ? materials.leaf : materials.leafLight);
+        leaf.rotation.z = Math.cos(angle) * 0.35;
+        leaf.rotation.x = Math.sin(angle) * 0.28;
       }
-
-      plantGroup.position.set(x, 0.3, z);
-      scene.add(plantGroup);
-    };
-
-    // --- ESTATE GROUND LAYOUT ASSEMBLY ---
-    const siteLawn = new THREE.Mesh(new THREE.PlaneGeometry(54, 42), mat.lawn);
-    siteLawn.rotation.x = -Math.PI * 0.5;
-    siteLawn.receiveShadow = true;
-    scene.add(siteLawn);
-
-    const foundation = new THREE.Mesh(new THREE.BoxGeometry(houseW, 0.3, houseD), mat.floorMarble);
-    foundation.position.set(0, 0.15, 0);
-    foundation.receiveShadow = true;
-    scene.add(foundation);
-
-    const drive = new THREE.Mesh(new THREE.BoxGeometry(5.5, 0.02, 14.0), mat.driveway);
-    drive.position.set(4.5, 0.01, hD + 4);
-    drive.receiveShadow = true;
-    scene.add(drive);
-
-    // --- CLIENT SECURITY WALL AND FRONT GATE ---
-    createWallBlock(houseW + 4.0, 0.25, 1.4, 0, hD + 5.0, mat.stuccoOuter); // Symmetrical Boundary Wall
-    createWallBlock(0.6, 0.6, 2.0, -2.5, hD + 5.0, mat.teak); // Left Gate Pillar Stone
-    createWallBlock(0.6, 0.6, 2.0, 1.5, hD + 5.0, mat.teak);  // Right Gate Pillar Stone
-    
-    // Front Ornamental Entry Gates (Partially ajar)
-    const leftGateDoor = new THREE.Mesh(new THREE.BoxGeometry(1.9, 1.6, 0.06), mat.brass);
-    leftGateDoor.position.set(-1.5, 0.3 + 0.8, hD + 5.2);
-    leftGateDoor.rotation.y = Math.PI * 0.12;
-    scene.add(leftGateDoor);
-
-    const rightGateDoor = new THREE.Mesh(new THREE.BoxGeometry(1.9, 1.6, 0.06), mat.brass);
-    rightGateDoor.position.set(0.5, 0.3 + 0.8, hD + 5.2);
-    rightGateDoor.rotation.y = -Math.PI * 0.08;
-    scene.add(rightGateDoor);
-
-    // Placed Interior Protective Wall Greenery Arrays requested by client
-    for(let wX = -hW + 1.5; wX < hW; wX += 3.5) {
-      placeInteriorPlantPot(wX, hD + 4.4);
+    }
+    function addTree(parent, x, z, scale = 1) {
+      addCylinder(parent, 0.18 * scale, 0.25 * scale, 1.9 * scale, x, 0.95 * scale, z, materials.wood, 10);
+      addSphere(parent, 1.05 * scale, 1.15 * scale, 0.95 * scale, x, 2.0 * scale, z, materials.leaf);
+      addSphere(parent, 0.72 * scale, 0.8 * scale, 0.68 * scale, x - 0.45 * scale, 2.25 * scale, z + 0.15 * scale, materials.leafLight);
+    }
+    function addBed(parent, x, z, accent = materials.wood) {
+      addBox(parent, 2.45, 0.34, 2.75, x, 0.42, z, accent);
+      addBox(parent, 2.34, 0.22, 2.58, x, 0.69, z + 0.02, materials.mattress);
+      addBox(parent, 2.52, 1.0, 0.15, x, 0.72, z - 1.36, accent);
+      addBox(parent, 0.82, 0.12, 0.44, x - 0.58, 0.88, z - 0.82, materials.white);
+      addBox(parent, 0.82, 0.12, 0.44, x + 0.58, 0.88, z - 0.82, materials.white);
+      addBox(parent, 0.9, 0.13, 0.62, x + 1.55, 0.24, z - 0.9, materials.wood);
+      addBox(parent, 0.9, 0.13, 0.62, x - 1.55, 0.24, z - 0.9, materials.wood);
+    }
+    function addWardrobe(parent, x, z, width = 1.5) {
+      addBox(parent, width, 2.15, 0.68, x, 1.2, z, materials.darkWood);
+      addBox(parent, 0.025, 1.88, 0.04, x, 1.2, z + 0.36, materials.brass || materials.metal, false);
+    }
+    function addSofa(parent, x, z, width = 3.0) {
+      addBox(parent, width, 0.38, 0.92, x, 0.46, z, materials.sofa);
+      addBox(parent, width, 0.78, 0.25, x, 0.86, z - 0.35, materials.sofa);
+      addBox(parent, 0.24, 0.56, 0.96, x - width / 2 + 0.12, 0.68, z, materials.sofa);
+      addBox(parent, 0.24, 0.56, 0.96, x + width / 2 - 0.12, 0.68, z, materials.sofa);
+      for (let i = 0; i < Math.max(2, Math.floor(width / 1.2)); i++) {
+        addBox(parent, 0.62, 0.13, 0.14, x - width / 2 + 0.78 + i * 1.0, 0.98, z - 0.18, materials.cushion);
+      }
+    }
+    function addDiningSet(parent, x, z, seats = 6) {
+      addBox(parent, 2.2, 0.14, 1.15, x, 0.9, z, materials.wood);
+      for (let i = 0; i < 4; i++) {
+        const px = x - 0.76 + (i % 2) * 1.52;
+        const pz = z - 0.82 + Math.floor(i / 2) * 1.64;
+        addBox(parent, 0.48, 0.12, 0.48, px, 0.65, pz, materials.darkWood);
+        addBox(parent, 0.48, 0.68, 0.1, px, 0.95, pz + (pz < z ? -0.22 : 0.22), materials.darkWood);
+      }
+      if (seats > 4) {
+        addBox(parent, 0.48, 0.12, 0.48, x - 1.35, 0.65, z, materials.darkWood);
+        addBox(parent, 0.48, 0.12, 0.48, x + 1.35, 0.65, z, materials.darkWood);
+      }
+    }
+    function addKitchen(parent, x, z, width = 3.8) {
+      addBox(parent, width, 0.92, 0.76, x, 0.63, z, materials.darkWood);
+      addBox(parent, width + 0.08, 0.09, 0.82, x, 1.13, z, materials.concrete);
+      addBox(parent, width, 0.76, 0.1, x, 1.52, z - 0.35, materials.wallWarm);
+      addBox(parent, 0.75, 0.035, 0.48, x + width * 0.2, 1.19, z, materials.metal);
+      addBox(parent, 0.56, 0.045, 0.38, x - width * 0.23, 1.19, z, materials.metal);
+    }
+    function addBath(parent, x, z) {
+      addBox(parent, 0.62, 0.16, 0.72, x + 0.4, 0.25, z + 0.3, materials.ceramic);
+      addCylinder(parent, 0.26, 0.26, 0.27, x + 0.4, 0.46, z + 0.3, materials.ceramic, 20);
+      addBox(parent, 0.58, 0.16, 0.42, x - 0.5, 0.88, z - 0.42, materials.ceramic);
+      addCylinder(parent, 0.08, 0.08, 0.24, x - 0.5, 1.05, z - 0.42, materials.metal, 12);
+    }
+    function addCow(parent, x, z, coat = materials.cow) {
+      const g = new THREE.Group();
+      parent.add(g);
+      g.position.set(x, 0.18, z);
+      addSphere(g, 0.9, 0.62, 0.52, 0, 0.88, 0, coat);
+      addSphere(g, 0.38, 0.42, 0.38, 0.72, 1.05, 0.02, coat);
+      addSphere(g, 0.28, 0.2, 0.26, 0.95, 0.82, 0.08, materials.cowBrown);
+      for (const lx of [-0.55, 0.5]) for (const lz of [-0.3, 0.3]) {
+        addBox(g, 0.13, 0.58, 0.14, lx, 0.34, lz, materials.darkWood);
+      }
+      addSphere(g, 0.13, 0.1, 0.11, 0.77, 1.31, -0.28, materials.cowBrown);
+      addSphere(g, 0.13, 0.1, 0.11, 0.77, 1.31, 0.3, materials.cowBrown);
+      const horn1 = addCylinder(g, 0.015, 0.09, 0.36, 0.58, 1.48, -0.26, materials.white, 8);
+      const horn2 = addCylinder(g, 0.015, 0.09, 0.36, 0.58, 1.48, 0.29, materials.white, 8);
+      horn1.rotation.z = -0.45; horn2.rotation.z = -0.45;
+      addSphere(g, 0.05, 0.05, 0.05, 0.98, 1.15, -0.2, materials.darkWood);
+      addSphere(g, 0.05, 0.05, 0.05, 0.98, 1.15, 0.2, materials.darkWood);
     }
 
-    // --- VILLA ROOM PARTITIONS & SPECIFIC COLOR MATRIX LAYOUT ---
-    
-    // Exterior Primary Shell
-    compileWallWithOpenings(houseW, 0, hD - wallThick/2, 0, true, false, mat.stuccoOuter); // Front Wall + Main Door
-    compileWallWithOpenings(houseW, 0, -hD + wallThick/2, 0, false, true, mat.stuccoOuter); // Back Wall + Window
-    compileWallWithOpenings(houseD, -hW + wallThick/2, 0, Math.PI / 2, false, true, mat.stuccoOuter); // Left Structural Wing
-    compileWallWithOpenings(houseD, hW - wallThick/2, 0, Math.PI / 2, false, true, mat.stuccoOuter);  // Right Structural Wing
+    function makeBase() {
+      addBox(scene, 58, 0.22, 45, 0, -0.18, 0, materials.ground, false);
+      const plotEdge = new THREE.Mesh(new THREE.BoxGeometry(28, 0.12, 22), new THREE.MeshStandardMaterial({ color: 0x9eaf8e, roughness: 1 }));
+      plotEdge.position.set(0, -0.02, 0);
+      plotEdge.receiveShadow = true;
+      scene.add(plotEdge);
+      addBox(scene, 5.0, 0.06, 14.5, 5.2, -0.02, 13.3, materials.path, false);
+      for (let i = 0; i < 6; i++) {
+        addBox(scene, 4.6, 0.035, 0.76, 5.2, 0.025, 7.1 + i * 1.13, materials.concrete, false);
+      }
+      addBox(scene, 23, 0.18, 0.22, 0, 0.52, 11.4, materials.wallWarm);
+      addBox(scene, 0.22, 0.95, 0.24, -11.2, 0.4, 11.4, materials.wallWarm);
+      addBox(scene, 0.22, 0.95, 0.24, 11.2, 0.4, 11.4, materials.wallWarm);
+      addPlant(scene, -10, 7.4, 1.25);
+      addPlant(scene, 10.2, 7.2, 1.25);
+      addPlant(scene, -10, -7.8, 1.1);
+      addTree(scene, -13, 1.0, 1.25);
+      addTree(scene, 13, -1.8, 1.15);
+      addTree(scene, -12.8, -9.5, 0.95);
+      for (let i = 0; i < 5; i++) addPlant(scene, -8.2 + i * 1.2, 8.3, 0.72);
+    }
 
-    // Interior Room Partitions matching the custom requested color profiles
-    compileWallWithOpenings(houseD - 0.5, 0, 0, Math.PI / 2, true, false, mat.colorAngan);   // Core Courtyard Left Boundary
-    compileWallWithOpenings(hW - 0.2, -hW / 2, 2.0, 0, true, false, mat.colorMaster);     // Ivory Suite Divide
-    compileWallWithOpenings(hW - 0.2, -hW / 2, -2.0, 0, false, true, mat.colorChild);      // Mint Sanctuary Boundary
-    compileWallWithOpenings(hW - 0.2, hW / 2, -1.5, 0, true, false, mat.colorKitchen);     // Euro Slate Kitchen partition
-    compileWallWithOpenings(houseD - 0.5, -2.5, 0, Math.PI / 2, true, false, mat.colorBaithak); // Royal Teal Baithak Entryway
+    function makeExterior(group, frontOpen = true) {
+      addWallX(group, 0, -D / 2 + 0.08, W, WALL_H, materials.wallWarm);
+      addWallZ(group, -W / 2 + 0.08, 0, D, WALL_H, materials.wall);
+      addWallZ(group, W / 2 - 0.08, 0, D, WALL_H, materials.wall);
+      if (!frontOpen) {
+        addWallX(group, -5.6, D / 2 - 0.08, 6.8, WALL_H, materials.wallWarm);
+        addWallX(group, 5.6, D / 2 - 0.08, 6.8, WALL_H, materials.wallWarm);
+      } else {
+        addWallX(group, -7.7, D / 2 - 0.08, 2.5, 1.05, materials.wallWarm, 0.52);
+        addWallX(group, 7.7, D / 2 - 0.08, 2.5, 1.05, materials.wallWarm, 0.52);
+        for (const x of [-8.2, -1.7, 1.7, 8.2]) addBox(group, 0.2, 2.9, 0.2, x, 1.45, D / 2 - 0.08, materials.trim);
+      }
+      addBox(group, W + 0.35, 0.24, D + 0.35, 0, -0.02, 0, materials.concrete);
+    }
 
-    // Multi-tier Spanish Pitched Roof Construction
-    createPitchedRoof(hW + 1.2, houseD + 0.8, 2.4, -4.0, wallH + 0.3, 0);
-    createPitchedRoof(hW + 1.2, houseD + 0.8, 2.0, 4.0, wallH + 0.3, 0);
+    function buildGroundFloor(group) {
+      makeExterior(group, true);
+      addFloorZone(group, -5.2, -3.45, 6.6, 5.55, materials.storageFloor);
+      addFloorZone(group, 3.8, -2.55, 7.0, 7.2, materials.cowsFloor);
+      addFloorZone(group, -5.1, 3.75, 6.8, 4.0, materials.gardenFloor);
+      addFloorZone(group, 4.6, 4.0, 5.9, 3.0, materials.floorGround);
 
-    // Traditional Central Angan Columns
-    const createTeakColumn = (x, z) => {
-      const col = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.12, wallH, 12), mat.teak);
-      col.position.set(x, wallH/2 + 0.3, z);
-      col.castShadow = true;
-      scene.add(col);
+      addWallZ(group, -1.55, -3.25, 6.2, 2.15, materials.wallWarm);
+      addWallX(group, 3.9, 1.22, 6.8, 1.65, materials.wallWarm, 0.86);
+      addWallZ(group, 0.15, 3.55, 4.0, 1.55, materials.wallWarm, 0.78);
+
+      // Secure feed and equipment storage.
+      for (let row = 0; row < 2; row++) {
+        addBox(group, 3.2, 0.12, 0.55, -5.4, 0.65 + row * 0.9, -5.45, materials.wood);
+        for (let i = 0; i < 4; i++) addBox(group, 0.52, 0.48, 0.42, -6.55 + i * 0.78, 0.96 + row * 0.9, -5.45, materials.wallWarm);
+      }
+      addBox(group, 1.7, 0.85, 0.7, -3.2, 0.58, -2.2, materials.wood);
+      addBox(group, 1.35, 0.5, 0.12, -3.2, 1.14, -2.58, materials.darkWood);
+
+      // Ventilated cattle bay and feed trough.
+      addBox(group, 5.8, 0.48, 0.55, 3.8, 0.34, -5.25, materials.concrete);
+      addBox(group, 5.8, 0.08, 0.6, 3.8, 0.61, -5.25, materials.wood);
+      addCow(group, 1.9, -2.4, materials.cow);
+      addCow(group, 4.7, -2.1, materials.cowBrown);
+      addBox(group, 0.18, 1.2, 4.2, 7.45, 0.75, -1.5, materials.trim);
+      addBox(group, 0.18, 1.2, 4.2, 0.8, 0.75, -1.5, materials.trim);
+      for (let i = 0; i < 5; i++) addBox(group, 0.12, 1.15, 0.12, 1.3 + i * 1.1, 0.72, -0.15, materials.wood);
+
+      // Planting and potting space in the front garden bay.
+      addBox(group, 5.5, 0.22, 0.9, -5.1, 0.27, 5.2, materials.wood);
+      for (let i = 0; i < 5; i++) addPlant(group, -7.3 + i * 1.15, 3.5, 0.72);
+      for (let i = 0; i < 4; i++) addPlant(group, -7.0 + i * 1.25, 5.0, 0.62);
+      addPlant(group, -2.3, 3.0, 0.85);
+      addBox(group, 1.7, 0.8, 0.9, 4.8, 0.55, 4.0, materials.wood);
+      addBox(group, 1.2, 0.15, 0.7, 4.8, 1.02, 4.0, materials.concrete);
+      addPlant(group, 7.2, 4.5, 0.8);
+
+      // The stair core connects the three levels.
+      for (let i = 0; i < 12; i++) {
+        const rise = (i + 1) * 0.235;
+        addBox(group, 2.25, rise, 0.42, 7.1, rise / 2, 3.55 - i * 0.52, materials.wood);
+      }
+      addWallZ(group, 5.8, 0.15, 3.5, 1.0, materials.trim, 0.5);
+      addBox(group, 0.12, 3.0, 0.12, 6.0, 1.5, 2.0, materials.metal);
+      addBox(group, 0.12, 3.0, 0.12, 8.15, 1.5, 2.0, materials.metal);
+    }
+
+    function buildResidentialFloor(group, upper = false) {
+      makeExterior(group, true);
+      addFloorZone(group, -5.0, -3.65, 6.8, 5.25, materials.masterFloor);
+      addFloorZone(group, 4.65, -3.65, 6.5, 5.25, materials.bedFloor);
+      addFloorZone(group, -5.0, 3.62, 6.8, 4.55, materials.bedFloor);
+      addFloorZone(group, 4.6, 3.6, 7.1, 4.55, materials.livingFloor);
+      addFloorZone(group, -0.1, 0.5, 4.1, 3.05, materials.kitchenFloor);
+      addFloorZone(group, 2.8, -0.2, 2.25, 2.2, materials.bathFloor);
+      addFloorZone(group, -2.7, -0.2, 2.1, 2.2, materials.bathFloor);
+
+      // Internal walls define room edges while the front remains open for a cutaway view.
+      addWallX(group, -5.0, -0.95, 6.8, 2.05, materials.wallWarm);
+      addWallX(group, 4.65, -0.95, 6.5, 2.05, materials.wallWarm);
+      addWallX(group, -5.0, 1.15, 6.8, 1.75, materials.wallWarm, 0.88);
+      addWallX(group, 4.6, 1.15, 7.1, 1.75, materials.wallWarm, 0.88);
+      addWallZ(group, -1.45, -3.65, 5.25, 2.0, materials.wallWarm);
+      addWallZ(group, 1.35, -3.65, 5.25, 2.0, materials.wallWarm);
+      addWallZ(group, -1.4, 3.55, 4.5, 1.7, materials.wallWarm, 0.85);
+      addWallZ(group, 1.0, 3.55, 4.5, 1.7, materials.wallWarm, 0.85);
+
+      // Bedrooms, wardrobes and bedside units.
+      addBed(group, -5.0, -3.55, materials.wood);
+      addWardrobe(group, -7.35, -5.45, 1.45);
+      addBed(group, 4.7, -3.55, materials.darkWood);
+      addWardrobe(group, 6.95, -5.45, 1.35);
+
+      if (!upper) {
+        addBed(group, -5.0, 3.6, materials.wood);
+        addWardrobe(group, -7.35, 5.05, 1.35);
+        addSofa(group, 4.5, 4.1, 3.4);
+        addBox(group, 2.4, 0.18, 1.15, 4.5, 0.58, 2.3, materials.wood);
+        addDiningSet(group, 4.5, 5.45, 6);
+        addKitchen(group, -0.1, 0.38, 3.65);
+        addBath(group, 2.8, -0.2);
+        addBath(group, -2.7, -0.2);
+        addPlant(group, 7.25, 5.55, 0.68);
+      } else {
+        addSofa(group, -4.8, 3.7, 3.2);
+        addBox(group, 2.1, 0.16, 1.0, -4.8, 2.0, materials.wood);
+        addDiningSet(group, -4.7, 5.35, 4);
+        addKitchen(group, 4.7, 3.55, 3.4);
+        addBath(group, 2.8, -0.2);
+        addBath(group, -2.7, -0.2);
+        addPlant(group, -7.5, 5.55, 0.65);
+        addPlant(group, 7.5, 5.55, 0.65);
+      }
+
+      // Stair opening and compact landing.
+      addBox(group, 2.5, 0.08, 3.9, 7.0, 0.2, 0.1, materials.concrete);
+      for (let i = 0; i < 11; i++) {
+        const rise = (i + 1) * 0.245;
+        addBox(group, 2.0, rise, 0.4, 7.0, rise / 2, 2.0 - i * 0.48, materials.wood);
+      }
+
+      // Shaded front balcony with a light metal-and-glass balustrade.
+      addBox(group, 9.1, 0.18, 1.7, 1.5, -0.02, 7.18, materials.concrete);
+      addBox(group, 9.1, 0.1, 0.1, 1.5, 0.72, 8.0, materials.trim);
+      for (let i = 0; i < 13; i++) addBox(group, 0.07, 0.72, 0.07, -2.9 + i * 0.73, 0.39, 8.0, materials.metal);
+      addPlant(group, -2.1, 7.35, 0.55);
+      addPlant(group, 5.1, 7.35, 0.55);
+      if (upper) {
+        // Upper-floor terrace pergola: open above, so the room layout stays visible.
+        for (let i = 0; i < 5; i++) addBox(group, 0.16, 0.15, 3.3, -1.4 + i * 0.72, 2.7, 4.25, materials.wood);
+        addBox(group, 4.1, 0.15, 0.16, 0.0, 2.7, 2.65, materials.wood);
+      }
+    }
+
+    makeBase();
+    const floorGroups = {};
+    const floorConfigs = [
+      { id: "ground", y: 0, build: buildGroundFloor },
+      { id: "first", y: LEVEL_GAP, build: (g) => buildResidentialFloor(g, false) },
+      { id: "second", y: LEVEL_GAP * 2, build: (g) => buildResidentialFloor(g, true) }
+    ];
+    for (const config of floorConfigs) {
+      const group = new THREE.Group();
+      group.position.y = config.y;
+      scene.add(group);
+      config.build(group);
+      floorGroups[config.id] = group;
+    }
+
+    // A few visible vertical support columns tie the balconies and levels together.
+    for (const x of [-8.35, -1.9, 1.9, 8.35]) {
+      addBox(scene, 0.2, LEVEL_GAP * 2 + 3.0, 0.2, x, (LEVEL_GAP * 2 + 3.0) / 2, 6.35, materials.trim);
+    }
+
+    const detail = {
+      all: {
+        kicker: "Whole house · overview",
+        title: "Three levels.<br>One connected home.",
+        description: "Explore the complete structure, then select a floor below to focus on its layout and spaces.",
+        rooms: ["Ground-floor utility", "3BHK residence", "2BHK upper home", "Balconies", "Garden"],
+        note: "This is a concept model. Plot dimensions, setbacks and room sizes can be adjusted once your site details are known."
+      },
+      ground: {
+        kicker: "Ground floor · utility + outdoor",
+        title: "A practical base<br>for daily life.",
+        description: "The ground level is planned for storage, a ventilated cattle shelter and a dedicated planting / potting area, with a stair core for access above.",
+        rooms: ["Storage room", "Cattle shelter", "Feed / wash area", "Planting space", "Staircase"],
+        note: "The cattle zone should be detailed for drainage, cross-ventilation, shade, feed storage and safe separation from the family entrance."
+      },
+      first: {
+        kicker: "First floor · 3BHK",
+        title: "Your main family<br>home.",
+        description: "Three bedrooms are arranged around a shared living and dining area, with a kitchen, two bathrooms and a front balcony.",
+        rooms: ["Master bedroom", "Bedroom 2", "Bedroom 3", "Living + dining", "Kitchen", "2 bathrooms"],
+        note: "The room arrangement is illustrative. An architect can tune privacy, daylight, ventilation and Vastu preferences to your plot."
+      },
+      second: {
+        kicker: "Second floor · 2BHK",
+        title: "A quieter upper<br>family home.",
+        description: "A separate two-bedroom layout with its own living space, kitchen, two bathrooms and an open front terrace / balcony.",
+        rooms: ["Master bedroom", "Bedroom 2", "Living area", "Kitchen", "2 bathrooms", "Terrace"],
+        note: "Confirm independent access, plumbing alignment and terrace waterproofing before finalising the upper-floor design."
+      }
     };
-    createTeakColumn(-1.5, -1.5); createTeakColumn(1.5, -1.5);
-    createTeakColumn(-1.5, 1.5);  createTeakColumn(1.5, 1.5);
 
-    // Indoor Room Potted Plants
-    placeInteriorPlantPot(-hW + 1.5, -hD + 1.5); // Master bedroom corner plant
-    placeInteriorPlantPot(-2.0, hD - 1.5);       // Baithak indoor shrub element
+    let selectedFloor = "all";
+    let planMode = false;
+    const defaultCamera = new THREE.Vector3(26, 20, 28);
+    const defaultTarget = new THREE.Vector3(0, 4.9, 0);
 
-    // --- INTERACTIVE SYSTEM & SMOOTH TELEPORTATION CORE ---
-    const rooms = {
-      facade: { target: [0, 1.2, 2], pos: [0, 10, 24] },
-      angan: { target: [0, 1.4, 0], pos: [2.5, 1.8, 2.5] },
-      baithak: { target: [-5.0, 1.4, 2.5], pos: [-2.8, 1.8, 2.8] },
-      master: { target: [-5.0, 1.4, -3.0], pos: [-2.5, 1.8, -2.5] },
-      child: { target: [-4.0, 1.4, 0.5], pos: [-2.0, 1.8, 0.8] },
-      kitchen: { target: [5.0, 1.4, -3.0], pos: [2.5, 1.8, -2.5] }
-    };
+    function setCameraForFloor(floor, asPlan = false) {
+      const y = floor === "ground" ? 1.45 : floor === "first" ? LEVEL_GAP + 1.45 : floor === "second" ? LEVEL_GAP * 2 + 1.45 : 4.9;
+      controls.target.set(0, y, 0);
+      if (asPlan) {
+        camera.position.set(0, y + 29, 0.001);
+        controls.maxPolarAngle = Math.PI * 0.495;
+      } else if (floor === "all") {
+        camera.position.set(defaultCamera.x, defaultCamera.y, defaultCamera.z);
+        controls.maxPolarAngle = Math.PI * 0.49;
+      } else {
+        camera.position.set(21, y + 12.5, 23);
+        controls.maxPolarAngle = Math.PI * 0.49;
+      }
+      controls.update();
+    }
 
-    let viewTween = null;
-    const TWEEN_MS = 1000;
-
-    const navigateToRoom = (key) => {
-      const config = rooms[key];
-      if (!config) return;
-
-      viewTween = {
-        start: performance.now(),
-        fromPos: camera.position.clone(),
-        toPos: new THREE.Vector3(...config.pos),
-        fromLook: controls.target.clone(),
-        toLook: new THREE.Vector3(...config.target)
-      };
-    };
-
-    const hudButtons = document.querySelectorAll("#nav-hud button");
-    hudButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        hudButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        navigateToRoom(btn.dataset.view);
+    function showFloor(floor) {
+      selectedFloor = floor;
+      planMode = false;
+      document.getElementById("plan-btn").classList.remove("active");
+      document.getElementById("plan-btn").setAttribute("aria-pressed", "false");
+      for (const [key, group] of Object.entries(floorGroups)) group.visible = floor === "all" || key === floor;
+      document.querySelectorAll(".floor-tab").forEach((button) => {
+        button.classList.toggle("active", button.dataset.floor === floor);
       });
+      const info = detail[floor];
+      document.getElementById("detail-kicker").textContent = info.kicker;
+      document.getElementById("detail-title").innerHTML = info.title;
+      document.getElementById("detail-description").textContent = info.description;
+      document.getElementById("room-list").innerHTML = info.rooms.map((room) => '<span class="room-chip">' + room + '</span>').join("");
+      document.getElementById("detail-note").querySelector("span").textContent = info.note;
+      setCameraForFloor(floor, false);
+    }
+
+    document.querySelectorAll(".floor-tab").forEach((button) => {
+      button.addEventListener("click", () => showFloor(button.dataset.floor));
     });
 
-    // --- FIRST PERSON SMOOTH WALK KEYBOARD MATRIX ---
-    const pressedKeys = { w: false, a: false, s: false, d: false, ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
-    const walkSpeed = 0.12;
-
-    window.addEventListener("keydown", (e) => { if (e.key in pressedKeys) pressedKeys[e.key] = true; });
-    window.addEventListener("keyup", (e) => { if (e.key in pressedKeys) pressedKeys[e.key] = false; });
-
-    const processWalkMovement = () => {
-      const forwardDir = new THREE.Vector3();
-      camera.getWorldDirection(forwardDir);
-      forwardDir.y = 0; // Flatten directional velocity axis to mimic walking on floor
-      forwardDir.normalize();
-
-      const sideDir = new THREE.Vector3();
-      sideDir.crossVectors(forwardDir, camera.up).normalize().negate();
-
-      const movementMove = new THREE.Vector3(0, 0, 0);
-
-      if (pressedKeys.w || pressedKeys.ArrowUp) movementMove.addScaledVector(forwardDir, walkSpeed);
-      if (pressedKeys.s || pressedKeys.ArrowDown) movementMove.addScaledVector(forwardDir, -walkSpeed);
-      if (pressedKeys.a || pressedKeys.ArrowLeft) movementMove.addScaledVector(sideDir, walkSpeed);
-      if (pressedKeys.d || pressedKeys.ArrowRight) movementMove.addScaledVector(sideDir, -walkSpeed);
-
-      if (movementMove.lengthSq() > 0) {
-        camera.position.add(movementMove);
-        controls.target.add(movementMove); // Continuously shifts target focus vector ahead to keep orbit sync accurate
+    document.getElementById("plan-btn").addEventListener("click", () => {
+      planMode = !planMode;
+      const button = document.getElementById("plan-btn");
+      button.classList.toggle("active", planMode);
+      button.setAttribute("aria-pressed", String(planMode));
+      if (planMode && selectedFloor === "all") {
+        for (const [key, group] of Object.entries(floorGroups)) group.visible = key === "first";
+        selectedFloor = "first";
+        document.querySelectorAll(".floor-tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.floor === "first"));
+        const info = detail.first;
+        document.getElementById("detail-kicker").textContent = info.kicker;
+        document.getElementById("detail-title").innerHTML = info.title;
+        document.getElementById("detail-description").textContent = info.description;
+        document.getElementById("room-list").innerHTML = info.rooms.map((room) => '<span class="room-chip">' + room + '</span>').join("");
+        document.getElementById("detail-note").querySelector("span").textContent = info.note;
       }
-    };
+      setCameraForFloor(selectedFloor, planMode);
+    });
 
-    // --- REALTIME ANIMATION RENDER ENGINE LOOP ---
-    const runUpdateFrame = (timestamp) => {
-      requestAnimationFrame(runUpdateFrame);
+    document.getElementById("rotate-btn").addEventListener("click", (event) => {
+      controls.autoRotate = !controls.autoRotate;
+      event.currentTarget.classList.toggle("active", controls.autoRotate);
+    });
+    document.getElementById("reset-btn").addEventListener("click", () => {
+      selectedFloor = "all";
+      showFloor("all");
+      controls.autoRotate = false;
+      document.getElementById("rotate-btn").classList.remove("active");
+    });
 
-      if (viewTween) {
-        const delta = timestamp - viewTween.start;
-        const alpha = Math.min(delta / TWEEN_MS, 1.0);
-        const sCurve = alpha * alpha * (3 - 2 * alpha); // Cubic interpolation curve
-
-        camera.position.lerpVectors(viewTween.fromPos, viewTween.toPos, sCurve);
-        controls.target.lerpVectors(viewTween.fromLook, viewTween.toLook, sCurve);
-
-        if (alpha >= 1.0) viewTween = null;
+    const briefText = [
+      "MY DREAM HOME — THREE-LEVEL HOUSE CONCEPT",
+      "",
+      "GROUND FLOOR: Storage room, ventilated cattle shelter for cows, feed / wash space, planting and potting area, and staircase.",
+      "FIRST FLOOR — 3BHK: Master bedroom, two additional bedrooms, living and dining area, kitchen, two bathrooms, and front balcony.",
+      "SECOND FLOOR — 2BHK: Master bedroom, one additional bedroom, living area, kitchen, two bathrooms, and terrace / balcony.",
+      "",
+      "DESIGN NOTE: This is an illustrative 3D concept, not a construction drawing. Final room sizes, column grid, foundation, stair design, plumbing, drainage, ventilation, setbacks and approvals must be designed and checked by qualified local professionals.",
+      "",
+      "The current model uses placeholder proportions. Update it after confirming the plot width, plot depth, road-facing side and local building rules."
+    ].join("\n");
+    document.getElementById("brief-btn").addEventListener("click", async (event) => {
+      const button = event.currentTarget;
+      const original = button.innerHTML;
+      try {
+        await navigator.clipboard.writeText(briefText);
+        button.textContent = "Brief copied";
+      } catch (error) {
+        const area = document.createElement("textarea");
+        area.value = briefText;
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        area.remove();
+        button.textContent = "Brief copied";
       }
+      window.setTimeout(() => { button.innerHTML = original; }, 1800);
+    });
 
-      processWalkMovement();
+    function resize() {
+      const width = document.getElementById("viewport").clientWidth;
+      const height = document.getElementById("viewport").clientHeight;
+      camera.aspect = width / Math.max(height, 1);
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height, false);
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) controls.enableDamping = false;
+
+    function animate() {
+      requestAnimationFrame(animate);
       controls.update();
       renderer.render(scene, camera);
-    };
+    }
+    animate();
+    loading.style.display = "none";
 
-    requestAnimationFrame(runUpdateFrame);
-
-    // Instant Viewport Adaptability Resizer
-    window.addEventListener("resize", () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+    // Make the initial view frame the full three-level structure.
+    controls.target.copy(defaultTarget);
+    camera.position.copy(defaultCamera);
+    controls.update();
   </script>
 </body>
 </html>
