@@ -960,6 +960,7 @@
       let tourMode=false;
       let tourIndex=0;
       let activeRoom="";
+      let roofOn=true;
       let cameraTween=null;
 
       const defaultPosition=new THREE.Vector3(31,27,36);
@@ -1035,6 +1036,9 @@
         for(const [key,group] of Object.entries(floorGroups)){
           group.visible=id==="all"||key===id;
         }
+        roofGroup.visible=roofOn && (id==="all"||id==="third") && !planMode;
+        $("roof-btn").classList.toggle("active",roofOn);
+        $("roof-btn").setAttribute("aria-pressed",String(roofOn));
         document.querySelectorAll(".floor-btn").forEach(b=>b.classList.toggle("active",b.dataset.floor===id));
         $("plan-btn").classList.toggle("active",planMode);
         $("plan-btn").setAttribute("aria-pressed",String(planMode));
@@ -1067,6 +1071,12 @@
       document.querySelectorAll(".floor-btn").forEach(button=>{
         button.addEventListener("click",()=>setFloor(button.dataset.floor));
       });
+      $("roof-btn").addEventListener("click",()=>{
+        roofOn=!roofOn;
+        roofGroup.visible=roofOn && (selectedFloor==="all"||selectedFloor==="third") && !planMode;
+        $("roof-btn").classList.toggle("active",roofOn);
+        $("roof-btn").setAttribute("aria-pressed",String(roofOn));
+      });
       $("plan-btn").addEventListener("click",()=>{
         planMode=!planMode;
         $("plan-btn").classList.toggle("active",planMode);
@@ -1096,6 +1106,7 @@
         controls.autoRotate=false;
         $("rotate-btn").classList.remove("active");
         $("rotate-btn").setAttribute("aria-pressed","false");
+        roofOn=true;
         setFloor("all");
       });
       $("zoom-in").addEventListener("click",()=>{
