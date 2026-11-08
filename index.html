@@ -995,11 +995,12 @@
       function renderRoomButtons(info){
         const grid=$("room-grid");
         grid.innerHTML="";
+        const shortNames={"Cattle shed":"Cattle","Grass paddock":"Grass","Feed manger":"Feed","Water trough":"Water","Fodder storage":"Fodder","Wash + utility":"Wash","Manure / compost bay":"Compost","Staircase":"Stairs","Master bedroom":"Master","Bedroom 2":"Bed 2","Bedroom 3":"Bed 3","Family lounge":"Family","Hall + living":"Hall","Dining":"Dining","Kitchen":"Kitchen","Attached toilet":"Attached WC","Common toilet":"Common WC","Pooja room":"Pooja","Balcony":"Balcony","Terrace":"Terrace"};
         for(const room of info.rooms){
           const b=document.createElement("button");
           b.type="button";
           b.className="room-chip"+(activeRoom===room?" active":"");
-          b.textContent=room;
+          b.textContent=shortNames[room]||room;
           b.addEventListener("click",()=>focusRoom(room));
           grid.appendChild(b);
         }
@@ -1011,6 +1012,7 @@
         $("detail-description").textContent=info.description;
         $("detail-note").textContent=info.note;
         renderRoomButtons(info);
+        document.querySelector(".detail").style.display=info.rooms.length?"block":"none";
         if(id==="all"){
           $("overview-eyebrow").textContent="Your home, thoughtfully planned";
           $("overview-title").innerHTML="A home for<br>every generation.";
