@@ -197,21 +197,38 @@
     @media (prefers-reduced-motion:reduce) {
       *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; scroll-behavior:auto!important; }
     }
+    /* Clean, model-first interface: only floor, room and camera controls remain visible. */
+    .topbar{height:58px;padding:0 18px;background:rgba(247,247,241,.82)}
+    #viewport{inset:58px 0 0}
+    .brand-mark{width:34px;height:34px;border-radius:10px}
+    .brand-name,.brand-sub,.top-caption{display:none!important}
+    .top-floor-count{color:#66766b;font-size:8px;font-weight:900;letter-spacing:.16em;margin-left:10px}
+    .north-badge{width:34px;height:34px;justify-content:center;padding:0}
+    .north-badge .n{width:auto;height:auto;padding:0;background:transparent;color:var(--forest);font-size:12px}
+    .overview{display:none!important}
+    .detail{left:50%;bottom:70px;transform:translateX(-50%);width:max-content;max-width:calc(100% - 28px);max-height:none;padding:6px;overflow:hidden;border-radius:12px;box-shadow:0 10px 28px rgba(26,42,34,.12)}
+    .detail-kicker,.detail h2,.detail p,.detail-note{display:none!important}
+    .room-grid{display:flex;flex-wrap:nowrap;gap:5px;margin:0;overflow-x:auto;max-width:min(660px,calc(100vw - 44px));padding:1px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+    .room-grid::-webkit-scrollbar{display:none}
+    .room-chip{flex:none;min-height:29px;border:0;border-radius:8px;padding:7px 10px;font-size:8px;letter-spacing:.02em}
+    .floor-panel{top:10px;right:16px;width:auto;padding:5px;border-radius:12px;background:rgba(250,250,246,.84);box-shadow:0 9px 26px rgba(26,42,34,.10)}
+    .floor-panel-head,.floor-hint{display:none!important}
+    .floor-list{flex-direction:row;gap:4px;max-height:none;overflow:visible}
+    .floor-btn{width:auto;min-width:44px;min-height:34px;padding:0 11px;border:0;border-radius:8px;text-align:center}
+    .floor-btn .floor-name{justify-content:center;font-size:8px;letter-spacing:.04em}
+    .floor-btn .floor-name em,.floor-btn small{display:none!important}
+    .north-compass{left:17px;top:50%;transform:translateY(-50%);width:34px;padding:5px 4px;gap:2px;border-radius:10px;box-shadow:0 5px 15px rgba(26,42,34,.08)}
+    .north-compass strong{font-size:8px}.north-compass .arrow{width:21px;height:21px;font-size:14px}.north-compass small{display:none!important}
+    .road-label,.interaction-hint,.disclaimer{display:none!important}
+    .toolbar{bottom:12px;gap:5px;padding:6px;border-radius:13px;box-shadow:0 12px 34px rgba(26,42,34,.14);width:auto;max-width:calc(100% - 24px)}
+    .tool-btn{width:37px;min-width:37px;height:36px;min-height:36px;padding:0;font-size:0;gap:0;border-radius:9px}
+    .tool-btn svg{width:16px;height:16px}.zoom-btn{font-size:17px!important;font-weight:500!important}.tool-sep{height:22px}
+    .loading{font-size:0}.loading span{font-size:0}
+    @media(max-width:680px){.topbar{height:50px;padding:0 10px}#viewport{inset:50px 0 0}.top-floor-count{font-size:7px;margin-left:7px}.floor-panel{top:8px;right:8px;padding:4px}.floor-btn{min-width:35px;min-height:30px;padding:0 7px}.floor-btn .floor-name{font-size:7px}.north-compass{left:8px;width:28px}.north-compass .arrow{width:18px;height:18px;font-size:12px}.detail{bottom:59px;max-width:calc(100% - 16px)}.room-grid{max-width:calc(100vw - 30px)}.room-chip{min-height:25px;padding:6px 8px;font-size:7px}.toolbar{bottom:7px;gap:3px;padding:5px;width:auto;max-width:calc(100% - 12px)}.tool-btn{width:31px;min-width:31px;height:30px;min-height:30px}.tool-btn svg{width:14px;height:14px}.zoom-btn{font-size:15px!important}.tool-sep{height:18px}}
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5V21H3z"/><path d="M8.5 21v-6.5h7V21M3 11.5h18"/></svg>
-      </div>
-      <div><div class="brand-name">MY DREAM HOME</div><div class="brand-sub">A NORTH-FACING FAMILY HOME</div></div>
-    </div>
-    <div class="top-right">
-      <div class="north-badge"><span class="n">N</span> NORTH ROAD + MAIN ENTRY</div>
-      <div class="top-caption">Interactive 3D · Vastu-inspired concept</div>
-    </div>
-  </header>
+  <header class="topbar"><div class="brand"><div class="brand-mark" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5V21H3z"/><path d="M8.5 21v-6.5h7V21M3 11.5h18"/></svg></div><span class="top-floor-count">3 FLOORS</span></div><div class="top-right"><div class="north-badge" aria-label="North facing"><span class="n">N ↑</span></div></div></header>
 
   <main id="viewport" aria-label="Interactive three-dimensional north-facing house">
     <canvas id="house-canvas" tabindex="0" aria-label="Interactive 3D model. Drag to rotate and scroll to zoom."></canvas>
@@ -236,54 +253,17 @@
       <div class="detail-note" id="detail-note">Concept dimensions only. Final planning must be based on a measured plot and local building rules.</div>
     </section>
 
-    <aside class="panel floor-panel" aria-label="Floor navigation">
-      <div class="floor-panel-head"><strong>Explore each level</strong><span>03 FLOORS</span></div>
-      <div class="floor-list">
-        <button class="floor-btn active" data-floor="all" type="button">
-          <span class="floor-name">Whole house <em>3D VIEW</em></span><small>See all levels together</small>
-        </button>
-        <button class="floor-btn" data-floor="ground" type="button">
-          <span class="floor-name">Ground floor <em>UTILITY</em></span><small>Cows · buffaloes · grass · storage</small>
-        </button>
-        <button class="floor-btn" data-floor="second" type="button">
-          <span class="floor-name">Second floor <em>3BHK</em></span><small>3 bedrooms · hall · kitchen · toilets</small>
-        </button>
-        <button class="floor-btn" data-floor="third" type="button">
-          <span class="floor-name">Third floor <em>2BHK</em></span><small>2 bedrooms · hall · kitchen · terrace</small>
-        </button>
-      </div>
-      <div class="floor-hint">Tip: Select a level, then choose a room below to move the camera there.</div>
-    </aside>
+    <aside class="floor-panel" aria-label="Floors"><div class="floor-list"><button class="floor-btn active" data-floor="all" type="button" aria-label="All floors"><span class="floor-name">ALL</span></button><button class="floor-btn" data-floor="ground" type="button" aria-label="Ground floor"><span class="floor-name">G</span></button><button class="floor-btn" data-floor="second" type="button" aria-label="Second floor, 3BHK"><span class="floor-name">2 · 3BHK</span></button><button class="floor-btn" data-floor="third" type="button" aria-label="Third floor, 2BHK"><span class="floor-name">3 · 2BHK</span></button></div></aside>
 
-    <div class="north-compass" aria-label="North direction">
-      <strong>N</strong><div class="arrow">↑</div><small>ROAD SIDE</small>
-    </div>
-    <div class="road-label">NORTH ROAD · MAIN GATE</div>
+    <div class="north-compass" aria-label="North"><strong>N</strong><div class="arrow">↑</div></div>
 
-    <div class="interaction-hint">
-      Drag to rotate · Scroll to zoom · Shift + scroll to move between floors<br>
-      Choose a room name to fly to that part of the house
-    </div>
-    <div class="disclaimer">Concept visualization only — not a structural, approval or construction drawing. Vastu room zoning is indicative.</div>
-
-    <nav class="toolbar" aria-label="3D model controls">
-      <button class="tool-btn" id="plan-btn" type="button" aria-pressed="false" title="Top-down floor plan">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 10h9M12 15h9"/></svg> Floor plan
-      </button>
-      <button class="tool-btn" id="tour-btn" type="button" aria-pressed="false" title="Cycle through rooms">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 12 4-4 4 4 4-4 6 4"/><path d="M17 12h4v4"/></svg> Room tour
-      </button>
-      <div class="tool-sep"></div>
-      <div class="zoom-group">
-        <button class="tool-btn zoom-btn" id="zoom-in" type="button" aria-label="Zoom in">+</button>
-        <button class="tool-btn zoom-btn" id="zoom-out" type="button" aria-label="Zoom out">−</button>
-      </div>
-      <button class="tool-btn" id="rotate-btn" type="button" aria-pressed="false" title="Auto rotate">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.5 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.5-3"/></svg> Rotate
-      </button>
-      <button class="tool-btn" id="reset-btn" type="button" title="Reset view">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 11a9 9 0 1 0 3-6.7L3 7"/><path d="M3 3v4h4"/></svg> Reset
-      </button>
+    <nav class="toolbar" aria-label="Model controls">
+      <button class="tool-btn" id="plan-btn" type="button" aria-label="Floor plan" aria-pressed="false" title="Floor plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 10h9M12 15h9"/></svg></button>
+      <button class="tool-btn" id="roof-btn" type="button" aria-label="Roof on or off" aria-pressed="true" title="Roof"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m2.5 11 9.5-7 9.5 7"/><path d="M5 10v10h14V10M9 20v-6h6v6"/></svg></button>
+      <button class="tool-btn" id="tour-btn" type="button" aria-label="Next room" aria-pressed="false" title="Next room"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 12 4-4 4 4 4-4 6 4"/><path d="M17 12h4v4"/></svg></button>
+      <div class="tool-sep"></div><button class="tool-btn zoom-btn" id="zoom-in" type="button" aria-label="Zoom in" title="Zoom in">+</button><button class="tool-btn zoom-btn" id="zoom-out" type="button" aria-label="Zoom out" title="Zoom out">−</button>
+      <button class="tool-btn" id="rotate-btn" type="button" aria-label="Auto rotate" aria-pressed="false" title="Auto rotate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.5 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.5-3"/></svg></button>
+      <button class="tool-btn" id="reset-btn" type="button" aria-label="Reset view" title="Reset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 11a9 9 0 1 0 3-6.7L3 7"/><path d="M3 3v4h4"/></svg></button>
     </nav>
 
     <div class="loading" id="loading"><span><i class="spinner"></i> PREPARING YOUR DREAM HOME...</span></div>
